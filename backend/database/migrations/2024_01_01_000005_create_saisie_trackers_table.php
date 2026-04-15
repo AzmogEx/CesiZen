@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('tracker_id')->constrained('trackers')->onDelete('cascade');
             $table->foreignId('emotion_id')->constrained('emotions');
-            $table->tinyInteger('intensite');
+            $table->unsignedTinyInteger('intensite');
             $table->text('note')->nullable();
             $table->dateTime('date_saisie');
             $table->timestamps();

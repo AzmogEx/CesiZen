@@ -23,8 +23,9 @@ export default function ConnexionPage() {
       await login(email, password);
       toast.success('Connexion réussie !');
       router.push('/dashboard');
-    } catch (error: any) {
-      const message = error?.response?.data?.message || 'Identifiants incorrects';
+    } catch (error: unknown) {
+      const axiosError = error as import('axios').AxiosError<{ message?: string }>;
+      const message = axiosError.response?.data?.message || 'Identifiants incorrects';
       toast.error(message);
     } finally {
       setLoading(false);
@@ -83,6 +84,7 @@ export default function ConnexionPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>

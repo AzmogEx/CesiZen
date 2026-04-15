@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, BarChart3, Plus, BookOpen, TrendingUp } from 'lucide-react';
+import { Heart, BarChart3, Plus, BookOpen } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSaisies } from '@/hooks/useTracker';
 import { useRapport } from '@/hooks/useRapport';

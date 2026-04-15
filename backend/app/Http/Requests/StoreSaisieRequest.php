@@ -17,7 +17,7 @@ class StoreSaisieRequest extends FormRequest
             'emotion_id' => 'required|exists:emotions,id',
             'intensite' => 'required|integer|between:1,10',
             'note' => 'nullable|string|max:2000',
-            'date_saisie' => 'required|date',
+            'date_saisie' => 'required|date_format:Y-m-d',
         ];
     }
 

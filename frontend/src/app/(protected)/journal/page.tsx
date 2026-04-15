@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Plus, Filter, Calendar } from 'lucide-react';
+import { Plus, Filter } from 'lucide-react';
 import { useSaisies, useDeleteSaisie } from '@/hooks/useTracker';
 import { useEmotions } from '@/hooks/useEmotions';
 import TrackerTimeline from '@/components/features/TrackerTimeline';
+import EditSaisieModal from '@/components/features/EditSaisieModal';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Skeleton from '@/components/ui/Skeleton';
 import toast from 'react-hot-toast';
+import type { SaisieTracker } from '@/types';
 
 export default function JournalPage() {
   const [showFilters, setShowFilters] = useState(false);
@@ -18,6 +20,7 @@ export default function JournalPage() {
     date_fin?: string;
     emotion_id?: number;
   }>({});
+  const [editingSaisie, setEditingSaisie] = useState<SaisieTracker | null>(null);
 
   const { data: saisies, isLoading } = useSaisies(filters);
   const { data: emotions } = useEmotions();
@@ -134,9 +137,17 @@ export default function JournalPage() {
       ) : (
         <TrackerTimeline
           saisies={saisies || []}
+          onEdit={(saisie) => setEditingSaisie(saisie)}
           onDelete={handleDelete}
         />
       )}
+
+      {/* Modale d'édition */}
+      <EditSaisieModal
+        saisie={editingSaisie}
+        isOpen={!!editingSaisie}
+        onClose={() => setEditingSaisie(null)}
+      />
     </div>
   );
 }

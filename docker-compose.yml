@@ -16,6 +16,27 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    command: >
+      postgres
+        -c max_connections=200
+        -c shared_buffers=256MB
+        -c effective_cache_size=768MB
+        -c work_mem=4MB
+        -c maintenance_work_mem=128MB
+
+  redis:
+    image: redis:7-alpine
+    container_name: cesizen-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
@@ -24,6 +45,7 @@ services:
     ports:
       - "8000:8000"
     environment:
+      APP_NAME: CESIZen
       APP_ENV: local
       APP_DEBUG: "true"
       APP_KEY: base64:UMxXo/+o7v1n6E+kimssgw8L2lQ2NQGMuQffn+Vh7lc=
@@ -36,10 +58,17 @@ services:
       DB_PASSWORD: cesizen_secret
       JWT_SECRET: w89wy05gyYCjGGBXyRHqthKEou5e40er2rdjg69j0mUCRL5ljescaC1CiMl8awtg
       FRONTEND_URL: http://localhost:3000
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     volumes:
       - ./backend:/app
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
 
   frontend:
@@ -58,3 +87,4 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:

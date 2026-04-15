@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfilRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ProfilController extends Controller
@@ -29,13 +29,8 @@ class ProfilController extends Controller
         ]);
     }
 
-    public function updatePassword(Request $request): JsonResponse
+    public function updatePassword(UpdatePasswordRequest $request): JsonResponse
     {
-        $request->validate([
-            'ancien_mot_de_passe' => 'required|string',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
         $utilisateur = auth()->user();
 
         if (!Hash::check($request->ancien_mot_de_passe, $utilisateur->password)) {

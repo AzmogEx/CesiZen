@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { useFeed } from '@/hooks/useFeeds';
 import Skeleton from '@/components/ui/Skeleton';
@@ -52,10 +53,13 @@ export default function ArticlePage() {
 
       {feed.image_url && (
         <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 mb-8">
-          <img
+          <Image
             src={feed.image_url}
             alt={feed.titre}
+            width={800}
+            height={400}
             className="w-full h-full object-cover"
+            unoptimized
           />
         </div>
       )}

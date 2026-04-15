@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit2, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import type { Emotion } from '@/types';
 import Card from '@/components/ui/Card';
@@ -81,8 +81,9 @@ export default function AdminEmotionsPage() {
       }
       setModalOpen(false);
       await fetchEmotions();
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Erreur');
+    } catch (err: unknown) {
+      const axiosError = err as import('axios').AxiosError<{ message?: string }>;
+      toast.error(axiosError.response?.data?.message || 'Erreur');
     } finally {
       setFormLoading(false);
     }

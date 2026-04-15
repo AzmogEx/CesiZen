@@ -15,7 +15,7 @@ return new class extends Migration
             $table->longText('contenu');
             $table->string('image_url')->nullable();
             $table->boolean('est_publie')->default(false);
-            $table->foreignId('auteur_id')->constrained('utilisateurs');
+            $table->foreignId('auteur_id')->constrained('utilisateurs')->onDelete('cascade');
             $table->integer('ordre')->default(0);
             $table->timestamps();
         });

@@ -36,8 +36,9 @@ export default function InscriptionPage() {
       await register(form);
       toast.success('Inscription réussie ! Bienvenue sur CESIZen.');
       router.push('/dashboard');
-    } catch (error: any) {
-      const data = error?.response?.data;
+    } catch (error: unknown) {
+      const axiosError = error as import('axios').AxiosError<{ message?: string; errors?: Record<string, string[]> }>;
+      const data = axiosError.response?.data;
       if (data?.errors) {
         setErrors(data.errors);
       } else {
@@ -143,6 +144,7 @@ export default function InscriptionPage() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -181,8 +183,8 @@ export default function InscriptionPage() {
               />
               <label htmlFor="consentement_rgpd" className="text-sm text-gray-600 dark:text-gray-400">
                 J&apos;accepte le traitement de mes données personnelles conformément à la{' '}
-                <Link href="/informations" className="text-malachite-600 dark:text-malachite-400 hover:underline">
-                  politique de confidentialite
+                <Link href="/politique-de-confidentialite" className="text-malachite-600 dark:text-malachite-400 hover:underline">
+                  politique de confidentialité
                 </Link>
                 . Mes données sont chiffrées et je peux supprimer mon compte à tout moment.
               </label>

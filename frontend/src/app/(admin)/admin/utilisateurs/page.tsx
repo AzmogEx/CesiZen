@@ -64,8 +64,9 @@ export default function AdminUtilisateursPage() {
       setNewUser({ nom: '', prenom: '', email: '', password: '', password_confirmation: '', role_id: 2 });
       await fetchUsers();
       toast.success('Utilisateur créé');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Erreur lors de la création');
+    } catch (err: unknown) {
+      const axiosError = err as import('axios').AxiosError<{ message?: string }>;
+      toast.error(axiosError.response?.data?.message || 'Erreur lors de la création');
     } finally {
       setFormLoading(false);
     }

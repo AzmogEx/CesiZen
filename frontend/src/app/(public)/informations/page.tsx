@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { BookOpen, Calendar } from 'lucide-react';
 import { useFeeds } from '@/hooks/useFeeds';
 import Card from '@/components/ui/Card';
@@ -39,10 +40,13 @@ export default function InformationsPage() {
               <Card hover className="h-full">
                 {feed.image_url && (
                   <div className="relative w-full h-48 mb-4 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                    <img
+                    <Image
                       src={feed.image_url}
                       alt={feed.titre}
+                      width={800}
+                      height={400}
                       className="w-full h-full object-cover"
+                      unoptimized
                     />
                   </div>
                 )}

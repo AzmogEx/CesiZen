@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Users, FileText, Heart, TrendingUp } from 'lucide-react';
+import { Users, FileText, Heart } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import api from '@/lib/api';
 

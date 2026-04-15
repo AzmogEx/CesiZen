@@ -37,8 +37,9 @@ export default function ProfilPage() {
       await fetchUser();
       setEditing(false);
       toast.success('Profil mis à jour');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Erreur lors de la mise à jour');
+    } catch (err: unknown) {
+      const axiosError = err as import('axios').AxiosError<{ message?: string }>;
+      toast.error(axiosError.response?.data?.message || 'Erreur lors de la mise à jour');
     } finally {
       setLoading(false);
     }
@@ -52,8 +53,9 @@ export default function ProfilPage() {
       setChangingPassword(false);
       setPasswordForm({ ancien_mot_de_passe: '', password: '', password_confirmation: '' });
       toast.success('Mot de passe modifié');
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Erreur lors du changement');
+    } catch (err: unknown) {
+      const axiosError = err as import('axios').AxiosError<{ message?: string }>;
+      toast.error(axiosError.response?.data?.message || 'Erreur lors du changement');
     } finally {
       setLoading(false);
     }
@@ -65,8 +67,9 @@ export default function ProfilPage() {
       await api.delete('/profil');
       toast.success('Compte supprimé');
       logout();
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Erreur lors de la suppression');
+    } catch (err: unknown) {
+      const axiosError = err as import('axios').AxiosError<{ message?: string }>;
+      toast.error(axiosError.response?.data?.message || 'Erreur lors de la suppression');
     } finally {
       setLoading(false);
     }

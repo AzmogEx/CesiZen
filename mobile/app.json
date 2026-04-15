@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "CESIZen",
+    "slug": "cesizen",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "scheme": "cesizen",
+    "splash": {
+      "backgroundColor": "#fce117",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cesi.cesizen"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#fce117"
+      },
+      "package": "com.cesi.cesizen"
+    },
+    "plugins": ["expo-router", "expo-secure-store", "expo-font"]
+  }
+}

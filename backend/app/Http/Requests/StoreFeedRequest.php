@@ -17,7 +17,7 @@ class StoreFeedRequest extends FormRequest
         $rules = [
             'titre' => 'required|string|max:255',
             'contenu' => 'required|string',
-            'image_url' => 'nullable|string|max:500',
+            'image_url' => 'nullable|url|max:500',
             'est_publie' => 'boolean',
             'ordre' => 'integer|min:0',
         ];
