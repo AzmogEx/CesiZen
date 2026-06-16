@@ -70,6 +70,12 @@ export default function LoginScreen() {
             <Text style={styles.buttonText}>{loading ? 'Connexion...' : 'Se connecter'}</Text>
           </TouchableOpacity>
 
+          <Link href="/auth/forgot-password" asChild>
+            <TouchableOpacity style={styles.forgotLink}>
+              <Text style={styles.link}>Mot de passe oublié ?</Text>
+            </TouchableOpacity>
+          </Link>
+
           <View style={styles.footer}>
             <Text style={styles.footerText}>Pas encore de compte ? </Text>
             <Link href="/auth/register" asChild>
@@ -113,7 +119,8 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { fontSize: 16, fontWeight: '700', color: Colors.black },
-  footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 20 },
+  forgotLink: { alignItems: 'center', marginTop: 12 },
+  footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 16 },
   footerText: { color: Colors.gray[500], fontSize: 14 },
   link: { color: Colors.secondary, fontSize: 14, fontWeight: '600' },
 });

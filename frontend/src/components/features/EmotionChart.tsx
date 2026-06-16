@@ -16,6 +16,7 @@ import {
   Line,
   Legend,
 } from 'recharts';
+import type { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 import type { RapportData } from '@/types';
 
 interface EmotionChartProps {
@@ -48,14 +49,18 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
               outerRadius={120}
               paddingAngle={3}
               dataKey="value"
-              label={({ name, pourcentage }: any) => `${name} (${pourcentage}%)`}
+              label={({ name, pourcentage }: { name?: string; pourcentage?: number }) =>
+                `${name} (${pourcentage}%)`
+              }
             >
               {pieData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
             <Tooltip
-              formatter={(value: any, name: any) => [`${value} saisies`, name]}
+              formatter={(value: ValueType | undefined, name: NameType | undefined) =>
+                [`${value} saisies`, name]
+              }
               contentStyle={{
                 backgroundColor: 'rgba(255,255,255,0.95)',
                 border: 'none',
@@ -139,7 +144,7 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
                 borderRadius: '12px',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
               }}
-              formatter={(value: any) => [`${Number(value).toFixed(1)}`, 'Intensité moyenne']}
+              formatter={(value: ValueType | undefined) => [`${Number(value).toFixed(1)}`, 'Intensité moyenne']}
             />
             <Bar dataKey="intensite" fill="#fce117" radius={[6, 6, 0, 0]} />
           </BarChart>

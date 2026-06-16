@@ -23,6 +23,7 @@ export interface Emotion {
   icone: string | null;
   niveau: number;
   parent_id: number | null;
+  parent?: Emotion | null;
   est_actif: boolean;
   enfants?: Emotion[];
 }

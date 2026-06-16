@@ -18,7 +18,7 @@ class SaisieTrackerController extends Controller
             return response()->json([]);
         }
 
-        $query = $tracker->saisies()->with('emotion')->orderBy('date_saisie', 'desc');
+        $query = $tracker->saisies()->with('emotion.parent')->orderBy('date_saisie', 'desc');
 
         if ($request->filled('date_debut')) {
             $query->where('date_saisie', '>=', $request->date_debut);

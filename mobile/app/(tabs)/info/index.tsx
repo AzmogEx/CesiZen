@@ -1,13 +1,18 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useFeeds } from '@/hooks/useFeeds';
 import { Colors } from '@/lib/colors';
 
-export default function InfoScreen() {
+export default function InfoListScreen() {
   const { data: feeds, isLoading } = useFeeds();
+  const router = useRouter();
 
   const renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => router.push(`/(tabs)/info/${item.slug}`)}
+    >
       <View style={styles.cardIcon}>
         <Ionicons name="document-text" size={24} color={Colors.secondary} />
       </View>
@@ -33,8 +38,8 @@ export default function InfoScreen() {
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <View style={styles.header}>
-            <Text style={styles.headerTitle}>Sante mentale</Text>
-            <Text style={styles.headerSubtitle}>Ressources et informations pour votre bien-etre</Text>
+            <Text style={styles.headerTitle}>Santé mentale</Text>
+            <Text style={styles.headerSubtitle}>Ressources et informations pour votre bien-être</Text>
           </View>
         }
         ListEmptyComponent={

@@ -38,7 +38,15 @@ export default function TabLayout() {
         name="info"
         options={{
           title: 'Infos',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <Ionicons name="information-circle" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="urgence"
+        options={{
+          title: 'Urgence',
+          tabBarIcon: ({ color, size }) => <Ionicons name="call" size={size} color={color} />,
         }}
       />
       <Tabs.Screen

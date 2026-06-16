@@ -44,6 +44,10 @@ Route::prefix('v1')->group(function () {
         Route::put('profil/password', [ProfilController::class, 'updatePassword']);
         Route::delete('profil', [ProfilController::class, 'destroy']);
 
+        // RGPD
+        Route::get('profil/export', [ProfilController::class, 'export']);
+        Route::post('profil/anonymiser', [ProfilController::class, 'anonymiser']);
+
         // Émotions
         Route::get('emotions', [EmotionController::class, 'index']);
 
@@ -58,7 +62,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // ── Admin ──────────────────────────────────────────────
-    Route::middleware(['jwt.auth', 'role:administrateur'])->prefix('admin')->group(function () {
+    Route::middleware(['jwt.auth', 'role:administrateur', 'throttle:60,1'])->prefix('admin')->group(function () {
 
         // Utilisateurs
         Route::get('utilisateurs', [AdminUtilisateurController::class, 'index']);

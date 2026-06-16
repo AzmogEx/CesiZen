@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Plus, Filter } from 'lucide-react';
+import { Plus, Filter, Download } from 'lucide-react';
 import { useSaisies, useDeleteSaisie } from '@/hooks/useTracker';
 import { useEmotions } from '@/hooks/useEmotions';
 import TrackerTimeline from '@/components/features/TrackerTimeline';
@@ -10,8 +10,32 @@ import EditSaisieModal from '@/components/features/EditSaisieModal';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Skeleton from '@/components/ui/Skeleton';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import toast from 'react-hot-toast';
 import type { SaisieTracker } from '@/types';
+
+function exportSaisiesCsv(saisies: SaisieTracker[]): void {
+  const escape = (v: unknown): string => {
+    const s = v === null || v === undefined ? '' : String(v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  };
+  const headers = ['Date', 'Emotion', 'Emotion parente', 'Intensite', 'Note'];
+  const rows = saisies.map((s) => [
+    s.date_saisie,
+    s.emotion?.nom ?? '',
+    s.emotion?.parent?.nom ?? '',
+    s.intensite,
+    s.note ?? '',
+  ]);
+  const csv = [headers, ...rows].map((r) => r.map(escape).join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `cesizen-saisies-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 export default function JournalPage() {
   const [showFilters, setShowFilters] = useState(false);
@@ -21,19 +45,29 @@ export default function JournalPage() {
     emotion_id?: number;
   }>({});
   const [editingSaisie, setEditingSaisie] = useState<SaisieTracker | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   const { data: saisies, isLoading } = useSaisies(filters);
   const { data: emotions } = useEmotions();
   const deleteSaisie = useDeleteSaisie();
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cette saisie ?')) return;
+  const confirmDelete = async () => {
+    if (!deleteId) return;
     try {
-      await deleteSaisie.mutateAsync(id);
+      await deleteSaisie.mutateAsync(deleteId);
       toast.success('Saisie supprimée');
     } catch {
       toast.error('Erreur lors de la suppression');
     }
+  };
+
+  const handleExport = () => {
+    if (!saisies || saisies.length === 0) {
+      toast.error('Aucune saisie à exporter');
+      return;
+    }
+    exportSaisiesCsv(saisies);
+    toast.success('Export CSV téléchargé');
   };
 
   return (
@@ -55,6 +89,10 @@ export default function JournalPage() {
           >
             <Filter size={16} />
             Filtrer
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleExport} title="Exporter mes saisies (RGPD)">
+            <Download size={16} />
+            Export CSV
           </Button>
           <Link href="/journal/nouvelle-saisie">
             <Button size="sm">
@@ -138,7 +176,7 @@ export default function JournalPage() {
         <TrackerTimeline
           saisies={saisies || []}
           onEdit={(saisie) => setEditingSaisie(saisie)}
-          onDelete={handleDelete}
+          onDelete={(id) => setDeleteId(id)}
         />
       )}
 
@@ -147,6 +185,16 @@ export default function JournalPage() {
         saisie={editingSaisie}
         isOpen={!!editingSaisie}
         onClose={() => setEditingSaisie(null)}
+      />
+
+      <ConfirmDialog
+        isOpen={deleteId !== null}
+        title="Supprimer la saisie"
+        message="Cette saisie sera définitivement supprimée de votre journal. Cette action est irréversible."
+        confirmLabel="Supprimer"
+        destructive
+        onConfirm={confirmDelete}
+        onClose={() => setDeleteId(null)}
       />
     </div>
   );

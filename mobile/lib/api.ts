@@ -24,11 +24,28 @@ api.interceptors.request.use(async (config) => {
   return config;
 });
 
+// Évite d'invalider la session sur les endpoints publics d'auth (login/register/forgot)
+function isAuthPublicEndpoint(url?: string): boolean {
+  if (!url) return false;
+  return /\/auth\/(login|register|forgot)/.test(url);
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const url: string | undefined = error.config?.url;
+
+    if (status === 401 && !isAuthPublicEndpoint(url)) {
       await SecureStore.deleteItemAsync('cesizen_token');
+      // Le AuthGuard de _layout détecte l'absence de token au prochain loadToken
+      // et redirige vers /auth/login.
+      try {
+        const { useAuthStore } = require('./auth-store');
+        useAuthStore.setState({ user: null, token: null, isAuthenticated: false });
+      } catch {
+        // store pas encore monté
+      }
     }
     return Promise.reject(error);
   }

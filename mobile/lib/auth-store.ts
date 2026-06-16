@@ -15,6 +15,7 @@ interface AuthState {
     email: string;
     password: string;
     password_confirmation: string;
+    consentement_rgpd: boolean;
   }) => Promise<void>;
   logout: () => Promise<void>;
   fetchUser: () => Promise<void>;

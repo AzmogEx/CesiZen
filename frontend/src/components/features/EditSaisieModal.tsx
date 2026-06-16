@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { SaisieTracker } from '@/types';
 import { useUpdateSaisie } from '@/hooks/useTracker';
 import EmotionPicker from '@/components/features/EmotionPicker';
@@ -22,14 +22,16 @@ export default function EditSaisieModal({ saisie, isOpen, onClose }: EditSaisieM
   const [note, setNote] = useState('');
   const [dateSaisie, setDateSaisie] = useState('');
 
-  useEffect(() => {
-    if (saisie) {
-      setEmotionId(saisie.emotion_id);
-      setIntensite(saisie.intensite);
-      setNote(saisie.note || '');
-      setDateSaisie(saisie.date_saisie.split('T')[0]);
-    }
-  }, [saisie]);
+  // Synchronise le formulaire quand une nouvelle saisie est passée : ajustement
+  // d'état pendant le rendu (pattern recommandé par React, sans effet).
+  const [prevSaisieId, setPrevSaisieId] = useState<number | null>(null);
+  if (saisie && saisie.id !== prevSaisieId) {
+    setPrevSaisieId(saisie.id);
+    setEmotionId(saisie.emotion_id);
+    setIntensite(saisie.intensite);
+    setNote(saisie.note || '');
+    setDateSaisie(saisie.date_saisie.split('T')[0]);
+  }
 
   const handleSubmit = async () => {
     if (!saisie || !emotionId) return;
