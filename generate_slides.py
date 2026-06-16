@@ -229,7 +229,7 @@ cols = [
     ]),
     ("1 module AU CHOIX (retenu)", BLUE, [
         "Tracker d'émotions : journal, saisies, rapports périodiques.",
-        "Hiérarchie : 7 émotions de base + 28 sous-émotions.",
+        "Hiérarchie : 7 émotions de base + 33 sous-émotions.",
     ]),
     ("Modules ÉCARTÉS", GREY, [
         "Diagnostic de stress.",
@@ -326,7 +326,7 @@ bullets(s, [
     "Journal de bord : consultation, modification, suppression des saisies.",
     "Rapports analytiques sur 4 périodes : semaine, mois, trimestre, année.",
     "Statistiques : intensité moyenne, émotion dominante, répartition, évolution.",
-    "Hiérarchie configurable par l'admin : 7 émotions + 28 sous-émotions.",
+    "Hiérarchie configurable par l'admin : 7 émotions + 33 sous-émotions.",
     "Web (graphiques Recharts) et mobile (Expo) synchronisés via l'API.",
 ], Inches(0.7), Inches(1.45), Inches(7.0), Inches(5.3), size=16, gap=10)
 image_fit(s, "mockup_wizard.png", Inches(7.9), Inches(1.35), Inches(2.5), Inches(5.3))

@@ -48,7 +48,7 @@ Cesizen/
 | Configurer les émotions (2 niveaux) | Admin | ✅ | N/A |
 
 ### Hiérarchie des émotions (seed)
-7 émotions de base (niveau 1) avec 28 sous-émotions (niveau 2) :
+7 émotions de base (niveau 1) avec 33 sous-émotions (niveau 2) :
 Joie, Tristesse, Colère, Peur, Dégoût, Surprise, Amour.
 
 ## Grille de priorisation des besoins

@@ -585,7 +585,7 @@ pdf.h2("5.3 Module 'Tracker d'émotions' (au choix)")
 pdf.paragraph(
     "Le module Tracker permet à l'utilisateur d'enregistrer son état émotionnel via un wizard en 3 étapes, "
     "de consulter son journal, et de visualiser des rapports analytiques sur 4 périodes (semaine, mois, trimestre, année). "
-    "Les émotions sont structurées en 2 niveaux (7 émotions de base + 28 sous-émotions précises)."
+    "Les émotions sont structurées en 2 niveaux (7 émotions de base + 33 sous-émotions précises)."
 )
 pdf.h3("Wizard d'ajout de saisie (3 étapes)")
 pdf.block_callout(

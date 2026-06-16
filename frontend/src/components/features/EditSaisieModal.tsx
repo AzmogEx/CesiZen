@@ -24,6 +24,8 @@ export default function EditSaisieModal({ saisie, isOpen, onClose }: EditSaisieM
 
   // Synchronise le formulaire quand une nouvelle saisie est passée : ajustement
   // d'état pendant le rendu (pattern recommandé par React, sans effet).
+  // À la fermeture (saisie = null) on réinitialise prevSaisieId pour que la
+  // réouverture de la MÊME saisie réaffiche bien ses valeurs d'origine.
   const [prevSaisieId, setPrevSaisieId] = useState<number | null>(null);
   if (saisie && saisie.id !== prevSaisieId) {
     setPrevSaisieId(saisie.id);
@@ -31,6 +33,8 @@ export default function EditSaisieModal({ saisie, isOpen, onClose }: EditSaisieM
     setIntensite(saisie.intensite);
     setNote(saisie.note || '');
     setDateSaisie(saisie.date_saisie.split('T')[0]);
+  } else if (!saisie && prevSaisieId !== null) {
+    setPrevSaisieId(null);
   }
 
   const handleSubmit = async () => {
