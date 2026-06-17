@@ -39,7 +39,7 @@ class AdminFeedController extends Controller
         $feed = Feed::findOrFail($id);
         $data = $request->validated();
 
-        if (isset($data['titre']) && !isset($data['slug'])) {
+        if (isset($data['titre']) && ! isset($data['slug'])) {
             $data['slug'] = Str::slug($data['titre']);
         }
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSaisieRequest;
-use App\Models\SaisieTracker;
 use App\Services\RapportService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +13,7 @@ class SaisieTrackerController extends Controller
     {
         $tracker = auth()->user()->tracker;
 
-        if (!$tracker) {
+        if (! $tracker) {
             return response()->json([]);
         }
 
@@ -39,7 +38,7 @@ class SaisieTrackerController extends Controller
     {
         $tracker = auth()->user()->tracker;
 
-        if (!$tracker) {
+        if (! $tracker) {
             $tracker = auth()->user()->tracker()->create(['nom' => 'Mon journal']);
         }
 

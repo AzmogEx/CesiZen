@@ -16,7 +16,9 @@ class TrackerTest extends TestCase
     use RefreshDatabase;
 
     protected Utilisateur $utilisateur;
+
     protected Emotion $emotion;
+
     protected string $token;
 
     protected function setUp(): void

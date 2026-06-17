@@ -12,7 +12,7 @@ class AdminEmotionController extends Controller
     public function index(): JsonResponse
     {
         $emotions = Emotion::niveau(1)
-            ->with(['enfants' => fn($q) => $q->orderBy('nom')])
+            ->with(['enfants' => fn ($q) => $q->orderBy('nom')])
             ->orderBy('nom')
             ->get();
 

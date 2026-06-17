@@ -67,10 +67,10 @@ export default function ProfileScreen() {
   );
 }
 
-function MenuItem({ icon, label }: { icon: string; label: string }) {
+function MenuItem({ icon, label }: { icon: keyof typeof Ionicons.glyphMap; label: string }) {
   return (
     <TouchableOpacity style={styles.menuItem}>
-      <Ionicons name={icon as any} size={20} color={Colors.gray[600]} />
+      <Ionicons name={icon} size={20} color={Colors.gray[600]} />
       <Text style={styles.menuLabel}>{label}</Text>
       <Ionicons name="chevron-forward" size={18} color={Colors.gray[300]} />
     </TouchableOpacity>

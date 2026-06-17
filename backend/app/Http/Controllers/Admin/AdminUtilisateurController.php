@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Utilisateur;
-use App\Models\Role;
 use App\Models\Tracker;
+use App\Models\Utilisateur;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,13 +18,13 @@ class AdminUtilisateurController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', "%{$search}%")
-                  ->orWhere('prenom', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('prenom', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
         if ($request->filled('role')) {
-            $query->whereHas('role', fn($q) => $q->where('nom', $request->role));
+            $query->whereHas('role', fn ($q) => $q->where('nom', $request->role));
         }
 
         $utilisateurs = $query->orderBy('created_at', 'desc')->paginate(15);
@@ -88,7 +87,7 @@ class AdminUtilisateurController extends Controller
     public function toggleActive(int $id): JsonResponse
     {
         $utilisateur = Utilisateur::findOrFail($id);
-        $utilisateur->update(['est_actif' => !$utilisateur->est_actif]);
+        $utilisateur->update(['est_actif' => ! $utilisateur->est_actif]);
 
         return response()->json([
             'message' => $utilisateur->est_actif ? 'Compte activé' : 'Compte désactivé',

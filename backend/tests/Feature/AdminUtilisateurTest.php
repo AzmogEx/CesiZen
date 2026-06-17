@@ -14,8 +14,11 @@ class AdminUtilisateurTest extends TestCase
     use RefreshDatabase;
 
     protected Utilisateur $admin;
+
     protected Utilisateur $membre;
+
     protected string $tokenAdmin;
+
     protected string $tokenMembre;
 
     protected function setUp(): void

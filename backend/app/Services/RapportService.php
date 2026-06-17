@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Models\Utilisateur;
-use App\Models\SaisieTracker;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class RapportService
 {
@@ -13,7 +11,7 @@ class RapportService
     {
         $tracker = $user->tracker;
 
-        if (!$tracker) {
+        if (! $tracker) {
             return $this->rapportVide();
         }
 
@@ -35,7 +33,7 @@ class RapportService
         $intensiteMoyenne = round($saisies->avg('intensite'), 1);
 
         $emotionsDominantes = $saisies->groupBy('emotion_id')
-            ->map(fn($group) => [
+            ->map(fn ($group) => [
                 'emotion' => $group->first()->emotion,
                 'count' => $group->count(),
                 'intensite_moyenne' => round($group->avg('intensite'), 1),
@@ -47,7 +45,7 @@ class RapportService
 
         $evolution = $this->getEvolution($saisies, $period, $dateDebut, $dateFin);
 
-        $repartition = $emotionsDominantes->map(fn($item) => [
+        $repartition = $emotionsDominantes->map(fn ($item) => [
             'nom' => $item['emotion']->nom,
             'couleur' => $item['emotion']->couleur,
             'icone' => $item['emotion']->icone,
@@ -96,7 +94,7 @@ class RapportService
             default => 'Y-m-d',
         };
 
-        $grouped = $saisies->groupBy(fn($saisie) => $saisie->date_saisie->format($format));
+        $grouped = $saisies->groupBy(fn ($saisie) => $saisie->date_saisie->format($format));
 
         $labels = [];
         $dataIntensiteMoyenne = [];
@@ -108,7 +106,7 @@ class RapportService
 
         $emotionDatasets = $saisies->groupBy('emotion_id')->map(function ($emotionGroup) use ($format, $grouped) {
             $emotion = $emotionGroup->first()->emotion;
-            $byPeriod = $emotionGroup->groupBy(fn($s) => $s->date_saisie->format($format));
+            $byPeriod = $emotionGroup->groupBy(fn ($s) => $s->date_saisie->format($format));
 
             $data = [];
             foreach ($grouped->keys() as $label) {

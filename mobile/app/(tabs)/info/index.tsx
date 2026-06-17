@@ -3,12 +3,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useFeeds } from '@/hooks/useFeeds';
 import { Colors } from '@/lib/colors';
+import type { Feed } from '@/types';
 
 export default function InfoListScreen() {
   const { data: feeds, isLoading } = useFeeds();
   const router = useRouter();
 
-  const renderItem = ({ item }: { item: any }) => (
+  const renderItem = ({ item }: { item: Feed }) => (
     <TouchableOpacity
       style={styles.card}
       onPress={() => router.push(`/(tabs)/info/${item.slug}`)}

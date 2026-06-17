@@ -35,7 +35,7 @@ class ProfilController extends Controller
     {
         $utilisateur = auth()->user();
 
-        if (!Hash::check($request->ancien_mot_de_passe, $utilisateur->password)) {
+        if (! Hash::check($request->ancien_mot_de_passe, $utilisateur->password)) {
             return response()->json([
                 'message' => 'L\'ancien mot de passe est incorrect',
             ], 422);

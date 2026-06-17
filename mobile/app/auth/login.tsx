@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { Link, useRouter } from 'expo-router';
 import { useAuthStore } from '@/lib/auth-store';
+import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
 
 export default function LoginScreen() {
@@ -20,8 +21,8 @@ export default function LoginScreen() {
     try {
       await login(email, password);
       router.replace('/(tabs)');
-    } catch (error: any) {
-      Alert.alert('Erreur', error.response?.data?.message || 'Identifiants incorrects');
+    } catch (error) {
+      Alert.alert('Erreur', getApiError(error).message || 'Identifiants incorrects');
     } finally {
       setLoading(false);
     }

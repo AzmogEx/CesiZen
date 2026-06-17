@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvo
 import { Link, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/lib/auth-store';
+import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,9 +44,10 @@ export default function RegisterScreen() {
         consentement_rgpd: consentement,
       });
       router.replace('/(tabs)');
-    } catch (error: any) {
-      const msg = error.response?.data?.message || 'Erreur lors de l\'inscription';
-      const apiErrors = error.response?.data?.errors;
+    } catch (error) {
+      const data = getApiError(error);
+      const msg = data.message || 'Erreur lors de l\'inscription';
+      const apiErrors = data.errors;
       if (apiErrors) {
         const mapped: Record<string, string> = {};
         Object.entries(apiErrors).forEach(([k, v]) => { mapped[k] = Array.isArray(v) ? v[0] as string : String(v); });

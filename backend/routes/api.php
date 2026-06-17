@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\FeedController;
-use App\Http\Controllers\EmotionController;
-use App\Http\Controllers\SaisieTrackerController;
-use App\Http\Controllers\Admin\AdminUtilisateurController;
-use App\Http\Controllers\Admin\AdminFeedController;
 use App\Http\Controllers\Admin\AdminEmotionController;
+use App\Http\Controllers\Admin\AdminFeedController;
+use App\Http\Controllers\Admin\AdminUtilisateurController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmotionController;
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\SaisieTrackerController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

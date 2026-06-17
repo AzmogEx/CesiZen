@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
-use App\Models\Utilisateur;
+use App\Http\Requests\RegisterRequest;
 use App\Models\Role;
 use App\Models\Tracker;
+use App\Models\Utilisateur;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt($credentials)) {
             return response()->json([
                 'message' => 'Identifiants incorrects',
             ], 401);
@@ -52,8 +52,9 @@ class AuthController extends Controller
 
         $utilisateur = auth()->user();
 
-        if (!$utilisateur->est_actif) {
+        if (! $utilisateur->est_actif) {
             auth()->logout();
+
             return response()->json([
                 'message' => 'Votre compte a été désactivé',
             ], 403);
