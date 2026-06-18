@@ -209,6 +209,7 @@ def generate_pdf():
         ('  6.1', 'Plan de validation', 12),
         ('  6.2', 'Checklist de validation', 13),
         ('  6.3', 'Critères d\'acceptation', 13),
+        ('  6.4', 'Modèle de procès-verbal de recette', 14),
     ]
     pdf.set_font('Helvetica', '', 10)
     for num, title, page in toc:
@@ -247,7 +248,16 @@ def generate_pdf():
         [45, 25, 85, 35]
     )
 
-    pdf.ln(5)
+    pdf.ln(2)
+    pdf.subsection_title('Outils de test automatisés')
+    pdf.body_text(
+        'Les tests sont automatisés sur les trois briques du projet et exécutables en une commande :'
+    )
+    pdf.bullet('Backend (API Laravel) : PHPUnit - 15 tests (authentification, tracker, admin, RGPD). Commande : php artisan test.')
+    pdf.bullet('Frontend Web (Next.js) : Vitest + Testing Library - composants UI et store d\'authentification. Commande : npm test.')
+    pdf.bullet('Mobile (React Native / Expo) : Jest (preset jest-expo) - utilitaires d\'appel API. Commande : npm test.')
+
+    pdf.ln(4)
     pdf.section_title('1.2 Tests fonctionnels - Authentification')
     pdf.colored_table(
         ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut', 'Responsable'],
