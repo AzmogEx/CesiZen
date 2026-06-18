@@ -19,11 +19,10 @@ export const Colors = {
   },
   emotions: {
     joie: '#FFD700',
-    tristesse: '#4169E1',
     colere: '#DC143C',
     peur: '#9932CC',
-    degout: '#228B22',
+    tristesse: '#4169E1',
     surprise: '#FF8C00',
-    amour: '#FF69B4',
+    degout: '#228B22',
   },
 };

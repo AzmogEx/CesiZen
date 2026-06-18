@@ -35,6 +35,10 @@ _UNICODE_FIX = {
     '≤': '<=',
     '≥': '>=',
     '°': 'deg',
+    'œ': 'oe',
+    'Œ': 'OE',
+    'æ': 'ae',
+    'Æ': 'AE',
 }
 
 def _safe(s):
@@ -265,8 +269,38 @@ for lib, val in metadata:
     pdf.set_font('Helvetica', '', 10)
     pdf.cell(0, 7, val, new_x="LMARGIN", new_y="NEXT")
 
-# ─────────────── 1. Glossaire ───────────────
+# ─────────────── Sommaire ───────────────
 pdf.add_page()
+pdf.set_font('Helvetica', 'B', 16)
+pdf.set_text_color(*COULEUR_BLEU)
+pdf.set_fill_color(*COULEUR_BLEU_CLAIR)
+pdf.cell(0, 11, '  Sommaire', fill=True, new_x="LMARGIN", new_y="NEXT")
+pdf.ln(6)
+sommaire = [
+    ('1', 'Glossaire'),
+    ('2', 'Recueil du besoin'),
+    ('3', 'Critères de priorisation et pondération'),
+    ('4', 'Cahier des charges - Analyse'),
+    ('5', 'Réponse fonctionnelle - Spécifications par module'),
+    ('6', "Schématisation UML - Cas d'usage"),
+    ('7', 'Modèle Conceptuel de Données (MCD)'),
+    ('8', 'Conception technique - Architecture MVC'),
+    ('9', 'Diagrammes UML - Séquences clés'),
+    ('10', 'Gestion des données personnelles et sensibles (RGPD)'),
+    ('11', 'Analyse des risques et mitigation'),
+    ('12', 'Exigences non-fonctionnelles'),
+    ('13', 'Conclusion'),
+]
+for num, titre in sommaire:
+    pdf.set_font('Helvetica', 'B', 11)
+    pdf.set_text_color(*COULEUR_SECONDAIRE)
+    pdf.cell(12, 8.5, num)
+    pdf.set_font('Helvetica', '', 11)
+    pdf.set_text_color(40, 40, 40)
+    pdf.cell(0, 8.5, titre, new_x="LMARGIN", new_y="NEXT")
+pdf.ln(6)
+
+# ─────────────── 1. Glossaire (même page que le sommaire) ───────────────
 pdf.h1(1, 'Glossaire')
 glossaire = [
     ('MVC', "Modèle-Vue-Contrôleur. Patron d'architecture séparant données, présentation et logique applicative."),
@@ -330,7 +364,9 @@ pdf.table(
         ['Organisationnelle', 'Réalisation individuelle, 3 mois calendaires', 'CRITIQUE'],
         ['Organisationnelle', "Pas de budget dédié à la création de contenu", 'MOYENNE'],
         ['Fonctionnelle', '2 modules obligatoires + 1 au choix (Tracker retenu)', 'CRITIQUE'],
+        ['Budgétaire', "Budget global du projet plafonné à 75 000 EUR (sujet)", 'CRITIQUE'],
         ['Budgétaire', 'Stack open-source uniquement (pas de licence payante)', 'MOYENNE'],
+        ['Temporelle', "Livraison de la version testée sous 12 mois (sujet)", 'FORTE'],
     ],
     col_widths=[35, 130, 25],
 )
@@ -455,7 +491,33 @@ pdf.bullet(
 # ─────────────── 4. Cahier des charges — Analyse ───────────────
 pdf.add_page()
 pdf.h1(4, 'Cahier des charges — Analyse')
-pdf.h2('4.1 Acteurs identifiés')
+pdf.h2('4.1 Parties prenantes et communication')
+pdf.paragraph(
+    "Au-delà des acteurs du système, le projet mobilise plusieurs parties prenantes dont les attentes et "
+    "les canaux d'échange structurent la conduite du projet. Le commanditaire valide les livrables en comité "
+    "de pilotage ; l'apprenant (maîtrise d'œuvre) restitue son avancement via le dossier et la soutenance ; "
+    "les contenus sont produits par des professionnels de santé et hébergés chez un prestataire HDS sous "
+    "le contrôle de la CNIL."
+)
+pdf.table(
+    headers=['Partie prenante', 'Rôle / intérêt', 'Attentes', 'Canal de communication'],
+    rows=[
+        ['Ministère (commanditaire)', "Finance et valide le projet",
+         "Conformité santé publique, RGPD, image institutionnelle", "Comités de pilotage, validation des livrables"],
+        ["Apprenant (maîtrise d'œuvre)", "Conçoit et développe la solution",
+         "Cadrage clair, périmètre stable", "Dossier, revues d'avancement, soutenance"],
+        ['Utilisateurs finaux', "Usage quotidien de la plateforme",
+         "Simplicité, confidentialité, accessibilité", "Retours in-app, enquêtes de satisfaction"],
+        ['Professionnels de santé', "Rédigent et modèrent les contenus",
+         "Outils d'administration fiables", "Back-office, charte éditoriale"],
+        ['Hébergeur HDS', "Héberge les données de santé",
+         "Conformité technique, disponibilité (SLA)", "Contrat de service, supervision"],
+        ['CNIL / DPO', "Contrôlent la conformité RGPD",
+         "Registre des traitements, sécurité", "Registre, analyses d'impact (AIPD)"],
+    ],
+    col_widths=[42, 40, 58, 50],
+)
+pdf.h2('4.2 Acteurs identifiés')
 pdf.table(
     headers=['Acteur', 'Description', 'Périmètre fonctionnel'],
     rows=[
@@ -472,7 +534,7 @@ pdf.table(
     col_widths=[35, 60, 90],
 )
 
-pdf.h2('4.2 Personas')
+pdf.h2('4.3 Personas')
 personas = [
     ("Claire — Utilisatrice (Visiteur → Membre)",
      "35 ans, responsable marketing à Lille. Mère célibataire de 2 enfants. Stressée par le travail, "
@@ -493,7 +555,7 @@ for nom, desc in personas:
     pdf.multi_cell(0, 5, '  ' + desc)
     pdf.ln(1)
 
-pdf.h2('4.3 Opportunités et pérennité')
+pdf.h2('4.4 Opportunités et pérennité')
 pdf.bullet(
     "Évolutivité : architecture découplée (API REST + 2 clients web/mobile) permettant l'ajout futur "
     "des modules Diagnostic, Respiration, Activités sans réécriture."
@@ -557,8 +619,7 @@ pdf.ln(2)
 pdf.figure(_os.path.join(ASSETS, 'mockup_inscription.png'), 62,
            caption="Maquette - écran d'inscription (consentement RGPD obligatoire)")
 
-# ─── Module 2 — Informations
-pdf.add_page()
+# ─── Module 2 — Informations (enchaîne après le module Comptes)
 pdf.h2("5.2 Module 'Informations' (obligatoire)")
 pdf.h3("Écrans principaux")
 pdf.bullet("Page publique liste : grille de cartes (titre, extrait 120 caractères, image, date).")
@@ -579,24 +640,27 @@ pdf.table(
     ],
     col_widths=[20, 170],
 )
+pdf.figure(_os.path.join(ASSETS, 'mockup_informations.png'), 88,
+           caption="Maquette - liste publique des pages d'information + back-office admin")
 
 # ─── Module 3 — Tracker
 pdf.h2("5.3 Module 'Tracker d'émotions' (au choix)")
 pdf.paragraph(
     "Le module Tracker permet à l'utilisateur d'enregistrer son état émotionnel via un wizard en 3 étapes, "
     "de consulter son journal, et de visualiser des rapports analytiques sur 4 périodes (semaine, mois, trimestre, année). "
-    "Les émotions sont structurées en 2 niveaux (7 émotions de base + 33 sous-émotions précises)."
+    "Les émotions sont structurées en 2 niveaux (6 émotions de base + 36 sous-émotions précises), "
+    "conformément au référentiel défini dans le sujet."
 )
 pdf.h3("Wizard d'ajout de saisie (3 étapes)")
 pdf.block_callout(
     "Étape 1 — Sélection de l'émotion de base (niveau 1)",
-    "L'utilisateur choisit parmi 7 émotions fondamentales : Joie, Tristesse, Colère, Peur, Dégoût, Surprise, Amour. "
+    "L'utilisateur choisit parmi 6 émotions fondamentales : Joie, Colère, Peur, Tristesse, Surprise, Dégoût. "
     "Chaque émotion est représentée par une couleur et un icône distinctifs.",
     color=COULEUR_SECONDAIRE
 )
 pdf.block_callout(
     "Étape 2 — Sous-émotion (niveau 2) + intensité 1-10",
-    "Selon l'émotion choisie, 4 à 6 sous-émotions plus précises sont proposées (ex: Joie → Sérénité, Enthousiasme, Fierté, Gratitude). "
+    "Selon l'émotion choisie, 6 sous-émotions plus précises sont proposées (ex: Joie -> Fierté, Contentement, Enchantement, Excitation, Émerveillement, Gratitude). "
     "L'intensité est ajustée via un slider de 1 (très faible) à 10 (très forte).",
     color=COULEUR_BLEU
 )
@@ -644,7 +708,7 @@ pdf.paragraph(
     "Le MCD utilise le formalisme Merise (entités, associations, cardinalités). 8 entités principales sont "
     "modélisées : Utilisateur, Rôle, Tracker, Émotion, SaisieTracker, Feed, ContactUrgence, Audit."
 )
-pdf.figure(_os.path.join(ASSETS, 'mcd.png'), 150,
+pdf.figure(_os.path.join(ASSETS, 'mcd.png'), 165,
            caption="Modèle Conceptuel de Données (Merise) - cardinalités et hiérarchie d'émotions")
 
 pdf.h2("7.1 Cardinalités principales")
@@ -781,7 +845,8 @@ pdf.table(
 )
 pdf.h2('10.3 Mesures de sécurité techniques')
 pdf.bullet("Chiffrement en transit : HTTPS strict (HSTS), TLS 1.3 minimum.")
-pdf.bullet("Chiffrement au repos : AES-256 sur le volume PostgreSQL, secrets dans .env hors-versioning.")
+pdf.bullet("Chiffrement au repos : chiffrement du volume PostgreSQL (AES-256) prévu en production HDS. "
+           "À ce stade, les mots de passe sont hachés (bcrypt) et les secrets sont stockés hors-versioning (.env).")
 pdf.bullet("Hash mot de passe : bcrypt 12 rounds (configurable selon serveur).")
 pdf.bullet("Authentification : JWT signé (HS256), expiration 60min, refresh 14j, throttle login 5/min.")
 pdf.bullet("Autorisation : middleware role-based (jwt.auth + role:administrateur), rate limit admin 60/min.")
@@ -796,7 +861,7 @@ pdf.table(
     headers=['Risque', 'Impact', 'Probabilité', 'Mitigation'],
     rows=[
         ['Fuite données de santé', 'CRITIQUE', 'Faible',
-         "Chiffrement AES-256, HDS, audits trimestriels, minimisation données."],
+         "Hachage bcrypt, chiffrement volume AES-256 prévu en prod HDS, audits trimestriels, minimisation données."],
         ['Dérive contenus (conseil médical dangereux)', 'FORT', 'Moyen',
          "Modération admin obligatoire avant publication. Avertissement légal en pied de page."],
         ['Perte de données utilisateur', 'FORT', 'Faible',
@@ -827,7 +892,6 @@ pdf.table(
         ['Sécurité', 'Audit pénétration', 'Annuel (tiers indépendant)'],
         ['Accessibilité', 'RGAA niveau', 'AA'],
         ['Ergonomie', 'Dark Mode', "Natif iOS / Android / Web"],
-        ['Internationalisation', 'Langues supportées', 'FR (v1), EN (v2)'],
     ],
     col_widths=[30, 80, 80],
 )
@@ -850,7 +914,7 @@ pdf.paragraph(
     "et démontre la faisabilité technique des choix présentés."
 )
 
-pdf.ln(6)
+pdf.ln(1)
 pdf.set_font('Helvetica', 'I', 9)
 pdf.set_text_color(*COULEUR_GRIS_MOYEN)
 pdf.cell(0, 6, 'Sources : consignes CESI INFCDAAL1, Santé Publique France 2023, CNIL — Guide RGPD santé.',

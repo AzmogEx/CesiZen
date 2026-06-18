@@ -16,7 +16,7 @@
 | **0:00 – 2:00** (2′) | 1 — 2 | **Introduction** | Se présenter. Annoncer le commanditaire (Ministère) et l'objet : une plateforme grand public de santé mentale. Donner le fil rouge : « je vais dérouler le recueil du besoin, la priorisation, la réponse fonctionnelle, puis la modélisation technique et la conformité RGPD. » Présenter le sommaire (slide 2). |
 | **2:00 – 5:00** (3′) | 3 — 4 | **Contexte, enjeux, parties prenantes** | Rappeler l'enjeu sociétal (22 % des Français, SPF 2023) et la stigmatisation. Énoncer les 4 objectifs stratégiques. Présenter les parties prenantes et les 3 acteurs (Visiteur, Utilisateur, Administrateur). Insister : « le besoin a été **reformulé**, pas recopié. » |
 | **5:00 – 7:00** (2′) | 5 — 6 | **Besoins & priorisation** | Périmètre : 2 modules obligatoires + Tracker au choix ; modules écartés assumés. Présenter la grille pondérée /15 (5 critères). Conclusion argumentée : « le Tracker cumule 4 fonctionnalités à 9-10/15, c'est le module au choix le plus rentable. » |
-| **7:00 – 12:00** (5′) | 7 — 8 — 9 | **Réponse fonctionnelle** | Module Comptes : JWT, RGPD, admin (slide 7 + maquette). Module Informations : feeds, modération, slug auto (slide 8). Module Tracker : wizard 3 étapes, journal, rapports 4 périodes, 7+33 émotions (slide 9 + maquettes). Montrer que chaque écran répond à un besoin précis. |
+| **7:00 – 12:00** (5′) | 7 — 8 — 9 | **Réponse fonctionnelle** | Module Comptes : JWT, RGPD, admin (slide 7 + maquette). Module Informations : feeds, modération, slug auto (slide 8). Module Tracker : wizard 3 étapes, journal, rapports 4 périodes, 6+36 émotions (slide 9 + maquettes). Montrer que chaque écran répond à un besoin précis. |
 | **12:00 – 16:00** (4′) | 10 — 11 — 12 | **Modélisation** | Cas d'usage UML (slide 10) : couverture par acteur. MCD Merise (slide 11) : 8 entités, cardinalités, hiérarchie d'émotions auto-référencée. Architecture MVC découplée (slide 12) : 1 API REST Laravel → 2 clients ; justifier le pattern (testabilité, évolutivité, non-duplication). |
 | **16:00 – 17:30** (1′30) | 13 | **RGPD & données sensibles** | Données de santé = sensibles (art. 9). Consentement, droits CNIL (export/anonymisation), soft delete. Sécurité : chiffrement AES-256/TLS, JWT, HDS, table audits. |
 | **17:30 – 19:00** (1′30) | 14 | **Prototype & perspectives** | Prototype fonctionnel (Laravel + Next.js + Expo + Docker). Ouverture : activer les modules écartés sans réécrire le modèle, Open Data, Mon Espace Santé (FHIR), i18n. |
@@ -49,7 +49,7 @@
 > Le besoin est un journal personnel unique ; le tracker est créé automatiquement à l'inscription. Le modèle reste extensible (passer en 1-N) si un jour on veut plusieurs journaux thématiques.
 
 **Q7. Comment gérez-vous la hiérarchie d'émotions à 2 niveaux ?**
-> Une seule table `emotions` avec auto-référence `parent_id` : niveau 1 = parent_id NULL, niveau 2 = parent_id renseigné. 7 émotions de base + 33 sous-émotions. L'admin la configure via le CRUD émotions.
+> Une seule table `emotions` avec auto-référence `parent_id` : niveau 1 = parent_id NULL, niveau 2 = parent_id renseigné. 6 émotions de base + 36 sous-émotions (référentiel du sujet). L'admin la configure via le CRUD émotions.
 
 ### Données & sécurité (RGPD)
 **Q8. Les données émotionnelles sont sensibles — comment êtes-vous conforme ?**

@@ -229,7 +229,7 @@ cols = [
     ]),
     ("1 module AU CHOIX (retenu)", BLUE, [
         "Tracker d'émotions : journal, saisies, rapports périodiques.",
-        "Hiérarchie : 7 émotions de base + 33 sous-émotions.",
+        "Hiérarchie : 6 émotions de base + 36 sous-émotions (référentiel du sujet).",
     ]),
     ("Modules ÉCARTÉS", GREY, [
         "Diagnostic de stress.",
@@ -326,7 +326,7 @@ bullets(s, [
     "Journal de bord : consultation, modification, suppression des saisies.",
     "Rapports analytiques sur 4 périodes : semaine, mois, trimestre, année.",
     "Statistiques : intensité moyenne, émotion dominante, répartition, évolution.",
-    "Hiérarchie configurable par l'admin : 7 émotions + 33 sous-émotions.",
+    "Hiérarchie configurable par l'admin : 6 émotions + 36 sous-émotions.",
     "Web (graphiques Recharts) et mobile (Expo) synchronisés via l'API.",
 ], Inches(0.7), Inches(1.45), Inches(7.0), Inches(5.3), size=16, gap=10)
 image_fit(s, "mockup_wizard.png", Inches(7.9), Inches(1.35), Inches(2.5), Inches(5.3))
@@ -383,7 +383,7 @@ rect(s, Inches(0.8), Inches(4.1), Inches(3.6), Inches(0.55), GREEN_D)
 tb, tf = textbox(s, Inches(0.95), Inches(4.13), Inches(3.4), Inches(0.5), MSO_ANCHOR.MIDDLE)
 set_par(tf.paragraphs[0], "Mesures de sécurité", 15, WHITE, bold=True, space_after=0)
 bullets(s, [
-    "Chiffrement en transit (HTTPS/TLS 1.3) et au repos (AES-256).",
+    "Chiffrement en transit (HTTPS/TLS 1.3) ; bcrypt sur les mots de passe, AES-256 au repos prévu en prod HDS.",
     "Authentification JWT signée, expiration 60 min, throttle login.",
     "Hébergement certifié HDS (Scaleway / OVH Healthcare).",
     "Journalisation : table audits trace toute action admin sensible.",

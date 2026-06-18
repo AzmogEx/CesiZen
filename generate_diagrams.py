@@ -212,9 +212,9 @@ def diagram_mcd():
         ca = (p0[0] + (p1[0] - p0[0]) * 0.16, p0[1] + (p1[1] - p0[1]) * 0.16)
         cb = (p0[0] + (p1[0] - p0[0]) * 0.84, p0[1] + (p1[1] - p0[1]) * 0.84)
         for (cx, cy), card in ((ca, card_a), (cb, card_b)):
-            w = c.text_w(card, 10, bold=True) + 8
-            c.box(cx - w / 2, cy - 9, w, 18, fill=WHITE, outline=GREEN_D, width=1, radius=5)
-            c.text(cx, cy, card, 10, GREEN_D, bold=True, anchor='mm')
+            w = c.text_w(card, 13, bold=True) + 12
+            c.box(cx - w / 2, cy - 12, w, 24, fill=WHITE, outline=GREEN_D, width=2, radius=6)
+            c.text(cx, cy, card, 13, GREEN_D, bold=True, anchor='mm')
         c.pill(mx, my, verb, 11, GREEN)
 
     # liens (cardinalités Merise : (min,max) côté de chaque entité)
@@ -233,8 +233,8 @@ def diagram_mcd():
     c.line(ex + ew + 45, ey - 5, ex + ew / 2, ey - 5, GREEN_D, 2)
     c.line(ex + ew / 2, ey - 5, ex + ew / 2, ey, GREEN_D, 2)
     c.pill(ex + ew + 45, ey + 18, 'hiérarchie', 10, GREEN)
-    c.text(ex + ew + 50, ey + 40, '0,n', 9, GREEN_D, bold=True, anchor='lm')
-    c.text(ex + ew / 2 + 8, ey - 12, '0,1', 9, GREEN_D, bold=True, anchor='lm')
+    c.text(ex + ew + 52, ey + 40, '0,n', 12, GREEN_D, bold=True, anchor='lm')
+    c.text(ex + ew / 2 + 10, ey - 13, '0,1', 12, GREEN_D, bold=True, anchor='lm')
 
     # dessin des entités (au-dessus des liens)
     for name, (x, y, w, attrs) in entities.items():
@@ -538,7 +538,7 @@ def mockup_wizard():
     c.ellipse(ix + 28, y + 170, 13, 13, fill=(255, 215, 0), outline=(225, 185, 0), width=2)
     c.text(ix + 52, y + 170, "Joie", 14, GREY_D, bold=True, anchor='lm')
     # sous-émotions
-    subs = ['Sérénité', 'Gratitude', 'Fierté', 'Espoir', 'Bonheur', 'Enthousiasme']
+    subs = ['Fierté', 'Contentement', 'Enchantement', 'Excitation', 'Émerveillement', 'Gratitude']
     for i, s in enumerate(subs):
         sx = ix + (i % 2) * 140
         sy = y + 215 + (i // 2) * 50
@@ -598,6 +598,48 @@ def mockup_rapports():
     c.save('mockup_rapports.png')
 
 
+def mockup_informations():
+    c = Canvas(620, 760)
+    title_bar(c, 14, 14, 592, "Maquette - Informations (pages de contenu)", fill=GREEN_D)
+    x, y, w, h = 40, 80, 540, 650
+    # fenêtre navigateur
+    c.box(x, y, w, h, fill=WHITE, outline=GREY_D, width=3, radius=14)
+    c.box(x, y, w, 40, fill=GREY_L, outline=GREY_L, radius=14)
+    c.rect(x, y + 22, w, 18, fill=GREY_L)
+    for i, col in enumerate([(255, 95, 86), (255, 189, 46), (39, 201, 63)]):
+        c.ellipse(x + 22 + i * 22, y + 20, 7, 7, fill=col, outline=col)
+    c.text(x + w / 2, y + 20, "cesizen.fr / informations", 10, GREY_D, anchor='mm')
+    ix = x + 28
+    c.text(ix, y + 68, "Santé mentale - Ressources", 16, BLUE, bold=True, anchor='lm')
+    c.text(ix, y + 92, "Articles et conseils validés par nos professionnels", 10, GREY, anchor='lm')
+    # cartes articles (liste publique)
+    articles = [
+        ("Comprendre le stress", ["Mécanismes du stress et signaux", "d'alerte à reconnaître au quotidien."]),
+        ("5 exercices anti-anxiété", ["Respiration et ancrage pour apaiser", "une montée d'anxiété."]),
+        ("Bien dormir, mieux vivre", ["L'impact du sommeil sur la santé", "mentale et routines de repos."]),
+        ("Quand consulter ?", ["Repères pour identifier le moment", "d'aller voir un professionnel."]),
+    ]
+    cy0 = y + 118
+    for i, (titre, lignes) in enumerate(articles):
+        cardx = ix + (i % 2) * 258
+        cardy = cy0 + (i // 2) * 152
+        c.box(cardx, cardy, 240, 132, fill=GREY_LL, outline=GREY_L, width=1, radius=12)
+        c.box(cardx, cardy, 240, 40, fill=BLUE_L, outline=BLUE_L, radius=12)
+        c.rect(cardx, cardy + 22, 240, 18, fill=BLUE_L)
+        c.text(cardx + 14, cardy + 20, titre, 11, BLUE, bold=True, anchor='lm')
+        for j, ln in enumerate(lignes):
+            c.text(cardx + 14, cardy + 62 + j * 19, ln, 9, INK, anchor='lm')
+        c.text(cardx + 14, cardy + 112, "12 mai 2026  ·  Lire ->", 8, GREEN_D, bold=True, anchor='lm')
+    # bandeau back-office admin
+    ay = cy0 + 320
+    c.box(ix, ay, w - 56, 40, fill=(255, 248, 200), outline=YELLOW, width=2, radius=10)
+    c.text(ix + 14, ay + 20, "Back-office admin : créer / modifier / publier  ·  slug auto  ·  "
+           "modération avant mise en ligne", 9, GREY_D, anchor='lm')
+    c.text(x + w / 2, y + h - 14, "RG-INF-01 slug auto · RG-INF-02 brouillon/publié · RG-INF-06 modération",
+           8, GREY, anchor='mm')
+    c.save('mockup_informations.png')
+
+
 # ════════════════════════════════════════════════════════════════════
 def main():
     print("Génération des schémas CESIZen ->", OUT_DIR)
@@ -608,6 +650,7 @@ def main():
     diagram_mvc()
     mockup_inscription()
     mockup_wizard()
+    mockup_informations()
     mockup_rapports()
     print("Terminé.")
 
