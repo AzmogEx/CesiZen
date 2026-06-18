@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/auth-store";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 interface NavLink {
   href: string;
@@ -11,9 +13,17 @@ interface NavLink {
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, token, logout } = useAuthStore();
   const isAuthenticated = !!token;
   const isAdmin = user?.role?.nom === "administrateur";
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+  const handleLogout = async () => {
+    setShowLogoutConfirm(false);
+    await logout();
+    router.push("/connexion");
+  };
 
   const navLinks: NavLink[] = [
     { href: "/", label: "Accueil" },
@@ -83,7 +93,7 @@ export default function Header() {
                       <li>
                         <button
                           className="fr-btn fr-icon-logout-box-r-line"
-                          onClick={() => logout()}
+                          onClick={() => setShowLogoutConfirm(true)}
                         >
                           Déconnexion
                         </button>
@@ -155,6 +165,15 @@ export default function Header() {
           </nav>
         </div>
       </div>
+      <ConfirmDialog
+        isOpen={showLogoutConfirm}
+        title="Déconnexion"
+        message="Voulez-vous vraiment vous déconnecter de votre compte CESIZen ?"
+        confirmLabel="Se déconnecter"
+        cancelLabel="Annuler"
+        onConfirm={handleLogout}
+        onClose={() => setShowLogoutConfirm(false)}
+      />
     </header>
   );
 }
