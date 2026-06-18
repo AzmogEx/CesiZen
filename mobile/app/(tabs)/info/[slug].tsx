@@ -11,7 +11,7 @@ export default function FeedDetailScreen() {
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.secondary} />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }
@@ -32,7 +32,7 @@ export default function FeedDetailScreen() {
       <Stack.Screen options={{ title: feed.titre ?? '' }} />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.badge}>
-          <Ionicons name="information-circle" size={14} color={Colors.secondary} />
+          <Ionicons name="information-circle" size={14} color={Colors.primary} />
           <Text style={styles.badgeText}>Information santé mentale</Text>
         </View>
 
@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.white },
   content: { padding: 20, paddingBottom: 40 },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.white },
-  badge: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', backgroundColor: `${Colors.secondary}15`, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999, marginBottom: 12 },
-  badgeText: { fontSize: 12, fontWeight: '600', color: Colors.secondary },
+  badge: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', backgroundColor: `${Colors.primary}15`, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 4, marginBottom: 12 },
+  badgeText: { fontSize: 12, fontWeight: '600', color: Colors.primary },
   title: { fontSize: 24, fontWeight: '800', color: Colors.black, marginBottom: 8, lineHeight: 30 },
   date: { fontSize: 13, color: Colors.gray[400], marginBottom: 20 },
-  body: { fontSize: 15, lineHeight: 24, color: Colors.gray[700] ?? '#374151' },
+  body: { fontSize: 15, lineHeight: 24, color: Colors.black },
   errorText: { marginTop: 12, fontSize: 16, color: Colors.gray[400] },
 });

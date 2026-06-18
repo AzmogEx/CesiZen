@@ -15,7 +15,7 @@ export default function InfoListScreen() {
       onPress={() => router.push(`/(tabs)/info/${item.slug}`)}
     >
       <View style={styles.cardIcon}>
-        <Ionicons name="document-text" size={24} color={Colors.secondary} />
+        <Ionicons name="document-text" size={24} color={Colors.primary} />
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{item.titre}</Text>
@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.white },
   listContent: { padding: 16 },
   header: { marginBottom: 20 },
-  headerTitle: { fontSize: 14, fontWeight: '700', color: Colors.secondary, textTransform: 'uppercase', letterSpacing: 1 },
+  headerTitle: { fontSize: 14, fontWeight: '700', color: Colors.primary, textTransform: 'uppercase', letterSpacing: 1 },
   headerSubtitle: { fontSize: 15, color: Colors.gray[500], marginTop: 4 },
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16,
-    backgroundColor: Colors.gray[50], borderRadius: 16, marginBottom: 10,
-    borderWidth: 1, borderColor: Colors.gray[100],
+    backgroundColor: Colors.white, borderRadius: 4, marginBottom: 10,
+    borderWidth: 1, borderColor: Colors.gray[200],
   },
-  cardIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: `${Colors.secondary}15`, justifyContent: 'center', alignItems: 'center' },
+  cardIcon: { width: 48, height: 48, borderRadius: 4, backgroundColor: `${Colors.primary}15`, justifyContent: 'center', alignItems: 'center' },
   cardContent: { flex: 1 },
   cardTitle: { fontSize: 15, fontWeight: '700', color: Colors.black, marginBottom: 4 },
   cardExcerpt: { fontSize: 13, color: Colors.gray[500], lineHeight: 18 },

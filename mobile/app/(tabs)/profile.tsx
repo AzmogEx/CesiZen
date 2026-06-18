@@ -58,7 +58,7 @@ export default function ProfileScreen() {
 
       {/* Logout */}
       <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
-        <Ionicons name="log-out-outline" size={20} color="#DC143C" />
+        <Ionicons name="log-out-outline" size={20} color={Colors.error} />
         <Text style={styles.logoutText}>Se deconnecter</Text>
       </TouchableOpacity>
 
@@ -82,26 +82,26 @@ const styles = StyleSheet.create({
   content: { padding: 20, paddingBottom: 40 },
   profileHeader: { alignItems: 'center', marginBottom: 32, marginTop: 12 },
   avatar: {
-    width: 80, height: 80, borderRadius: 40, backgroundColor: Colors.primary,
+    width: 80, height: 80, borderRadius: 4, backgroundColor: Colors.primary,
     justifyContent: 'center', alignItems: 'center', marginBottom: 12,
   },
-  avatarText: { fontSize: 28, fontWeight: '800', color: Colors.black },
+  avatarText: { fontSize: 28, fontWeight: '800', color: Colors.white },
   name: { fontSize: 22, fontWeight: '700', color: Colors.black },
   email: { fontSize: 14, color: Colors.gray[500], marginTop: 4 },
-  roleBadge: { backgroundColor: `${Colors.secondary}20`, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 8, marginTop: 8 },
-  roleText: { fontSize: 12, fontWeight: '600', color: Colors.secondary, textTransform: 'capitalize' },
+  roleBadge: { backgroundColor: `${Colors.primary}15`, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 4, marginTop: 8 },
+  roleText: { fontSize: 12, fontWeight: '600', color: Colors.primary, textTransform: 'capitalize' },
   menuSection: { marginBottom: 24 },
-  sectionTitle: { fontSize: 13, fontWeight: '700', color: Colors.gray[400], textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 },
-  menuCard: { backgroundColor: Colors.gray[50], borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: Colors.gray[100] },
+  sectionTitle: { fontSize: 13, fontWeight: '700', color: Colors.gray[500], textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 },
+  menuCard: { backgroundColor: Colors.white, borderRadius: 4, overflow: 'hidden', borderWidth: 1, borderColor: Colors.gray[200] },
   menuItem: {
     flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 15, paddingHorizontal: 16,
-    borderBottomWidth: 1, borderBottomColor: Colors.gray[100],
+    borderBottomWidth: 1, borderBottomColor: Colors.gray[200],
   },
-  menuLabel: { flex: 1, fontSize: 15, color: Colors.gray[700] },
+  menuLabel: { flex: 1, fontSize: 15, color: Colors.black },
   logoutBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
-    paddingVertical: 16, borderRadius: 14, backgroundColor: '#DC143C10',
+    paddingVertical: 16, borderRadius: 4, backgroundColor: Colors.errorBg,
   },
-  logoutText: { fontSize: 15, fontWeight: '600', color: '#DC143C' },
+  logoutText: { fontSize: 15, fontWeight: '600', color: Colors.error },
   version: { textAlign: 'center', fontSize: 12, color: Colors.gray[400], marginTop: 20 },
 });

@@ -68,7 +68,7 @@ export default function UrgenceScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <View style={styles.iconBadge}>
-          <Ionicons name="heart" size={20} color="#DC2626" />
+          <Ionicons name="heart" size={20} color={Colors.error} />
         </View>
         <Text style={styles.headerTitle}>Vous n'êtes pas seul(e)</Text>
         <Text style={styles.headerSubtitle}>
@@ -79,7 +79,7 @@ export default function UrgenceScreen() {
       {CONTACTS.map((c) => (
         <TouchableOpacity key={c.numero} style={styles.card} onPress={() => appeler(c.numero, c.nom)}>
           <View style={styles.cardIcon}>
-            <Ionicons name="call" size={22} color="#DC2626" />
+            <Ionicons name="call" size={22} color={Colors.error} />
           </View>
           <View style={styles.cardContent}>
             <Text style={styles.cardName}>{c.nom}</Text>
@@ -92,7 +92,7 @@ export default function UrgenceScreen() {
       ))}
 
       <View style={styles.warning}>
-        <Ionicons name="warning" size={18} color="#DC2626" />
+        <Ionicons name="warning" size={18} color={Colors.error} />
         <Text style={styles.warningText}>
           En cas d'urgence vitale, appelez immédiatement le <Text style={styles.bold}>15</Text> (SAMU) ou le <Text style={styles.bold}>112</Text>.
         </Text>
@@ -105,21 +105,21 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.white },
   content: { padding: 16, paddingBottom: 32 },
   header: { marginBottom: 20, alignItems: 'flex-start' },
-  iconBadge: { width: 40, height: 40, borderRadius: 999, backgroundColor: '#FEE2E2', justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
+  iconBadge: { width: 40, height: 40, borderRadius: 4, backgroundColor: Colors.errorBg, justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
   headerTitle: { fontSize: 22, fontWeight: '800', color: Colors.black, marginBottom: 6 },
   headerSubtitle: { fontSize: 14, color: Colors.gray[500], lineHeight: 20 },
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 14, padding: 16,
-    backgroundColor: Colors.gray[50], borderRadius: 16, marginBottom: 10,
-    borderWidth: 1, borderColor: Colors.gray[100],
+    backgroundColor: Colors.white, borderRadius: 4, marginBottom: 10,
+    borderWidth: 1, borderColor: Colors.gray[200],
   },
-  cardIcon: { width: 44, height: 44, borderRadius: 12, backgroundColor: '#FEE2E2', justifyContent: 'center', alignItems: 'center' },
+  cardIcon: { width: 44, height: 44, borderRadius: 4, backgroundColor: Colors.errorBg, justifyContent: 'center', alignItems: 'center' },
   cardContent: { flex: 1 },
   cardName: { fontSize: 14, fontWeight: '700', color: Colors.black, marginBottom: 2 },
-  cardNumber: { fontSize: 20, fontWeight: '800', color: '#DC2626', marginBottom: 6 },
+  cardNumber: { fontSize: 20, fontWeight: '800', color: Colors.error, marginBottom: 6 },
   cardDescription: { fontSize: 12, color: Colors.gray[500], lineHeight: 17 },
-  cardAvailability: { fontSize: 11, color: Colors.secondary, marginTop: 4, fontWeight: '600' },
-  warning: { marginTop: 8, padding: 14, borderRadius: 12, backgroundColor: '#FEF2F2', borderWidth: 1, borderColor: '#FECACA', flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
-  warningText: { flex: 1, fontSize: 13, color: '#B91C1C', lineHeight: 19 },
+  cardAvailability: { fontSize: 11, color: Colors.primary, marginTop: 4, fontWeight: '600' },
+  warning: { marginTop: 8, padding: 14, borderRadius: 4, backgroundColor: Colors.errorBg, borderWidth: 1, borderColor: Colors.error, flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
+  warningText: { flex: 1, fontSize: 13, color: Colors.error, lineHeight: 19 },
   bold: { fontWeight: '800' },
 });

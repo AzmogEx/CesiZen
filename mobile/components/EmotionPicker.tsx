@@ -87,13 +87,13 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
 const styles = StyleSheet.create({
   loading: { padding: 40, alignItems: 'center' },
   backBtn: { marginBottom: 12 },
-  backText: { fontSize: 14, color: Colors.gray[500] },
+  backText: { fontSize: 14, color: Colors.primary, textDecorationLine: 'underline' },
   subTitle: { fontSize: 14, color: Colors.gray[600], marginBottom: 12 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   emotionCard: {
     width: '30%',
-    backgroundColor: Colors.gray[50],
-    borderRadius: 16,
+    backgroundColor: Colors.white,
+    borderRadius: 4,
     padding: 14,
     alignItems: 'center',
     gap: 6,
@@ -101,6 +101,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray[200],
   },
   emotionEmoji: { fontSize: 30 },
-  emotionName: { fontSize: 12, fontWeight: '600', color: Colors.gray[700], textAlign: 'center' },
+  emotionName: { fontSize: 12, fontWeight: '600', color: Colors.black, textAlign: 'center' },
   arrow: { fontSize: 10, color: Colors.gray[400] },
 });

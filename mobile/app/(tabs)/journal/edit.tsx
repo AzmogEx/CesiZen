@@ -112,7 +112,7 @@ export default function EditEntryScreen() {
           onPress={handleSubmit}
           disabled={updateSaisie.isPending || !emotionId}
         >
-          <Ionicons name="checkmark" size={20} color={Colors.black} />
+          <Ionicons name="checkmark" size={20} color={Colors.white} />
           <Text style={styles.submitBtnText}>
             {updateSaisie.isPending ? 'Envoi...' : 'Enregistrer'}
           </Text>
@@ -129,34 +129,35 @@ const styles = StyleSheet.create({
   loadingText: { color: Colors.gray[400], fontSize: 16 },
   title: { fontSize: 24, fontWeight: '800', color: Colors.black, marginBottom: 24 },
   section: { marginBottom: 24 },
-  label: { fontSize: 15, fontWeight: '700', color: Colors.gray[700], marginBottom: 10 },
+  label: { fontSize: 15, fontWeight: '700', color: Colors.black, marginBottom: 10 },
   intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: 16 },
   intensityValue: { fontSize: 48, fontWeight: '800', color: Colors.black },
   intensityUnit: { fontSize: 20, color: Colors.gray[400], marginLeft: 4 },
   sliderButtons: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
   sliderDot: {
-    width: 28, height: 28, borderRadius: 14,
+    width: 28, height: 28, borderRadius: 4,
     backgroundColor: Colors.gray[100], justifyContent: 'center', alignItems: 'center',
   },
   sliderDotActive: { backgroundColor: Colors.primary },
   sliderDotText: { fontSize: 12, fontWeight: '600', color: Colors.gray[500] },
-  sliderDotTextActive: { color: Colors.black },
+  sliderDotTextActive: { color: Colors.white },
   sliderLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
   sliderLabel: { fontSize: 12, color: Colors.gray[400] },
   textArea: {
-    backgroundColor: Colors.gray[50], borderWidth: 1, borderColor: Colors.gray[200],
-    borderRadius: 16, padding: 16, fontSize: 15, color: Colors.black, minHeight: 100,
+    backgroundColor: Colors.gray[100], borderTopLeftRadius: 4, borderTopRightRadius: 4,
+    borderBottomWidth: 2, borderBottomColor: Colors.black,
+    padding: 16, fontSize: 15, color: Colors.black, minHeight: 100,
   },
   actionsRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, gap: 12 },
   cancelBtn: {
-    flex: 1, paddingVertical: 16, borderRadius: 14,
-    backgroundColor: Colors.gray[100], alignItems: 'center',
+    flex: 1, paddingVertical: 16, borderRadius: 4,
+    backgroundColor: Colors.white, alignItems: 'center', borderWidth: 1, borderColor: Colors.primary,
   },
-  cancelBtnText: { fontSize: 15, fontWeight: '600', color: Colors.gray[600] },
+  cancelBtnText: { fontSize: 15, fontWeight: '600', color: Colors.primary },
   submitBtn: {
-    flex: 1, flexDirection: 'row', gap: 8, paddingVertical: 16, borderRadius: 14,
-    backgroundColor: Colors.secondary, alignItems: 'center', justifyContent: 'center',
+    flex: 1, flexDirection: 'row', gap: 8, paddingVertical: 16, borderRadius: 4,
+    backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center',
   },
-  submitBtnText: { fontSize: 15, fontWeight: '700', color: Colors.black },
+  submitBtnText: { fontSize: 15, fontWeight: '700', color: Colors.white },
   btnDisabled: { opacity: 0.5 },
 });

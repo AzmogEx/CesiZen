@@ -81,7 +81,7 @@ export default function JournalScreen() {
         }
       />
       <TouchableOpacity style={styles.fab} onPress={() => router.push('/(tabs)/journal/new')}>
-        <Ionicons name="add" size={28} color={Colors.black} />
+        <Ionicons name="add" size={28} color={Colors.white} />
       </TouchableOpacity>
     </View>
   );
@@ -92,14 +92,14 @@ const styles = StyleSheet.create({
   listContent: { padding: 16, paddingBottom: 80 },
   saisieCard: {
     flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 16,
-    backgroundColor: Colors.gray[50], borderRadius: 16, marginBottom: 10,
-    borderWidth: 1, borderColor: Colors.gray[100],
+    backgroundColor: Colors.white, borderRadius: 4, marginBottom: 10,
+    borderWidth: 1, borderColor: Colors.gray[200],
   },
-  emotionIcon: { width: 48, height: 48, borderRadius: 14, justifyContent: 'center', alignItems: 'center' },
+  emotionIcon: { width: 48, height: 48, borderRadius: 4, justifyContent: 'center', alignItems: 'center' },
   emotionEmoji: { fontSize: 24 },
   saisieContent: { flex: 1 },
   saisieHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 6 },
-  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 8 },
+  badge: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 4 },
   badgeText: { fontSize: 13, fontWeight: '600' },
   intensityText: { fontSize: 12, color: Colors.gray[400] },
   intensityBar: { height: 4, backgroundColor: Colors.gray[200], borderRadius: 2, marginBottom: 6 },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   emptyText: { fontSize: 14, color: Colors.gray[400], marginTop: 4 },
   fab: {
     position: 'absolute', right: 20, bottom: 20,
-    width: 56, height: 56, borderRadius: 28,
+    width: 56, height: 56, borderRadius: 4,
     backgroundColor: Colors.primary, justifyContent: 'center', alignItems: 'center',
     shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8,
     elevation: 6,

@@ -4,6 +4,7 @@ import { Link, useRouter } from 'expo-router';
 import { useAuthStore } from '@/lib/auth-store';
 import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
+import RepubliqueHeader from '@/components/RepubliqueHeader';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <RepubliqueHeader />
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Text style={styles.logo}>CESIZen</Text>
@@ -95,17 +97,18 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.white },
   scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
   header: { alignItems: 'center', marginBottom: 40 },
-  logo: { fontSize: 36, fontWeight: '800', color: Colors.black },
+  logo: { fontSize: 36, fontWeight: '800', color: Colors.primary },
   subtitle: { fontSize: 16, color: Colors.gray[500], marginTop: 8 },
-  form: { backgroundColor: Colors.gray[50], borderRadius: 24, padding: 24 },
+  form: { backgroundColor: Colors.gray[50], borderRadius: 4, padding: 24, borderWidth: 1, borderColor: Colors.gray[200] },
   title: { fontSize: 24, fontWeight: '700', color: Colors.black, marginBottom: 24 },
   inputGroup: { marginBottom: 16 },
-  label: { fontSize: 14, fontWeight: '600', color: Colors.gray[700], marginBottom: 6 },
+  label: { fontSize: 14, fontWeight: '600', color: Colors.black, marginBottom: 6 },
   input: {
-    backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderColor: Colors.gray[300],
-    borderRadius: 12,
+    backgroundColor: Colors.gray[100],
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.black,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
@@ -113,15 +116,15 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Colors.primary,
-    borderRadius: 12,
+    borderRadius: 4,
     paddingVertical: 16,
     alignItems: 'center',
     marginTop: 8,
   },
   buttonDisabled: { opacity: 0.6 },
-  buttonText: { fontSize: 16, fontWeight: '700', color: Colors.black },
+  buttonText: { fontSize: 16, fontWeight: '700', color: Colors.white },
   forgotLink: { alignItems: 'center', marginTop: 12 },
   footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 16 },
   footerText: { color: Colors.gray[500], fontSize: 14 },
-  link: { color: Colors.secondary, fontSize: 14, fontWeight: '600' },
+  link: { color: Colors.primary, fontSize: 14, fontWeight: '600', textDecorationLine: 'underline' },
 });
