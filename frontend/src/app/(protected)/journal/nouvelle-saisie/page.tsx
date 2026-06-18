@@ -86,7 +86,7 @@ export default function NouvelleSaisiePage() {
           </div>
 
           {/* Étape actuelle */}
-          <div className="fr-card fr-p-3w fr-mb-3w">
+          <div className="app-panel fr-p-3w fr-mb-3w">
             <p className="fr-text--sm fr-text-mention--grey fr-mb-3w">
               {STEPS[step - 1].description}
             </p>

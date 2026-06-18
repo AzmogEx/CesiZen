@@ -110,7 +110,7 @@ export default function JournalPage() {
 
       {/* Filtres */}
       {showFilters && (
-        <div className="fr-card fr-p-3w fr-mb-4w">
+        <div className="app-panel fr-p-3w fr-mb-4w">
           <div className="fr-grid-row fr-grid-row--gutters">
             <div className="fr-col-12 fr-col-md-4">
               <div className="fr-input-group">

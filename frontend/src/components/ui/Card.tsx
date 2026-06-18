@@ -12,7 +12,7 @@ interface CardProps {
 // éditoriale DSFR, afin de garder un conteneur générique réutilisable).
 export default function Card({ children, className = "", hover = false }: CardProps) {
   const classes = [
-    "fr-card",
+    "app-panel",
     "fr-p-3w",
     hover ? "fr-enlarge-link" : "",
     className,

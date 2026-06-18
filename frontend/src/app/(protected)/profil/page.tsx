@@ -79,7 +79,7 @@ export default function ProfilPage() {
           <h1>Mon profil</h1>
 
           {/* Infos du profil */}
-          <div className="fr-card fr-p-3w fr-mb-3w">
+          <div className="app-panel fr-p-3w fr-mb-3w">
             <h2 className="fr-h4 fr-mb-1v">
               {user?.prenom} {user?.nom}
             </h2>
@@ -171,7 +171,7 @@ export default function ProfilPage() {
           </div>
 
           {/* Changer mot de passe */}
-          <div className="fr-card fr-p-3w fr-mb-3w">
+          <div className="app-panel fr-p-3w fr-mb-3w">
             <h2 className="fr-h5">
               <span className="fr-icon-lock-line fr-mr-1w" aria-hidden="true" />
               Mot de passe
@@ -252,7 +252,7 @@ export default function ProfilPage() {
           </div>
 
           {/* Zone dangereuse — RGPD */}
-          <div className="fr-card fr-p-3w">
+          <div className="app-panel fr-p-3w">
             <h2 className="fr-h5">
               <span className="fr-icon-warning-line fr-mr-1w" aria-hidden="true" />
               Zone dangereuse

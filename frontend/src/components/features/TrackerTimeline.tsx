@@ -44,7 +44,7 @@ export default function TrackerTimeline({ saisies, onEdit, onDelete }: TrackerTi
           <div className="fr-grid-row fr-grid-row--gutters">
             {items.map((saisie) => (
               <div key={saisie.id} className="fr-col-12">
-                <div className="fr-card fr-p-2w">
+                <div className="app-panel fr-p-2w">
                   <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--top">
                     {/* Icône émotion */}
                     <div className="fr-col-auto">

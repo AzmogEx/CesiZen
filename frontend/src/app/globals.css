@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Panneau neutre (remplace l'usage détourné de .fr-card comme conteneur).
+   Utilise les variables DSFR pour s'adapter aux thèmes clair/sombre. */
+.app-panel {
+  background-color: var(--background-default-grey);
+  border: 1px solid var(--border-default-grey);
+  border-radius: 0.25rem;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

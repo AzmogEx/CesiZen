@@ -128,26 +128,26 @@ export default function RapportsPage() {
           </div>
 
           {/* Répartition (Camembert) */}
-          <div className="fr-card fr-p-3w fr-mb-3w">
+          <div className="app-panel fr-p-3w fr-mb-3w">
             <h2 className="fr-h5">Répartition des émotions</h2>
             <EmotionChart data={rapport} type="repartition" />
           </div>
 
           {/* Évolution (Lignes) */}
-          <div className="fr-card fr-p-3w fr-mb-3w">
+          <div className="app-panel fr-p-3w fr-mb-3w">
             <h2 className="fr-h5">Évolution dans le temps</h2>
             <EmotionChart data={rapport} type="evolution" />
           </div>
 
           {/* Intensité moyenne (Barres) */}
-          <div className="fr-card fr-p-3w fr-mb-3w">
+          <div className="app-panel fr-p-3w fr-mb-3w">
             <h2 className="fr-h5">Intensité moyenne par période</h2>
             <EmotionChart data={rapport} type="intensite" />
           </div>
 
           {/* Détail répartition */}
           {rapport.repartition.length > 0 && (
-            <div className="fr-card fr-p-3w">
+            <div className="app-panel fr-p-3w">
               <h2 className="fr-h5">Détail par émotion</h2>
               <ul className="fr-raw-list">
                 {rapport.repartition.map((item) => (
