@@ -130,6 +130,8 @@ export default function Header() {
           >
             Fermer
           </button>
+          {/* Conteneur requis par le JS DSFR (recopie des liens d'action en mobile) */}
+          <div className="fr-header__menu-links"></div>
           <nav
             className="fr-nav"
             id="navigation-principale"
