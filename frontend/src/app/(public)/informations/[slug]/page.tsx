@@ -2,10 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowLeft, Calendar, User } from 'lucide-react';
 import { useFeed } from '@/hooks/useFeeds';
-import Skeleton from '@/components/ui/Skeleton';
 
 export default function ArticlePage() {
   const params = useParams();
@@ -14,79 +11,93 @@ export default function ArticlePage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-12">
-        <Skeleton className="h-8 w-48 mb-8" />
-        <Skeleton variant="rect" className="h-64 mb-6" />
-        <Skeleton className="h-10 w-3/4 mb-4" />
-        <Skeleton className="h-4 w-full mb-2" />
-        <Skeleton className="h-4 w-full mb-2" />
-        <Skeleton className="h-4 w-2/3" />
+      <div className="fr-container fr-py-6w">
+        <p className="fr-text--sm">Chargement de l&apos;article…</p>
       </div>
     );
   }
 
   if (error || !feed) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-12 text-center">
-        <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">
-          Article introuvable
-        </p>
-        <Link
-          href="/informations"
-          className="text-malachite-600 dark:text-malachite-400 hover:underline"
-        >
-          ← Retour aux informations
+      <div className="fr-container fr-py-6w">
+        <div className="fr-alert fr-alert--error">
+          <h3 className="fr-alert__title">Article introuvable</h3>
+          <p>
+            L&apos;article demandé n&apos;existe pas ou n&apos;est plus
+            disponible.
+          </p>
+        </div>
+        <Link className="fr-link fr-mt-2w" href="/informations">
+          Retour aux informations
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      <Link
-        href="/informations"
-        className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-8 transition-colors"
+    <div className="fr-container fr-py-6w">
+      <nav
+        role="navigation"
+        className="fr-breadcrumb"
+        aria-label="vous êtes ici :"
       >
-        <ArrowLeft size={16} />
-        Retour aux informations
-      </Link>
-
-      {feed.image_url && (
-        <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 mb-8">
-          <Image
-            src={feed.image_url}
-            alt={feed.titre}
-            width={800}
-            height={400}
-            className="w-full h-full object-cover"
-            unoptimized
-          />
+        <button
+          type="button"
+          className="fr-breadcrumb__button"
+          aria-expanded="false"
+          aria-controls="breadcrumb-article"
+        >
+          Voir le fil d&apos;Ariane
+        </button>
+        <div className="fr-collapse" id="breadcrumb-article">
+          <ol className="fr-breadcrumb__list">
+            <li>
+              <Link className="fr-breadcrumb__link" href="/">
+                Accueil
+              </Link>
+            </li>
+            <li>
+              <Link className="fr-breadcrumb__link" href="/informations">
+                Informations
+              </Link>
+            </li>
+            <li>
+              <a className="fr-breadcrumb__link" aria-current="page">
+                {feed.titre}
+              </a>
+            </li>
+          </ol>
         </div>
-      )}
+      </nav>
 
-      <h1 className="font-display text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        {feed.titre}
-      </h1>
+      <h1>{feed.titre}</h1>
 
-      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 dark:text-gray-500 mb-8 pb-8 border-b border-gray-200 dark:border-gray-800">
+      <p className="fr-text--sm">
         {feed.auteur && (
-          <div className="flex items-center gap-1.5">
-            <User size={14} />
+          <>
+            <span
+              className="fr-icon-user-line fr-mr-1w"
+              aria-hidden="true"
+            />
             {feed.auteur.prenom} {feed.auteur.nom}
-          </div>
+            {' — '}
+          </>
         )}
-        <div className="flex items-center gap-1.5">
-          <Calendar size={14} />
-          {new Date(feed.created_at).toLocaleDateString('fr-FR', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </div>
-      </div>
+        <span
+          className="fr-icon-calendar-line fr-mr-1w"
+          aria-hidden="true"
+        />
+        {new Date(feed.created_at).toLocaleDateString('fr-FR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })}
+      </p>
 
-      <article
-        className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-a:text-malachite-600 dark:prose-a:text-malachite-400"
+      <hr className="fr-mt-2w fr-mb-4w" />
+
+      <div
+        className="fr-col-12 fr-col-md-10"
         dangerouslySetInnerHTML={{ __html: feed.contenu }}
       />
     </div>

@@ -19,33 +19,45 @@ export default function Slider({
   label,
   showValue = true,
 }: SliderProps) {
+  const rangeId = label
+    ? `range-${label.toLowerCase().replace(/\s+/g, "-")}`
+    : "range";
+
   return (
-    <div className="w-full">
+    <div className="fr-range-group">
       {(label || showValue) && (
-        <div className="flex items-center justify-between mb-2">
-          {label && (
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              {label}
-            </label>
-          )}
+        <label className="fr-label" htmlFor={rangeId}>
+          {label}
           {showValue && (
-            <span className="text-sm font-bold text-candlelight-600 dark:text-candlelight-400 bg-candlelight-50 dark:bg-candlelight-950 px-2 py-0.5 rounded-lg">
-              {value}
-            </span>
+            <span className="fr-hint-text">Valeur sélectionnée : {value}</span>
           )}
-        </div>
+        </label>
       )}
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full h-2 rounded-full appearance-none cursor-pointer bg-gray-200 dark:bg-gray-700 accent-candlelight-500"
-      />
-      <div className="flex justify-between mt-1">
-        <span className="text-xs text-gray-400 dark:text-gray-500">{min}</span>
-        <span className="text-xs text-gray-400 dark:text-gray-500">{max}</span>
+      <div
+        className="fr-range fr-range--sm"
+        data-fr-js-range="true"
+        data-fr-min={min}
+        data-fr-max={max}
+      >
+        <span
+          className="fr-range__output"
+          aria-hidden="true"
+        >{`${value}`}</span>
+        <input
+          id={rangeId}
+          type="range"
+          min={min}
+          max={max}
+          value={value}
+          step={1}
+          onChange={(e) => onChange(Number(e.target.value))}
+        />
+        <div className="fr-range__min" aria-hidden="true">
+          {min}
+        </div>
+        <div className="fr-range__max" aria-hidden="true">
+          {max}
+        </div>
       </div>
     </div>
   );

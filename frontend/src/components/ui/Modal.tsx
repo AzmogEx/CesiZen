@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useCallback } from "react";
-import { X } from "lucide-react";
 
 type ModalSize = "sm" | "md" | "lg";
 
@@ -13,10 +12,11 @@ interface ModalProps {
   size?: ModalSize;
 }
 
-const sizeClasses: Record<ModalSize, string> = {
-  sm: "max-w-sm",
-  md: "max-w-lg",
-  lg: "max-w-2xl",
+// Largeur de la colonne DSFR selon la taille demandée.
+const sizeColClasses: Record<ModalSize, string> = {
+  sm: "fr-col-12 fr-col-md-4",
+  md: "fr-col-12 fr-col-md-6",
+  lg: "fr-col-12 fr-col-md-8",
 };
 
 export default function Modal({
@@ -46,44 +46,49 @@ export default function Modal({
 
   if (!isOpen) return null;
 
+  // L'ouverture/fermeture est pilotée par React (isOpen/onClose), on applique
+  // donc la structure et les classes visuelles DSFR sans le JS d'ouverture DSFR.
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-      {/* Overlay */}
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div
-        className={`
-          relative w-full ${sizeClasses[size]}
-          bg-white dark:bg-gray-900
-          rounded-2xl shadow-2xl
-          border border-gray-100 dark:border-gray-800
-          p-6
-          animate-in zoom-in-95 fade-in duration-200
-        `}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          {title && (
-            <h2 className="text-xl font-bold font-display text-gray-900 dark:text-gray-100">
-              {title}
-            </h2>
-          )}
-          <button
-            onClick={onClose}
-            className="ml-auto p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
-            aria-label="Fermer"
-          >
-            <X size={20} />
-          </button>
+    <dialog
+      className="fr-modal fr-modal--opened"
+      aria-modal="true"
+      role="dialog"
+      open
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1000,
+        display: "block",
+        background: "transparent",
+        border: "none",
+        maxWidth: "none",
+        maxHeight: "none",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <div className="fr-container fr-container--fluid fr-container-md">
+        <div className="fr-grid-row fr-grid-row--center">
+          <div className={sizeColClasses[size]}>
+            <div className="fr-modal__body">
+              <div className="fr-modal__header">
+                <button
+                  type="button"
+                  className="fr-btn--close fr-btn"
+                  aria-label="Fermer"
+                  onClick={onClose}
+                >
+                  Fermer
+                </button>
+              </div>
+              <div className="fr-modal__content">
+                {title && <h1 className="fr-modal__title">{title}</h1>}
+                {children}
+              </div>
+            </div>
+          </div>
         </div>
-
-        {/* Content */}
-        <div>{children}</div>
       </div>
-    </div>
+    </dialog>
   );
 }

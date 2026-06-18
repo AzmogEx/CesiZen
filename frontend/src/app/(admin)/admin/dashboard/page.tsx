@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Users, FileText, Heart } from 'lucide-react';
-import Card from '@/components/ui/Card';
 import api from '@/lib/api';
 
 interface AdminStats {
@@ -41,86 +39,63 @@ export default function AdminDashboardPage() {
   }, []);
 
   const statCards = [
-    {
-      label: 'Utilisateurs',
-      value: stats?.total_utilisateurs || 0,
-      icon: <Users size={24} />,
-      color: 'text-blue-500',
-      bg: 'bg-blue-50 dark:bg-blue-950/30',
-    },
-    {
-      label: 'Articles',
-      value: stats?.total_feeds || 0,
-      icon: <FileText size={24} />,
-      color: 'text-malachite-500',
-      bg: 'bg-malachite-50 dark:bg-malachite-950/30',
-    },
-    {
-      label: 'Émotions',
-      value: stats?.total_emotions || 0,
-      icon: <Heart size={24} />,
-      color: 'text-candlelight-500',
-      bg: 'bg-candlelight-50 dark:bg-candlelight-950/30',
-    },
+    { label: 'Utilisateurs', value: stats?.total_utilisateurs || 0, icon: 'fr-icon-user-line' },
+    { label: 'Articles', value: stats?.total_feeds || 0, icon: 'fr-icon-article-line' },
+    { label: 'Émotions', value: stats?.total_emotions || 0, icon: 'fr-icon-heart-line' },
+  ];
+
+  const quickActions = [
+    { href: '/admin/utilisateurs', icon: 'fr-icon-user-line', label: 'Gérer les utilisateurs' },
+    { href: '/admin/contenus', icon: 'fr-icon-article-line', label: 'Gérer les contenus' },
+    { href: '/admin/emotions', icon: 'fr-icon-heart-line', label: 'Gérer les émotions' },
   ];
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Administration
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Vue d&apos;ensemble de la plateforme CESIZen
-        </p>
-      </div>
+      <h1>Administration</h1>
+      <p className="fr-text--lead fr-mb-4w">
+        Vue d&apos;ensemble de la plateforme CESIZen
+      </p>
 
-      <div className="grid sm:grid-cols-3 gap-6 mb-8">
+      <div className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
         {statCards.map((card) => (
-          <Card key={card.label}>
-            <div className="flex items-center gap-4">
-              <div className={`w-14 h-14 rounded-xl ${card.bg} flex items-center justify-center ${card.color}`}>
-                {card.icon}
-              </div>
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{card.label}</p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {loading ? '...' : card.value}
-                </p>
+          <div className="fr-col-12 fr-col-md-4" key={card.label}>
+            <div className="fr-tile fr-tile--horizontal">
+              <div className="fr-tile__body">
+                <div className="fr-tile__content">
+                  <h2 className="fr-tile__title">
+                    <span className={`${card.icon} fr-mr-1w`} aria-hidden="true" />
+                    {card.label}
+                  </h2>
+                  <p className="fr-tile__detail fr-text--bold fr-display--xs">
+                    {loading ? '…' : card.value}
+                  </p>
+                </div>
               </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
 
-      <Card>
-        <h2 className="font-display text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Actions rapides
-        </h2>
-        <div className="grid sm:grid-cols-3 gap-4">
-          <Link
-            href="/admin/utilisateurs"
-            className="flex items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-          >
-            <Users size={20} className="text-blue-500" />
-            <span className="font-medium text-gray-700 dark:text-gray-300">Gérer les utilisateurs</span>
-          </Link>
-          <Link
-            href="/admin/contenus"
-            className="flex items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-          >
-            <FileText size={20} className="text-malachite-500" />
-            <span className="font-medium text-gray-700 dark:text-gray-300">Gérer les contenus</span>
-          </Link>
-          <Link
-            href="/admin/emotions"
-            className="flex items-center gap-3 p-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-          >
-            <Heart size={20} className="text-candlelight-500" />
-            <span className="font-medium text-gray-700 dark:text-gray-300">Gérer les émotions</span>
-          </Link>
-        </div>
-      </Card>
+      <h2>Actions rapides</h2>
+      <div className="fr-grid-row fr-grid-row--gutters">
+        {quickActions.map((action) => (
+          <div className="fr-col-12 fr-col-md-4" key={action.href}>
+            <div className="fr-tile fr-tile--horizontal fr-enlarge-link">
+              <div className="fr-tile__body">
+                <div className="fr-tile__content">
+                  <h3 className="fr-tile__title">
+                    <Link href={action.href}>
+                      <span className={`${action.icon} fr-mr-1w`} aria-hidden="true" />
+                      {action.label}
+                    </Link>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -7,16 +7,18 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 bg-gray-50 dark:bg-gray-950">
-          <div className="p-6 lg:p-8">
-            {children}
+      <div className="fr-container--fluid fr-py-4w">
+        <div className="fr-grid-row fr-grid-row--gutters">
+          <div className="fr-col-12 fr-col-md-3 fr-col-lg-2">
+            <Sidebar />
           </div>
-        </main>
+          <main className="fr-col-12 fr-col-md-9 fr-col-lg-10" id="contenu">
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

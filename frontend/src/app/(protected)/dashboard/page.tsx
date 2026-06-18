@@ -1,13 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, BarChart3, Plus, BookOpen } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useSaisies } from '@/hooks/useTracker';
 import { useRapport } from '@/hooks/useRapport';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import Skeleton from '@/components/ui/Skeleton';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -17,177 +13,202 @@ export default function DashboardPage() {
   const recentSaisies = saisies?.slice(0, 5) || [];
 
   return (
-    <div>
+    <div className="fr-container fr-py-6w">
       {/* En-tête */}
-      <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Bonjour {user?.prenom} 👋
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Voici un aperçu de votre bien-être cette semaine.
-        </p>
-      </div>
+      <h1>Bonjour {user?.prenom}</h1>
+      <p className="fr-text--lead">
+        Voici un aperçu de votre bien-être cette semaine.
+      </p>
 
       {/* Actions rapides */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <Link href="/journal/nouvelle-saisie">
-          <Card hover className="flex items-center gap-4 bg-linear-to-r from-candlelight-50 to-candlelight-100 dark:from-candlelight-950/30 dark:to-candlelight-900/20 border-candlelight-200 dark:border-candlelight-800">
-            <div className="w-12 h-12 rounded-xl bg-candlelight-200 dark:bg-candlelight-900 flex items-center justify-center">
-              <Plus className="text-candlelight-700 dark:text-candlelight-400" size={24} />
+      <div className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
+        <div className="fr-col-12 fr-col-md-4">
+          <div className="fr-tile fr-tile--horizontal fr-enlarge-link">
+            <div className="fr-tile__body">
+              <div className="fr-tile__content">
+                <h3 className="fr-tile__title">
+                  <Link href="/journal/nouvelle-saisie">
+                    <span
+                      className="fr-icon-add-line fr-mr-1w"
+                      aria-hidden="true"
+                    />
+                    Nouvelle saisie
+                  </Link>
+                </h3>
+                <p className="fr-tile__detail">Enregistrer une émotion</p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white">Nouvelle saisie</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Enregistrer une émotion</p>
-            </div>
-          </Card>
-        </Link>
+          </div>
+        </div>
 
-        <Link href="/journal">
-          <Card hover className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-malachite-100 dark:bg-malachite-900 flex items-center justify-center">
-              <BookOpen className="text-malachite-600 dark:text-malachite-400" size={24} />
+        <div className="fr-col-12 fr-col-md-4">
+          <div className="fr-tile fr-tile--horizontal fr-enlarge-link">
+            <div className="fr-tile__body">
+              <div className="fr-tile__content">
+                <h3 className="fr-tile__title">
+                  <Link href="/journal">
+                    <span
+                      className="fr-icon-book-2-line fr-mr-1w"
+                      aria-hidden="true"
+                    />
+                    Mon journal
+                  </Link>
+                </h3>
+                <p className="fr-tile__detail">Voir toutes mes saisies</p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white">Mon journal</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Voir toutes mes saisies</p>
-            </div>
-          </Card>
-        </Link>
+          </div>
+        </div>
 
-        <Link href="/journal/rapports">
-          <Card hover className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-              <BarChart3 className="text-blue-600 dark:text-blue-400" size={24} />
+        <div className="fr-col-12 fr-col-md-4">
+          <div className="fr-tile fr-tile--horizontal fr-enlarge-link">
+            <div className="fr-tile__body">
+              <div className="fr-tile__content">
+                <h3 className="fr-tile__title">
+                  <Link href="/journal/rapports">
+                    <span
+                      className="fr-icon-line-chart-line fr-mr-1w"
+                      aria-hidden="true"
+                    />
+                    Mes rapports
+                  </Link>
+                </h3>
+                <p className="fr-tile__detail">Visualiser mes tendances</p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white">Mes rapports</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Visualiser mes tendances</p>
-            </div>
-          </Card>
-        </Link>
+          </div>
+        </div>
       </div>
 
       {/* Stats de la semaine */}
-      <div className="grid sm:grid-cols-3 gap-4 mb-8">
+      <div className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
         {rapportLoading ? (
           Array.from({ length: 3 }).map((_, i) => (
-            <Card key={i}>
-              <Skeleton className="h-4 w-24 mb-2" />
-              <Skeleton className="h-8 w-16" />
-            </Card>
+            <div className="fr-col-12 fr-col-md-4" key={i}>
+              <div className="fr-tile fr-tile--vertical">
+                <div className="fr-tile__body">
+                  <div className="fr-tile__content">
+                    <p className="fr-tile__detail">Chargement…</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           ))
         ) : (
           <>
-            <Card>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Saisies cette semaine</p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                {rapport?.stats.total_saisies || 0}
-              </p>
-            </Card>
-            <Card>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Intensité moyenne</p>
-              <div className="flex items-center gap-2">
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {rapport?.stats.intensite_moyenne?.toFixed(1) || '—'}
-                </p>
-                <span className="text-sm text-gray-400">/10</span>
-              </div>
-            </Card>
-            <Card>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Émotion dominante</p>
-              {rapport?.stats.emotion_dominante ? (
-                <div className="flex items-center gap-2">
-                  <Badge color={rapport.stats.emotion_dominante.couleur}>
-                    {rapport.stats.emotion_dominante.nom}
-                  </Badge>
-                  <span className="text-sm text-gray-400">
-                    ({rapport.stats.emotion_dominante.count}x)
-                  </span>
+            <div className="fr-col-12 fr-col-md-4">
+              <div className="fr-tile fr-tile--vertical">
+                <div className="fr-tile__body">
+                  <div className="fr-tile__content">
+                    <p className="fr-tile__detail">Saisies cette semaine</p>
+                    <p className="fr-h2 fr-mb-0">
+                      {rapport?.stats.total_saisies || 0}
+                    </p>
+                  </div>
                 </div>
-              ) : (
-                <p className="text-xl text-gray-300 dark:text-gray-600">—</p>
-              )}
-            </Card>
+              </div>
+            </div>
+            <div className="fr-col-12 fr-col-md-4">
+              <div className="fr-tile fr-tile--vertical">
+                <div className="fr-tile__body">
+                  <div className="fr-tile__content">
+                    <p className="fr-tile__detail">Intensité moyenne</p>
+                    <p className="fr-h2 fr-mb-0">
+                      {rapport?.stats.intensite_moyenne?.toFixed(1) || '—'}
+                      <span className="fr-text--sm"> /10</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="fr-col-12 fr-col-md-4">
+              <div className="fr-tile fr-tile--vertical">
+                <div className="fr-tile__body">
+                  <div className="fr-tile__content">
+                    <p className="fr-tile__detail">Émotion dominante</p>
+                    {rapport?.stats.emotion_dominante ? (
+                      <p className="fr-mb-0">
+                        <span className="fr-badge fr-badge--info">
+                          {rapport.stats.emotion_dominante.nom}
+                        </span>
+                        <span className="fr-text--sm">
+                          {' '}
+                          ({rapport.stats.emotion_dominante.count}x)
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="fr-h4 fr-mb-0">—</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </>
         )}
       </div>
 
       {/* Saisies récentes */}
-      <Card>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-display text-lg font-semibold text-gray-900 dark:text-white">
-            Saisies récentes
-          </h2>
-          <Link
-            href="/journal"
-            className="text-sm text-malachite-600 dark:text-malachite-400 hover:underline"
-          >
-            Voir tout →
-          </Link>
-        </div>
+      <div className="fr-card">
+        <div className="fr-card__body">
+          <div className="fr-card__content">
+            <div className="fr-grid-row fr-grid-row--middle fr-mb-2w">
+              <h2 className="fr-col fr-h5 fr-mb-0">Saisies récentes</h2>
+              <p className="fr-col--right fr-mb-0">
+                <Link href="/journal" className="fr-link">
+                  Voir tout
+                </Link>
+              </p>
+            </div>
 
-        {saisiesLoading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <Skeleton variant="circle" />
-                <div className="flex-1">
-                  <Skeleton className="h-4 w-32 mb-1" />
-                  <Skeleton className="h-3 w-48" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : recentSaisies.length > 0 ? (
-          <div className="space-y-3">
-            {recentSaisies.map((saisie) => (
-              <div
-                key={saisie.id}
-                className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-              >
-                <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center text-lg shrink-0"
-                  style={{ backgroundColor: `${saisie.emotion?.couleur}20` }}
+            {saisiesLoading ? (
+              <p>Chargement…</p>
+            ) : recentSaisies.length > 0 ? (
+              <ul className="fr-raw-list">
+                {recentSaisies.map((saisie) => (
+                  <li
+                    key={saisie.id}
+                    className="fr-py-1w"
+                    style={{ borderBottom: '1px solid var(--border-default-grey)' }}
+                  >
+                    <div className="fr-grid-row fr-grid-row--middle">
+                      <span className="fr-mr-2w" style={{ fontSize: '1.5rem' }}>
+                        {saisie.emotion?.icone || '🔵'}
+                      </span>
+                      <span className="fr-col">
+                        <strong>{saisie.emotion?.nom}</strong>{' '}
+                        <span className="fr-text--sm">
+                          {saisie.intensite}/10
+                        </span>
+                        {saisie.note && (
+                          <span className="fr-text--sm fr-text-mention--grey fr-display-block">
+                            {saisie.note}
+                          </span>
+                        )}
+                      </span>
+                      <span className="fr-text--sm fr-text-mention--grey">
+                        {new Date(saisie.date_saisie).toLocaleDateString('fr-FR', {
+                          day: 'numeric',
+                          month: 'short',
+                        })}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="fr-callout">
+                <p className="fr-callout__text">Aucune saisie pour le moment.</p>
+                <Link
+                  className="fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left"
+                  href="/journal/nouvelle-saisie"
                 >
-                  {saisie.emotion?.icone || '🔵'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900 dark:text-white text-sm">
-                      {saisie.emotion?.nom}
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {saisie.intensite}/10
-                    </span>
-                  </div>
-                  {saisie.note && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      {saisie.note}
-                    </p>
-                  )}
-                </div>
-                <span className="text-xs text-gray-400 dark:text-gray-500 shrink-0">
-                  {new Date(saisie.date_saisie).toLocaleDateString('fr-FR', {
-                    day: 'numeric',
-                    month: 'short',
-                  })}
-                </span>
+                  Faire ma première saisie
+                </Link>
               </div>
-            ))}
+            )}
           </div>
-        ) : (
-          <div className="text-center py-8 text-gray-400 dark:text-gray-600">
-            <Heart size={32} className="mx-auto mb-2 opacity-50" />
-            <p>Aucune saisie pour le moment</p>
-            <Link
-              href="/journal/nouvelle-saisie"
-              className="text-sm text-candlelight-600 hover:underline mt-2 inline-block"
-            >
-              Faire ma première saisie
-            </Link>
-          </div>
-        )}
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

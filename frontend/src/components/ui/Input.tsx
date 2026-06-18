@@ -17,42 +17,26 @@ export default function Input({
   ...inputProps
 }: InputProps) {
   const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
+  const errorId = error ? `${inputId}-error` : undefined;
 
   return (
-    <div className="w-full">
+    <div className={`fr-input-group${error ? " fr-input-group--error" : ""}`}>
       {label && (
-        <label
-          htmlFor={inputId}
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-        >
+        <label className="fr-label" htmlFor={inputId}>
           {label}
         </label>
       )}
-      <div className="relative">
-        {icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
-            {icon}
-          </div>
-        )}
+      <div className={icon ? "fr-input-wrap" : undefined}>
+        {icon && <span aria-hidden="true">{icon}</span>}
         <input
           id={inputId}
-          className={`
-            w-full rounded-xl border border-gray-300 dark:border-gray-700
-            bg-white dark:bg-gray-900
-            text-gray-900 dark:text-gray-100
-            placeholder:text-gray-400 dark:placeholder:text-gray-500
-            focus:outline-none focus:ring-2 focus:ring-candlelight-500 focus:border-candlelight-500
-            transition-all duration-200
-            px-4 py-2.5 text-base
-            ${icon ? "pl-10" : ""}
-            ${error ? "border-red-500 focus:ring-red-500 focus:border-red-500" : ""}
-            ${className}
-          `}
+          className={`fr-input${error ? " fr-input--error" : ""} ${className}`.trim()}
+          aria-describedby={errorId}
           {...inputProps}
         />
       </div>
       {error && (
-        <p className="mt-1.5 text-sm text-red-500 dark:text-red-400">
+        <p id={errorId} className="fr-error-text">
           {error}
         </p>
       )}

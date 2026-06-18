@@ -9,10 +9,12 @@ interface SkeletonProps {
   variant?: SkeletonVariant;
 }
 
-const variantClasses: Record<SkeletonVariant, string> = {
-  text: "h-4 w-full rounded",
-  circle: "h-10 w-10 rounded-full",
-  rect: "h-24 w-full rounded-xl",
+// Dimensions/forme selon la variante. Couleur neutre gérée en ligne pour
+// rester cohérent avec le thème DSFR (sans couleur custom Tailwind).
+const variantStyle: Record<SkeletonVariant, React.CSSProperties> = {
+  text: { height: "1rem", width: "100%", borderRadius: "0.25rem" },
+  circle: { height: "2.5rem", width: "2.5rem", borderRadius: "9999px" },
+  rect: { height: "6rem", width: "100%", borderRadius: "0.25rem" },
 };
 
 export default function Skeleton({
@@ -21,12 +23,14 @@ export default function Skeleton({
 }: SkeletonProps) {
   return (
     <div
-      className={`
-        animate-pulse
-        bg-gray-200 dark:bg-gray-700
-        ${variantClasses[variant]}
-        ${className}
-      `}
+      className={className}
+      aria-hidden="true"
+      style={{
+        ...variantStyle[variant],
+        backgroundColor: "var(--background-contrast-grey)",
+        opacity: 0.6,
+        animation: "fr-skeleton-pulse 1.5s ease-in-out infinite",
+      }}
     />
   );
 }

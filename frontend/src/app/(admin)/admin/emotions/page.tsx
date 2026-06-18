@@ -1,13 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
 import api from '@/lib/api';
 import type { Emotion } from '@/types';
-import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import Badge from '@/components/ui/Badge';
 import Modal from '@/components/ui/Modal';
 import toast from 'react-hot-toast';
 
@@ -100,193 +97,268 @@ export default function AdminEmotionsPage() {
     }
   };
 
+  const colorSwatch = (couleur: string) => (
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'inline-block',
+        width: '1rem',
+        height: '1rem',
+        borderRadius: '50%',
+        backgroundColor: couleur,
+        verticalAlign: 'middle',
+        marginRight: '0.5rem',
+      }}
+    />
+  );
+
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-1">
-            Émotions
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400">
-            Gérez le catalogue des émotions disponibles
+      <div className="fr-grid-row fr-grid-row--middle fr-grid-row--gutters fr-mb-4w">
+        <div className="fr-col">
+          <h1 className="fr-mb-1v">Émotions</h1>
+          <p className="fr-text--sm fr-mb-0">
+            Gérez le catalogue des émotions disponibles (2 niveaux)
           </p>
         </div>
-        <Button onClick={() => openCreate()} size="sm">
-          <Plus size={16} />
-          Nouvelle émotion
-        </Button>
+        <div className="fr-col-auto">
+          <button
+            type="button"
+            className="fr-btn fr-btn--icon-left fr-icon-add-line"
+            onClick={() => openCreate()}
+          >
+            Nouvelle émotion
+          </button>
+        </div>
       </div>
 
       {loading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i}>
-              <div className="h-6 bg-gray-100 dark:bg-gray-800 rounded animate-pulse w-32" />
-            </Card>
-          ))}
-        </div>
+        <p>Chargement…</p>
       ) : emotions.length === 0 ? (
-        <Card className="text-center py-12">
-          <p className="text-gray-400 dark:text-gray-600 mb-4">Aucune émotion</p>
-          <Button onClick={() => openCreate()} size="sm">Créer la première émotion</Button>
-        </Card>
+        <div className="fr-callout">
+          <p className="fr-callout__text">Aucune émotion pour le moment.</p>
+          <button type="button" className="fr-btn fr-btn--icon-left fr-icon-add-line" onClick={() => openCreate()}>
+            Créer la première émotion
+          </button>
+        </div>
       ) : (
-        <div className="space-y-4">
-          {parentEmotions.map((emotion) => (
-            <Card key={emotion.id}>
-              <div className="flex items-center gap-4 mb-3">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-                  style={{ backgroundColor: `${emotion.couleur}20` }}
-                >
-                  {emotion.icone || '🔵'}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
-                      {emotion.nom}
-                    </h3>
-                    <Badge color={emotion.couleur}>{emotion.couleur}</Badge>
-                    {!emotion.est_actif && (
-                      <Badge color="#9ca3af">Inactif</Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-400">Niveau 1</p>
-                </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => openCreate(emotion.id)}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    title="Ajouter sous-émotion"
-                  >
-                    <Plus size={16} className="text-malachite-500" />
-                  </button>
-                  <button
-                    onClick={() => openEdit(emotion)}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    title="Modifier"
-                  >
-                    <Edit2 size={16} className="text-gray-500" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(emotion.id)}
-                    className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-                    title="Supprimer"
-                  >
-                    <Trash2 size={16} className="text-red-500" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Sous-émotions */}
-              {emotion.enfants && emotion.enfants.length > 0 && (
-                <div className="ml-8 pl-4 border-l-2 border-gray-200 dark:border-gray-700 space-y-2">
-                  {emotion.enfants.map((child) => (
-                    <div key={child.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
-                      <span className="text-lg">{child.icone || '🔵'}</span>
-                      <span className="flex-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {child.nom}
-                      </span>
-                      <div
-                        className="w-4 h-4 rounded-full shrink-0"
-                        style={{ backgroundColor: child.couleur }}
-                      />
-                      {!child.est_actif && <Badge color="#9ca3af">Inactif</Badge>}
-                      <button
-                        onClick={() => openEdit(child)}
-                        className="p-1.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      >
-                        <Edit2 size={14} className="text-gray-400" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(child.id)}
-                        className="p-1.5 rounded hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-                      >
-                        <Trash2 size={14} className="text-red-400" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-          ))}
+        <div className="fr-table fr-table--bordered">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Émotion</th>
+                <th scope="col">Niveau</th>
+                <th scope="col">Couleur</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {parentEmotions.map((emotion) => (
+                <FragmentRows
+                  key={emotion.id}
+                  emotion={emotion}
+                  colorSwatch={colorSwatch}
+                  onAddChild={openCreate}
+                  onEdit={openEdit}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
       {/* Modal création/édition */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editingEmotion ? 'Modifier l\'émotion' : 'Nouvelle émotion'}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="fr-mt-2w">
           <Input
             label="Nom"
             value={form.nom}
             onChange={(e) => setForm({ ...form, nom: e.target.value })}
             required
           />
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Couleur
-              </label>
-              <div className="flex items-center gap-3">
-                <input
-                  type="color"
-                  value={form.couleur}
-                  onChange={(e) => setForm({ ...form, couleur: e.target.value })}
-                  className="w-10 h-10 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer"
-                />
-                <input
-                  type="text"
-                  value={form.couleur}
-                  onChange={(e) => setForm({ ...form, couleur: e.target.value })}
-                  className="flex-1 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-candlelight-500 font-mono text-sm"
-                />
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col-6">
+              <div className="fr-input-group">
+                <label className="fr-label" htmlFor="emotion-couleur">Couleur</label>
+                <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
+                  <div className="fr-col-auto">
+                    <input
+                      id="emotion-couleur"
+                      type="color"
+                      value={form.couleur}
+                      onChange={(e) => setForm({ ...form, couleur: e.target.value })}
+                      style={{ width: '2.5rem', height: '2.5rem', border: 'none', padding: 0, cursor: 'pointer' }}
+                    />
+                  </div>
+                  <div className="fr-col">
+                    <input
+                      type="text"
+                      className="fr-input"
+                      value={form.couleur}
+                      onChange={(e) => setForm({ ...form, couleur: e.target.value })}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <Input
-              label="Icône (emoji)"
-              value={form.icone}
-              onChange={(e) => setForm({ ...form, icone: e.target.value })}
-              placeholder="😊"
-            />
+            <div className="fr-col-6">
+              <Input
+                label="Icône (emoji)"
+                value={form.icone}
+                onChange={(e) => setForm({ ...form, icone: e.target.value })}
+                placeholder="😊"
+              />
+            </div>
           </div>
           {form.niveau === 2 && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Émotion parente
-              </label>
+            <div className="fr-select-group">
+              <label className="fr-label" htmlFor="emotion-parent">Émotion parente</label>
               <select
+                id="emotion-parent"
+                className="fr-select"
                 value={form.parent_id || ''}
                 onChange={(e) => setForm({ ...form, parent_id: Number(e.target.value) || null })}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-candlelight-500"
               >
-                <option value="">Sélectionner...</option>
+                <option value="">Sélectionner…</option>
                 {parentEmotions.map((e) => (
                   <option key={e.id} value={e.id}>{e.icone} {e.nom}</option>
                 ))}
               </select>
             </div>
           )}
-          <label className="flex items-center gap-2 cursor-pointer">
+          <div className="fr-checkbox-group">
             <input
               type="checkbox"
+              id="emotion-actif"
               checked={form.est_actif}
               onChange={(e) => setForm({ ...form, est_actif: e.target.checked })}
-              className="w-4 h-4 rounded border-gray-300 text-malachite-500 focus:ring-malachite-500"
             />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="fr-label" htmlFor="emotion-actif">
               Active
-            </span>
-          </label>
-          <div className="flex gap-3 pt-2">
-            <Button type="submit" loading={formLoading}>
-              {editingEmotion ? 'Mettre à jour' : 'Créer'}
-            </Button>
-            <Button variant="ghost" onClick={() => setModalOpen(false)}>
-              Annuler
-            </Button>
+            </label>
           </div>
+          <ul className="fr-btns-group fr-btns-group--inline fr-mt-2w">
+            <li>
+              <Button type="submit" loading={formLoading}>
+                {editingEmotion ? 'Mettre à jour' : 'Créer'}
+              </Button>
+            </li>
+            <li>
+              <Button variant="ghost" onClick={() => setModalOpen(false)}>
+                Annuler
+              </Button>
+            </li>
+          </ul>
         </form>
       </Modal>
     </div>
+  );
+}
+
+function FragmentRows({
+  emotion,
+  colorSwatch,
+  onAddChild,
+  onEdit,
+  onDelete,
+}: {
+  emotion: Emotion;
+  colorSwatch: (couleur: string) => React.ReactNode;
+  onAddChild: (parentId?: number) => void;
+  onEdit: (emotion: Emotion) => void;
+  onDelete: (id: number) => void;
+}) {
+  return (
+    <>
+      <tr>
+        <td>
+          <span className="fr-mr-1w" aria-hidden="true">{emotion.icone || '🔵'}</span>
+          <strong>{emotion.nom}</strong>
+        </td>
+        <td><span className="fr-badge fr-badge--sm">Niveau 1</span></td>
+        <td>{colorSwatch(emotion.couleur)}<span className="fr-text--xs">{emotion.couleur}</span></td>
+        <td>
+          <span className={`fr-badge fr-badge--sm ${emotion.est_actif ? 'fr-badge--success' : 'fr-badge--error'}`}>
+            {emotion.est_actif ? 'Active' : 'Inactive'}
+          </span>
+        </td>
+        <td>
+          <ul className="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
+            <li>
+              <button
+                type="button"
+                onClick={() => onAddChild(emotion.id)}
+                className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-add-line"
+                title="Ajouter une sous-émotion"
+              >
+                Sous-émotion
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => onEdit(emotion)}
+                className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-edit-line"
+                title="Modifier"
+              >
+                Modifier
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => onDelete(emotion.id)}
+                className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-delete-line"
+                title="Supprimer"
+              >
+                Supprimer
+              </button>
+            </li>
+          </ul>
+        </td>
+      </tr>
+      {emotion.enfants?.map((child) => (
+        <tr key={child.id}>
+          <td>
+            <span className="fr-icon-arrow-right-line fr-icon--sm fr-mr-1w" aria-hidden="true" />
+            <span className="fr-mr-1w" aria-hidden="true">{child.icone || '🔵'}</span>
+            {child.nom}
+          </td>
+          <td><span className="fr-badge fr-badge--sm fr-badge--info">Niveau 2</span></td>
+          <td>{colorSwatch(child.couleur)}<span className="fr-text--xs">{child.couleur}</span></td>
+          <td>
+            <span className={`fr-badge fr-badge--sm ${child.est_actif ? 'fr-badge--success' : 'fr-badge--error'}`}>
+              {child.est_actif ? 'Active' : 'Inactive'}
+            </span>
+          </td>
+          <td>
+            <ul className="fr-btns-group fr-btns-group--inline fr-btns-group--sm">
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onEdit(child)}
+                  className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-edit-line"
+                  title="Modifier"
+                >
+                  Modifier
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => onDelete(child.id)}
+                  className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-delete-line"
+                  title="Supprimer"
+                >
+                  Supprimer
+                </button>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      ))}
+    </>
   );
 }

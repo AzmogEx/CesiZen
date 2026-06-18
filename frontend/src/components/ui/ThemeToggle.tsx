@@ -1,35 +1,51 @@
 "use client";
 
 import React from "react";
-import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
+
+type Scheme = "light" | "dark";
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  const [scheme, setScheme] = React.useState<Scheme>("light");
 
   React.useEffect(() => {
     setMounted(true);
+    const current = document.documentElement.getAttribute("data-fr-theme");
+    setScheme(current === "dark" ? "dark" : "light");
   }, []);
+
+  const toggle = () => {
+    const next: Scheme = scheme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-fr-theme", next);
+    document.documentElement.setAttribute("data-fr-scheme", next);
+    setScheme(next);
+  };
 
   if (!mounted) {
     return (
       <button
-        className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        type="button"
+        className="fr-btn fr-btn--tertiary fr-btn--icon-left fr-icon-theme-fill"
         aria-label="Changer le thème"
       >
-        <div className="h-5 w-5" />
+        Thème
       </button>
     );
   }
 
   return (
     <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 text-gray-600 dark:text-gray-400"
-      aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
+      type="button"
+      onClick={toggle}
+      className={`fr-btn fr-btn--tertiary fr-btn--icon-left ${
+        scheme === "dark" ? "fr-icon-sun-fill" : "fr-icon-moon-fill"
+      }`}
+      aria-label={
+        scheme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"
+      }
+      title={scheme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
     >
-      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+      {scheme === "dark" ? "Mode clair" : "Mode sombre"}
     </button>
   );
 }
