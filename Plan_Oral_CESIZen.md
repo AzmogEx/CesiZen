@@ -2,7 +2,8 @@
 
 **Apprenant :** Adam Marzuk · **Bloc :** INFCDAAL1 — Concevoir les solutions logicielles
 **Format :** 20 min de présentation + ~10 min de questions/réponses
-**Support :** `CESIZen_Soutenance.pptx` (16 slides : 14 + 2 annexes)
+**Support :** `CESIZen_Soutenance.pptx` (16 slides : 14 + 2 annexes) + **démo live de l'app** (compte `demo@cesizen.fr` / `Demo123!`)
+**Antisèche à garder en main :** `Plan2_Oral_CESIZen.md` · **Lancement :** voir `Guide_Lancement_CESIZen.md`
 
 > Objectif : montrer la **démarche** (recueil → analyse → modélisation) autant que le résultat.
 > Le jury note aussi la **prise de parole** : posture, voix, regard, gestion du temps.
@@ -13,16 +14,17 @@
 
 | Temps | Slide(s) | Sujet | Messages clés à dire |
 |---|---|---|---|
-| **0:00 – 2:00** (2′) | 1 — 2 | **Introduction** | Se présenter. Annoncer le commanditaire (Ministère) et l'objet : une plateforme grand public de santé mentale. Donner le fil rouge : « je vais dérouler le recueil du besoin, la priorisation, la réponse fonctionnelle, puis la modélisation technique et la conformité RGPD. » Présenter le sommaire (slide 2). |
-| **2:00 – 5:00** (3′) | 3 — 4 | **Contexte, enjeux, parties prenantes** | Rappeler l'enjeu sociétal (22 % des Français, SPF 2023) et la stigmatisation. Énoncer les 4 objectifs stratégiques. Présenter les parties prenantes et les 3 acteurs (Visiteur, Utilisateur, Administrateur). Insister : « le besoin a été **reformulé**, pas recopié. » |
-| **5:00 – 7:00** (2′) | 5 — 6 | **Besoins & priorisation** | Périmètre : 2 modules obligatoires + Tracker au choix ; modules écartés assumés. Présenter la grille pondérée /15 (5 critères). Conclusion argumentée : « le Tracker cumule 4 fonctionnalités à 9-10/15, c'est le module au choix le plus rentable. » |
-| **7:00 – 12:00** (5′) | 7 — 8 — 9 | **Réponse fonctionnelle** | Module Comptes : JWT, RGPD, admin (slide 7 + maquette). Module Informations : feeds, modération, slug auto (slide 8). Module Tracker : wizard 3 étapes, journal, rapports 4 périodes, 6+36 émotions (slide 9 + maquettes). Montrer que chaque écran répond à un besoin précis. |
-| **12:00 – 16:00** (4′) | 10 — 11 — 12 | **Modélisation** | Cas d'usage UML (slide 10) : couverture par acteur. MCD Merise (slide 11) : 8 entités, cardinalités, hiérarchie d'émotions auto-référencée. Architecture MVC découplée (slide 12) : 1 API REST Laravel → 2 clients ; justifier le pattern (testabilité, évolutivité, non-duplication). |
-| **16:00 – 17:30** (1′30) | 13 | **RGPD & données sensibles** | Données de santé = sensibles (art. 9). Consentement, droits CNIL (export/anonymisation), soft delete. Sécurité : chiffrement AES-256/TLS, JWT, HDS, table audits. |
-| **17:30 – 19:00** (1′30) | 14 | **Prototype & perspectives** | Prototype fonctionnel (Laravel + Next.js + Expo + Docker). Ouverture : activer les modules écartés sans réécrire le modèle, Open Data, Mon Espace Santé (FHIR), i18n. |
+| **0:00 – 2:00** (2′) | 1 — 2 | **Introduction** | Se présenter. Annoncer le commanditaire (Ministère) et l'objet : une plateforme grand public de santé mentale. Donner le fil rouge : « je vais dérouler le recueil du besoin, la priorisation, la réponse fonctionnelle **avec une démonstration de l'application**, puis la modélisation technique et la conformité RGPD. » Présenter le sommaire (slide 2). |
+| **2:00 – 4:30** (2′30) | 3 — 4 | **Contexte, enjeux, parties prenantes** | Rappeler l'enjeu sociétal (22 % des Français, SPF 2023) et la stigmatisation. Énoncer les 4 objectifs stratégiques. Présenter les parties prenantes et les 3 acteurs (Visiteur, Utilisateur, Administrateur). Insister : « le besoin a été **reformulé**, pas recopié. » |
+| **4:30 – 6:00** (1′30) | 5 — 6 | **Besoins & priorisation** | Périmètre : 2 modules obligatoires + Tracker au choix ; modules écartés assumés. Grille pondérée /15 (5 critères). Conclusion : « le Tracker cumule 4 fonctionnalités à 9-10/15, c'est le module au choix le plus rentable. » |
+| **6:00 – 8:30** (2′30) | 7 — 8 | **Réponse fonctionnelle (Comptes + Informations)** | Module Comptes : JWT, RGPD, admin (slide 7 + maquette). Module Informations : feeds, modération, slug auto (slide 8 + maquette). Enchaîner : « pour le Tracker, je vais vous le montrer en direct. » |
+| **8:30 – 12:30** (4′) | démo live | **🎬 Démo de l'application — Tracker** | Sur l'app web (compte `demo@cesizen.fr` **déjà connecté**) : page Informations → journal de bord → **nouvelle saisie** (wizard 3 étapes : émotion → sous-émotion + intensité → date + note) → **Rapports** (changer la période : camembert + courbe d'évolution). 🛟 Si ça plante : basculer sur les maquettes (slide 9) sans s'excuser. |
+| **12:30 – 16:00** (3′30) | 10 — 11 — 12 | **Modélisation** | Cas d'usage UML (slide 10) : couverture par acteur. MCD Merise (slide 11) : 8 entités, cardinalités, hiérarchie d'émotions auto-référencée. Architecture MVC découplée (slide 12) : 1 API REST Laravel → 2 clients ; justifier le pattern (testabilité, évolutivité, non-duplication). |
+| **16:00 – 17:30** (1′30) | 13 | **RGPD & données sensibles** | Données de santé = sensibles (art. 9). Consentement, droits CNIL (export/anonymisation), soft delete. Sécurité : bcrypt (mots de passe), JWT, HDS, table audits ; chiffrement AES-256 au repos prévu en production. |
+| **17:30 – 19:00** (1′30) | 14 | **Prototype & perspectives** | Prototype fonctionnel (Laravel + Next.js + Expo + Docker), **25 tests automatisés** (15 back + 6 front + 4 mobile). Ouverture : activer les modules écartés sans réécrire le modèle, Open Data, Mon Espace Santé (FHIR). |
 | **19:00 – 20:00** (1′) | 14 | **Conclusion** | Synthèse : besoin reformulé → périmètre priorisé → réponse fonctionnelle → architecture pérenne → conformité. Remercier, ouvrir les questions. |
 
-**Repères de rythme :** ~1 slide / 1 min 20. Si retard à 12:00, raccourcir la modélisation (garder MCD + MVC, survoler les cas d'usage).
+**Repères de rythme :** checkpoint mental à **12:30** (fin de la démo). Si retard, raccourcir la modélisation (garder MCD + MVC, survoler les cas d'usage) et garder 1 min pour conclure. ⚠️ **Lance la stack et connecte-toi AVANT d'entrer** dans la salle (sois déjà sur le journal de bord).
 
 ---
 
@@ -53,7 +55,7 @@
 
 ### Données & sécurité (RGPD)
 **Q8. Les données émotionnelles sont sensibles — comment êtes-vous conforme ?**
-> Consentement explicite à l'inscription (case non pré-cochée), finalités documentées, droits CNIL implémentés (accès, rectification, effacement, portabilité via export JSON, anonymisation). Hébergement HDS, chiffrement AES-256 au repos et TLS en transit, table `audits` pour la traçabilité.
+> Consentement explicite à l'inscription (case non pré-cochée), finalités documentées, droits CNIL implémentés (accès, rectification, effacement, portabilité via export JSON, anonymisation). Hébergement HDS, TLS en transit, **bcrypt** sur les mots de passe (chiffrement AES-256 au repos prévu pour la mise en production), table `audits` pour la traçabilité.
 
 **Q9. Différence entre soft delete et anonymisation ?**
 > Soft delete (`deleted_at`) = suppression réversible 30 j puis purge — pour le droit à l'effacement avec fenêtre de rétractation. Anonymisation = on dissocie les données de l'identité (note vidée, contacts supprimés) tout en gardant des statistiques agrégées non identifiantes.
@@ -70,10 +72,16 @@
 
 ### Questions « piège » fréquentes
 **Q13. Qu'est-ce qui est réellement développé vs spécifié ?**
-> Un prototype fonctionnel des 3 modules (API + web + mobile) accompagne le dossier ; les spécifications détaillées couvrent les 2 modules obligatoires + le Tracker, conformément à la consigne.
+> Un prototype fonctionnel des 3 modules (API + web + mobile) accompagne le dossier, avec **25 tests automatisés** (15 PHPUnit back, 6 Vitest web, 4 Jest mobile) ; les spécifications détaillées couvrent les 2 modules obligatoires + le Tracker, conformément à la consigne.
 
 **Q14. Si c'était à refaire, que changeriez-vous ?**
 > J'ajouterais des tests automatisés d'accessibilité RGAA dès le début, et je formaliserais un diagramme de classes en complément du MCD pour la couche métier.
+
+**Q15. Ce que vous avez montré en démo est-il réel ?**
+> Oui, c'est le prototype qui tourne en local (Docker) : API Laravel + front Next.js + PostgreSQL. Les saisies et les rapports affichés sont calculés en direct par l'API (service `RapportService`), pas des écrans figés.
+
+**Q16. Comment testez-vous la qualité du code ?**
+> Tests automatisés sur les 3 briques, lançables en une commande : `php artisan test` (15 tests : auth, tracker, admin, RGPD), `npm test` côté web (Vitest : composants + store) et mobile (Jest : appels API). Plus le type-checking strict (TypeScript) et le linting (ESLint, Pint).
 
 ---
 
