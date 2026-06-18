@@ -147,42 +147,37 @@ export default function NouvelleSaisiePage() {
             )}
           </div>
 
-          {/* Navigation */}
-          <ul className="fr-btns-group fr-btns-group--inline-md">
-            <li>
+          {/* Navigation (flex simple pour éviter le rognage des libellés
+              dans un groupe DSFR avec boutons à icône) */}
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              className="fr-btn fr-btn--secondary fr-btn--icon-left fr-icon-arrow-left-line"
+              onClick={() => setStep(step - 1)}
+              disabled={step === 1}
+            >
+              Précédent
+            </button>
+            {step < 3 ? (
               <button
                 type="button"
-                className="fr-btn fr-btn--secondary fr-icon-arrow-left-line fr-btn--icon-left"
-                onClick={() => setStep(step - 1)}
-                disabled={step === 1}
+                className="fr-btn fr-btn--icon-right fr-icon-arrow-right-line"
+                onClick={() => setStep(step + 1)}
+                disabled={!canNext()}
               >
-                Précédent
+                Suivant
               </button>
-            </li>
-            {step < 3 ? (
-              <li>
-                <button
-                  type="button"
-                  className="fr-btn fr-icon-arrow-right-line fr-btn--icon-right"
-                  onClick={() => setStep(step + 1)}
-                  disabled={!canNext()}
-                >
-                  Suivant
-                </button>
-              </li>
             ) : (
-              <li>
-                <button
-                  type="button"
-                  className="fr-btn fr-icon-check-line fr-btn--icon-left"
-                  onClick={handleSubmit}
-                  disabled={!emotionId || createSaisie.isPending}
-                >
-                  Enregistrer
-                </button>
-              </li>
+              <button
+                type="button"
+                className="fr-btn fr-btn--icon-left fr-icon-check-line"
+                onClick={handleSubmit}
+                disabled={!emotionId || createSaisie.isPending}
+              >
+                Enregistrer
+              </button>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </div>
