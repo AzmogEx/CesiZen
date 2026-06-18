@@ -250,109 +250,109 @@ def generate_pdf():
     pdf.ln(5)
     pdf.section_title('1.2 Tests fonctionnels - Authentification')
     pdf.colored_table(
-        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut'],
+        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut', 'Responsable'],
         [
-            ['T-AUTH-01', 'Inscription valide', 'Nom, prénom, email, mdp', 'Compte créé, token JWT', 'OK'],
-            ['T-AUTH-02', 'Inscription email existant', 'Email déjà utilisé', 'Erreur 422, msg clair', 'OK'],
-            ['T-AUTH-03', 'Connexion valide', 'Email + mdp corrects', 'Token JWT retourné', 'OK'],
-            ['T-AUTH-04', 'Connexion mdp erroné', 'Email + mdp incorrect', 'Erreur 401', 'OK'],
-            ['T-AUTH-05', 'Connexion compte inactif', 'Compte désactivé', 'Erreur 403', 'OK'],
-            ['T-AUTH-06', 'Rate limiting login', '6 tentatives en 1 min', 'Erreur 429 throttle', 'OK'],
-            ['T-AUTH-07', 'Déconnexion', 'Token valide', 'Token invalidé', 'OK'],
-            ['T-AUTH-08', 'Refresh token', 'Token expirant', 'Nouveau token retourné', 'OK'],
-            ['T-AUTH-09', 'Accès route protégée sans token', 'Aucun token', 'Erreur 401', 'OK'],
-            ['T-AUTH-10', 'Accès route admin sans rôle', 'Token membre', 'Erreur 403', 'OK'],
+            ['T-AUTH-01', 'Inscription valide', 'Nom, prénom, email, mdp', 'Compte créé, token JWT', 'OK', 'Dév. backend'],
+            ['T-AUTH-02', 'Inscription email existant', 'Email déjà utilisé', 'Erreur 422, msg clair', 'OK', 'Dév. backend'],
+            ['T-AUTH-03', 'Connexion valide', 'Email + mdp corrects', 'Token JWT retourné', 'OK', 'Dév. backend'],
+            ['T-AUTH-04', 'Connexion mdp erroné', 'Email + mdp incorrect', 'Erreur 401', 'OK', 'Dév. backend'],
+            ['T-AUTH-05', 'Connexion compte inactif', 'Compte désactivé', 'Erreur 403', 'OK', 'Dév. backend'],
+            ['T-AUTH-06', 'Rate limiting login', '6 tentatives en 1 min', 'Erreur 429 throttle', 'OK', 'Dév. backend'],
+            ['T-AUTH-07', 'Déconnexion', 'Token valide', 'Token invalidé', 'OK', 'Dév. backend'],
+            ['T-AUTH-08', 'Refresh token', 'Token expirant', 'Nouveau token retourné', 'OK', 'Dév. backend'],
+            ['T-AUTH-09', 'Accès route protégée sans token', 'Aucun token', 'Erreur 401', 'OK', 'Dév. backend'],
+            ['T-AUTH-10', 'Accès route admin sans rôle', 'Token membre', 'Erreur 403', 'OK', 'Dév. backend'],
         ],
-        [20, 42, 40, 55, 33]
+        [20, 42, 40, 49, 15, 24]
     )
 
     pdf.ln(3)
     pdf.section_title('1.3 Tests fonctionnels - Tracker émotionnel')
     pdf.colored_table(
-        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut'],
+        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut', 'Responsable'],
         [
-            ['T-TRK-01', 'Créer saisie', 'Émotion, intensité 1-10, note', 'Saisie enregistrée', 'OK'],
-            ['T-TRK-02', 'Créer saisie sans tracker', 'Premier usage', 'Tracker auto-créé', 'OK'],
-            ['T-TRK-03', 'Lister saisies', 'Token valide', 'Liste paginée (20/page)', 'OK'],
-            ['T-TRK-04', 'Filtrer par date', 'date_debut, date_fin', 'Saisies dans la période', 'OK'],
-            ['T-TRK-05', 'Filtrer par émotion', 'emotion_id', 'Saisies correspondantes', 'OK'],
-            ['T-TRK-06', 'Modifier saisie', 'Nouvelle intensité/note', 'Saisie mise à jour', 'OK'],
-            ['T-TRK-07', 'Supprimer saisie', 'ID saisie existante', 'Saisie supprimée', 'OK'],
-            ['T-TRK-08', 'Rapport semaine', 'period=week', 'Stats hebdomadaires', 'OK'],
-            ['T-TRK-09', 'Rapport mois', 'period=month', 'Stats mensuelles', 'OK'],
-            ['T-TRK-10', 'Rapport trimestre', 'period=quarter', 'Stats trimestrielles', 'OK'],
-            ['T-TRK-11', 'Rapport année', 'period=year', 'Stats annuelles', 'OK'],
-            ['T-TRK-12', 'Saisie intensité hors bornes', 'intensité = 15', 'Erreur validation 422', 'OK'],
+            ['T-TRK-01', 'Créer saisie', 'Émotion, intensité 1-10, note', 'Saisie enregistrée', 'OK', 'Dév. backend'],
+            ['T-TRK-02', 'Créer saisie sans tracker', 'Premier usage', 'Tracker auto-créé', 'OK', 'Dév. backend'],
+            ['T-TRK-03', 'Lister saisies', 'Token valide', 'Liste paginée (20/page)', 'OK', 'Dév. backend'],
+            ['T-TRK-04', 'Filtrer par date', 'date_debut, date_fin', 'Saisies dans la période', 'OK', 'Dév. backend'],
+            ['T-TRK-05', 'Filtrer par émotion', 'emotion_id', 'Saisies correspondantes', 'OK', 'Dév. backend'],
+            ['T-TRK-06', 'Modifier saisie', 'Nouvelle intensité/note', 'Saisie mise à jour', 'OK', 'Dév. backend'],
+            ['T-TRK-07', 'Supprimer saisie', 'ID saisie existante', 'Saisie supprimée', 'OK', 'Dév. backend'],
+            ['T-TRK-08', 'Rapport semaine', 'period=week', 'Stats hebdomadaires', 'OK', 'Dév. backend'],
+            ['T-TRK-09', 'Rapport mois', 'period=month', 'Stats mensuelles', 'OK', 'Dév. backend'],
+            ['T-TRK-10', 'Rapport trimestre', 'period=quarter', 'Stats trimestrielles', 'OK', 'Dév. backend'],
+            ['T-TRK-11', 'Rapport année', 'period=year', 'Stats annuelles', 'OK', 'Dév. backend'],
+            ['T-TRK-12', 'Saisie intensité hors bornes', 'intensité = 15', 'Erreur validation 422', 'OK', 'Dév. backend'],
         ],
-        [20, 42, 42, 53, 33]
+        [20, 42, 42, 47, 15, 24]
     )
 
     pdf.add_page()
     pdf.section_title('1.4 Tests fonctionnels - Feeds / Ressources')
     pdf.colored_table(
-        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut'],
+        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut', 'Responsable'],
         [
-            ['T-FEED-01', 'Lister feeds publiés', 'Aucun (public)', 'Liste ordonnée des articles', 'OK'],
-            ['T-FEED-02', 'Détail feed par slug', 'Slug existant', 'Contenu complet + auteur', 'OK'],
-            ['T-FEED-03', 'Feed slug inexistant', 'Slug invalide', 'Erreur 404', 'OK'],
-            ['T-FEED-04', 'Feed non publié inaccessible', 'Feed draft', 'Non listé / 404', 'OK'],
+            ['T-FEED-01', 'Lister feeds publiés', 'Aucun (public)', 'Liste ordonnée des articles', 'OK', 'Dév. backend'],
+            ['T-FEED-02', 'Détail feed par slug', 'Slug existant', 'Contenu complet + auteur', 'OK', 'Dév. backend'],
+            ['T-FEED-03', 'Feed slug inexistant', 'Slug invalide', 'Erreur 404', 'OK', 'Dév. backend'],
+            ['T-FEED-04', 'Feed non publié inaccessible', 'Feed draft', 'Non listé / 404', 'OK', 'Dév. backend'],
         ],
-        [22, 45, 38, 52, 33]
+        [22, 45, 38, 46, 15, 24]
     )
 
     pdf.ln(5)
     pdf.section_title('1.5 Tests fonctionnels - Administration')
     pdf.colored_table(
-        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut'],
+        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut', 'Responsable'],
         [
-            ['T-ADM-01', 'Lister utilisateurs', 'Token admin', 'Liste paginée (15/p)', 'OK'],
-            ['T-ADM-02', 'Rechercher utilisateur', 'search=nom', 'Résultats ilike', 'OK'],
-            ['T-ADM-03', 'Créer utilisateur', 'Données complètes', 'Utilisateur + Tracker', 'OK'],
-            ['T-ADM-04', 'Modifier utilisateur', 'Nouvelles données', 'Utilisateur mis à jour', 'OK'],
-            ['T-ADM-05', 'Activer/Désactiver', 'ID user', 'Toggle est_actif', 'OK'],
-            ['T-ADM-06', 'Supprimer utilisateur', 'ID user', 'Soft delete', 'OK'],
-            ['T-ADM-07', 'CRUD feeds (admin)', 'Données feed', 'Création/modif/suppr.', 'OK'],
-            ['T-ADM-08', 'CRUD émotions', 'Données émotion', 'Création/modif/désact.', 'OK'],
-            ['T-ADM-09', 'Désactiver émotion parent', 'ID parent', 'Parent + enfants désact.', 'OK'],
-            ['T-ADM-10', 'Audit trail', 'Actions admin', 'Logs en base (audits)', 'OK'],
+            ['T-ADM-01', 'Lister utilisateurs', 'Token admin', 'Liste paginée (15/p)', 'OK', 'Dév. backend'],
+            ['T-ADM-02', 'Rechercher utilisateur', 'search=nom', 'Résultats ilike', 'OK', 'Dév. backend'],
+            ['T-ADM-03', 'Créer utilisateur', 'Données complètes', 'Utilisateur + Tracker', 'OK', 'Dév. backend'],
+            ['T-ADM-04', 'Modifier utilisateur', 'Nouvelles données', 'Utilisateur mis à jour', 'OK', 'Dév. backend'],
+            ['T-ADM-05', 'Activer/Désactiver', 'ID user', 'Toggle est_actif', 'OK', 'Dév. backend'],
+            ['T-ADM-06', 'Supprimer utilisateur', 'ID user', 'Soft delete', 'OK', 'Dév. backend'],
+            ['T-ADM-07', 'CRUD feeds (admin)', 'Données feed', 'Création/modif/suppr.', 'OK', 'Dév. backend'],
+            ['T-ADM-08', 'CRUD émotions', 'Données émotion', 'Création/modif/désact.', 'OK', 'Dév. backend'],
+            ['T-ADM-09', 'Désactiver émotion parent', 'ID parent', 'Parent + enfants désact.', 'OK', 'Dév. backend'],
+            ['T-ADM-10', 'Audit trail', 'Actions admin', 'Logs en base (audits)', 'OK', 'Dév. backend'],
         ],
-        [20, 42, 38, 52, 38]
+        [20, 42, 38, 46, 15, 29]
     )
 
     pdf.ln(5)
     pdf.section_title('1.6 Tests fonctionnels - Profil utilisateur')
     pdf.colored_table(
-        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut'],
+        ['ID', 'Cas de test', 'Entrée', 'Résultat attendu', 'Statut', 'Responsable'],
         [
-            ['T-PRO-01', 'Voir profil', 'Token valide', 'Infos profil complètes', 'OK'],
-            ['T-PRO-02', 'Modifier nom/prénom', 'Nouvelles valeurs', 'Profil mis à jour', 'OK'],
-            ['T-PRO-03', 'Changer mot de passe', 'Ancien + nouveau mdp', 'Mot de passe changé', 'OK'],
-            ['T-PRO-04', 'Ancien mdp incorrect', 'Mauvais ancien mdp', 'Erreur 422', 'OK'],
-            ['T-PRO-05', 'Supprimer compte (RGPD)', 'Confirmation', 'Soft delete du compte', 'OK'],
+            ['T-PRO-01', 'Voir profil', 'Token valide', 'Infos profil complètes', 'OK', 'Dév. backend'],
+            ['T-PRO-02', 'Modifier nom/prénom', 'Nouvelles valeurs', 'Profil mis à jour', 'OK', 'Dév. backend'],
+            ['T-PRO-03', 'Changer mot de passe', 'Ancien + nouveau mdp', 'Mot de passe changé', 'OK', 'Dév. backend'],
+            ['T-PRO-04', 'Ancien mdp incorrect', 'Mauvais ancien mdp', 'Erreur 422', 'OK', 'Dév. backend'],
+            ['T-PRO-05', 'Supprimer compte (RGPD)', 'Confirmation', 'Soft delete du compte', 'OK', 'DPO / Dév.'],
         ],
-        [20, 42, 42, 53, 33]
+        [20, 42, 42, 47, 15, 24]
     )
 
     pdf.ln(5)
     pdf.section_title('1.7 Tests non fonctionnels')
     pdf.colored_table(
-        ['ID', 'Catégorie', 'Test', 'Critère', 'Statut'],
+        ['ID', 'Catégorie', 'Test', 'Critère', 'Statut', 'Responsable'],
         [
-            ['T-NF-01', 'Performance', 'Temps de réponse API', '< 200ms (95e centile)', 'OK'],
-            ['T-NF-02', 'Performance', 'Chargement page front', '< 2s (First Contentful Paint)', 'OK'],
-            ['T-NF-03', 'Sécurité', 'Injection SQL', 'Eloquent ORM paramétré', 'OK'],
-            ['T-NF-04', 'Sécurité', 'XSS', 'Échappement React natif', 'OK'],
-            ['T-NF-05', 'Sécurité', 'CORS', 'Origines restreintes', 'OK'],
-            ['T-NF-06', 'Sécurité', 'JWT expiration', 'Tokens à durée limitée', 'OK'],
-            ['T-NF-07', 'Sécurité', 'Rate limiting', 'Throttle 5 tentatives/min', 'OK'],
-            ['T-NF-08', 'Accessibilité', 'Responsive design', 'Mobile, tablette, desktop', 'OK'],
-            ['T-NF-09', 'Accessibilité', 'Mode sombre', 'Toggle dark/light mode', 'OK'],
-            ['T-NF-10', 'RGPD', 'Droit à l\'effacement', 'Soft delete + anonymisation', 'OK'],
-            ['T-NF-11', 'RGPD', 'Consentement', 'Champ consentement_rgpd', 'OK'],
-            ['T-NF-12', 'Fiabilité', 'Gestion erreurs API', 'Réponses JSON structurées', 'OK'],
-            ['T-NF-13', 'Fiabilité', 'Audit trail admin', 'Table audits traçabilité', 'OK'],
+            ['T-NF-01', 'Performance', 'Temps de réponse API', '< 200ms (95e centile)', 'OK', 'DevOps'],
+            ['T-NF-02', 'Performance', 'Chargement page front', '< 2s (First Contentful Paint)', 'OK', 'DevOps'],
+            ['T-NF-03', 'Sécurité', 'Injection SQL', 'Eloquent ORM paramétré', 'OK', 'Dév. backend'],
+            ['T-NF-04', 'Sécurité', 'XSS', 'Échappement React natif', 'OK', 'Dév. front'],
+            ['T-NF-05', 'Sécurité', 'CORS', 'Origines restreintes', 'OK', 'Dév. backend'],
+            ['T-NF-06', 'Sécurité', 'JWT expiration', 'Tokens à durée limitée', 'OK', 'Dév. backend'],
+            ['T-NF-07', 'Sécurité', 'Rate limiting', 'Throttle 5 tentatives/min', 'OK', 'Dév. backend'],
+            ['T-NF-08', 'Accessibilité', 'Responsive design', 'Mobile, tablette, desktop', 'OK', 'Dév. front'],
+            ['T-NF-09', 'Accessibilité', 'Mode sombre', 'Toggle dark/light mode', 'OK', 'Dév. front'],
+            ['T-NF-10', 'RGPD', 'Droit à l\'effacement', 'Soft delete + anonymisation', 'OK', 'DPO'],
+            ['T-NF-11', 'RGPD', 'Consentement', 'Champ consentement_rgpd', 'OK', 'DPO'],
+            ['T-NF-12', 'Fiabilité', 'Gestion erreurs API', 'Réponses JSON structurées', 'OK', 'DevOps'],
+            ['T-NF-13', 'Fiabilité', 'Audit trail admin', 'Table audits traçabilité', 'OK', 'DevOps'],
         ],
-        [18, 28, 42, 60, 42]
+        [16, 26, 38, 52, 14, 34]
     )
 
     # ============================
@@ -874,6 +874,76 @@ def generate_pdf():
     pdf.set_text_color(0, 100, 0)
     pdf.set_fill_color(230, 250, 230)
     pdf.cell(0, 10, '  RÉSULTAT : 14/14 critères d\'acceptation validés - Projet conforme aux exigences.', fill=True, new_x="LMARGIN", new_y="NEXT")
+
+    # ============================
+    # 6.4 Modèle de PV de recette
+    # ============================
+    pdf.add_page()
+    pdf.section_title('6.4 Modèle de procès-verbal de recette')
+    pdf.body_text(
+        'Le procès-verbal (PV) de recette formalise l\'acceptation de la solution par le commanditaire '
+        'à l\'issue de la recette utilisateur (UAT). Modèle type à compléter et signer par les deux parties :'
+    )
+
+    pdf.subsection_title('Identification')
+    pdf.colored_table(
+        ['Rubrique', 'Renseignement'],
+        [
+            ['Projet', 'CESIZen - Plateforme de santé mentale'],
+            ['Version recettée', 'v1.0'],
+            ['Date de recette', '......  /  ......  /  ............'],
+            ['Maîtrise d\'ouvrage (commanditaire)', 'Ministère des Solidarités et de la Santé'],
+            ['Maîtrise d\'oeuvre (réalisation)', 'Adam Marzuk - CESI École d\'Ingénieurs'],
+            ['Périmètre recetté', 'Comptes utilisateurs, Informations, Tracker d\'émotions'],
+        ],
+        [70, 120]
+    )
+
+    pdf.ln(2)
+    pdf.subsection_title('Synthèse des résultats')
+    pdf.colored_table(
+        ['Indicateur', 'Valeur'],
+        [
+            ['Cas de test exécutés', '............  /  54'],
+            ['Cas conformes (OK)', '............'],
+            ['Anomalies bloquantes', '............'],
+            ['Anomalies mineures', '............'],
+            ['Taux de conformité', '............  %'],
+        ],
+        [95, 95]
+    )
+
+    pdf.ln(2)
+    pdf.subsection_title('Réserves éventuelles')
+    pdf.body_text('1. ................................................................................................................')
+    pdf.body_text('2. ................................................................................................................')
+
+    pdf.ln(1)
+    pdf.subsection_title('Décision de recette')
+    pdf.body_text(
+        '[   ] Recette prononcée sans réserve      '
+        '[   ] Recette prononcée avec réserves      '
+        '[   ] Recette refusée'
+    )
+
+    pdf.ln(4)
+    pdf.set_font('Helvetica', 'B', 9)
+    pdf.set_text_color(30, 30, 30)
+    pdf.cell(95, 7, 'Pour la maîtrise d\'ouvrage', border=0)
+    pdf.cell(95, 7, 'Pour la maîtrise d\'oeuvre', border=0, new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font('Helvetica', '', 8)
+    pdf.cell(95, 6, 'Nom : .....................................', border=0)
+    pdf.cell(95, 6, 'Nom : .....................................', border=0, new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(95, 6, 'Fonction : Product Owner', border=0)
+    pdf.cell(95, 6, 'Fonction : Développeur / Apprenant', border=0, new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(95, 6, 'Date et signature :', border=0)
+    pdf.cell(95, 6, 'Date et signature :', border=0, new_x="LMARGIN", new_y="NEXT")
+    pdf.ln(2)
+    sig_y = pdf.get_y()
+    pdf.set_draw_color(120, 120, 120)
+    pdf.rect(pdf.l_margin, sig_y, 90, 26)
+    pdf.rect(pdf.l_margin + 100, sig_y, 90, 26)
+    pdf.ln(30)
 
     # Sauvegarde
     output_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'CESIZen_Cahier_Tests_Etude_Comparative.pdf')
