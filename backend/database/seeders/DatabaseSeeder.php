@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             EmotionSeeder::class,
             FeedSeeder::class,
+            DemoSeeder::class,
         ]);
     }
 }

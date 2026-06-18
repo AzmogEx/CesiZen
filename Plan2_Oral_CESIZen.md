@@ -1,6 +1,6 @@
 # 🎯 Antisèche oral CESIZen — à garder sous les yeux
 
-**20 min de présentation + 10 min Q/R · 16 slides · checkpoint mental à 12:00**
+**20 min (présentation + démo live de l'app) + 10 min Q/R · 16 slides · checkpoint à 12:30**
 
 ---
 
@@ -16,33 +16,35 @@
 
 ---
 
-## 🗺️ Déroulé (mots-clés seulement)
+## 🗺️ Déroulé (mots-clés seulement) — démo live intégrée
 
 **0:00–2:00 · Intro (slides 1-2)**
 - Qui je suis · commanditaire = Ministère · objet = plateforme grand public santé mentale
-- Fil rouge : *« recueil → priorisation → réponse fonctionnelle → modélisation → RGPD »*
-- ➡️ transition : *« Commençons par le contexte. »*
+- Fil rouge : *« recueil → priorisation → réponse fonctionnelle + démo → modélisation → RGPD »*
+- ➡️ *« Commençons par le contexte. »*
 
-**2:00–5:00 · Contexte & parties prenantes (slides 3-4)**
+**2:00–4:30 · Contexte & parties prenantes (slides 3-4)**
 - Enjeu sociétal (22 %, stigmatisation) · 4 objectifs stratégiques
-- Parties prenantes : Ministère ↔ apprenant ↔ HDS ↔ utilisateurs ↔ CNIL
-- 3 acteurs : Visiteur · Utilisateur connecté · Administrateur
-- 💬 insister : *« le besoin a été reformulé, pas recopié »*
-- ➡️ *« De ce besoin, comment ai-je choisi quoi développer ? »*
+- Parties prenantes : Ministère ↔ apprenant ↔ HDS ↔ utilisateurs ↔ CNIL · 3 acteurs
+- 💬 *« le besoin a été reformulé, pas recopié »*
+- ➡️ *« Comment ai-je choisi quoi développer ? »*
 
-**5:00–7:00 · Besoins & priorisation (slides 5-6)**
+**4:30–6:00 · Besoins & priorisation (slides 5-6)**
 - Périmètre : 2 oblig + Tracker · modules écartés **assumés**
-- Grille pondérée /15 (5 critères) → conclusion : Tracker = plus rentable
-- ➡️ *« Voyons concrètement la réponse fonctionnelle. »*
+- Grille pondérée /15 → Tracker = plus rentable
+- ➡️ *« Voyons la réponse fonctionnelle. »*
 
-**7:00–12:00 · Réponse fonctionnelle (slides 7-8-9)** ⏱️ *moment clé*
-- **Comptes** : JWT · RGPD · admin CRUD (+ maquette inscription)
-- **Informations** : feeds · slug auto · modération (+ maquette)
-- **Tracker** : wizard 3 étapes · journal · rapports 4 périodes · 6+36 émotions (+ maquettes)
+**6:00–8:30 · Réponse fonctionnelle Comptes + Informations (slides 7-8)**
+- **Comptes** : JWT · RGPD · admin CRUD (maquette)
+- **Informations** : feeds · slug auto · modération (maquette)
+- ➡️ *« Et pour le Tracker, je vais vous le montrer en direct. »*
+
+**8:30–12:30 · 🎬 DÉMO LIVE — le Tracker (voir script ci-dessous)**
+- inscription/connexion → journal → wizard 3 étapes → rapport graphique
 - 💬 chaque écran = réponse à un besoin précis
-- ➡️ *« Passons à la modélisation technique. »*
+- ➡️ *« Voyons maintenant ce qui structure tout ça techniquement. »*
 
-**12:00–16:00 · Modélisation (slides 10-11-12)** — ⚠️ si retard, accélère ici
+**12:30–16:00 · Modélisation (slides 10-11-12)** — ⚠️ si retard, accélère ici
 - **Cas d'usage UML** : couverture par acteur
 - **MCD Merise** : 8 entités · cardinalités · hiérarchie émotions auto-référencée (parent_id)
 - **MVC découplé** : 1 API → 2 clients · justif = testabilité, évolutivité, non-duplication
@@ -54,12 +56,32 @@
 - ➡️ *« Tout cela est concrétisé par un prototype. »*
 
 **17:30–19:00 · Prototype & perspectives (slide 14)**
-- Stack réelle : Laravel + Next.js + Expo + Docker · 25 tests automatisés
+- Stack réelle : Laravel + Next.js + Expo + Docker · **25 tests automatisés**
 - Ouverture : activer les modules écartés sans réécrire · Mon Espace Santé (FHIR) · Open Data
 
 **19:00–20:00 · Conclusion**
-- Synthèse en 1 phrase : *besoin reformulé → périmètre priorisé → réponse fonctionnelle → archi pérenne → conformité*
+- 1 phrase : *besoin reformulé → périmètre priorisé → réponse fonctionnelle → archi pérenne → conformité*
 - Remercier · *« Je suis à votre disposition pour vos questions. »*
+
+---
+
+## 🎬 Script de démo (≈ 4 min) — le Tracker en direct
+
+**AVANT de commencer l'oral** (à faire pendant l'installation, app déjà lancée) :
+- `docker compose up -d` lancé · onglet navigateur ouvert sur **http://localhost:3000**
+- **déjà connecté** sur le compte de démo · zoom navigateur à **125 %** · notifications coupées
+- Compte : laisser le **journal pré-rempli** de quelques saisies (sinon le rapport est vide)
+
+**Pendant la démo (chemin balisé, ne pas improviser) :**
+1. *(20 s)* Page **Informations** publique → *« voici le module Informations, accessible sans compte »*
+2. *(30 s)* **Journal de bord** → *« le membre retrouve son historique émotionnel »*
+3. *(90 s)* **Nouvelle saisie** → wizard : Étape 1 émotion (Joie) → Étape 2 sous-émotion + intensité (slider) → Étape 3 date + note → **Valider** → *« elle apparaît immédiatement dans le journal »*
+4. *(60 s)* **Rapports** → changer la période (semaine → mois) → *« camembert de répartition + courbe d'évolution, calculés côté API »*
+5. *(20 s, si le temps)* mention rapide **admin** : config des émotions
+
+🛟 **Filet de sécurité** : si la démo plante, je bascule sur les **maquettes des slides** sans m'excuser → *« je vous montre les écrans clés »*. Zéro stress.
+
+🔑 Admin seedé : `admin@cesizen.fr` / `Admin123!`
 
 ---
 
