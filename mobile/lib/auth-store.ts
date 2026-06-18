@@ -59,11 +59,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
   },
 
   logout: async () => {
-    try {
-      await api.post('/auth/logout');
-    } catch {}
+    // Déconnexion locale d'abord (instantanée et fiable, même hors-ligne).
     await SecureStore.deleteItemAsync('cesizen_token');
     set({ user: null, token: null, isAuthenticated: false });
+    // Notifie le serveur en arrière-plan (best-effort, sans bloquer l'UI).
+    api.post('/auth/logout').catch(() => {});
   },
 
   fetchUser: async () => {
