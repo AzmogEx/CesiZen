@@ -8,20 +8,17 @@ interface CardProps {
   hover?: boolean;
 }
 
+// Conteneur neutre au style DSFR (fr-card sans la structure imposée d'une carte
+// éditoriale DSFR, afin de garder un conteneur générique réutilisable).
 export default function Card({ children, className = "", hover = false }: CardProps) {
-  return (
-    <div
-      className={`
-        bg-white dark:bg-gray-900
-        rounded-2xl shadow-sm
-        border border-gray-100 dark:border-gray-800
-        p-6
-        transition-all duration-200
-        ${hover ? "hover:shadow-lg hover:-translate-y-0.5" : ""}
-        ${className}
-      `}
-    >
-      {children}
-    </div>
-  );
+  const classes = [
+    "app-panel",
+    "fr-p-3w",
+    hover ? "fr-enlarge-link" : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return <div className={classes}>{children}</div>;
 }

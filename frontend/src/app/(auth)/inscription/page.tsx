@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '@/lib/auth-store';
 import toast from 'react-hot-toast';
 
@@ -50,174 +49,178 @@ export default function InscriptionPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-candlelight-50 via-white to-malachite-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-block">
-            <h1 className="font-display text-4xl font-bold">
-              <span className="text-malachite-600 dark:text-malachite-400">CESI</span>
-              <span className="text-candlelight-500">ZEN</span>
-            </h1>
-          </Link>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">Créez votre compte gratuitement</p>
-        </div>
+    <>
+      <h1>Créer un compte</h1>
+      <p className="fr-text--lead">Créez votre compte CESIZen gratuitement.</p>
 
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 p-8">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="prenom" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                  Prénom
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    id="prenom"
-                    name="prenom"
-                    type="text"
-                    value={form.prenom}
-                    onChange={handleChange}
-                    required
-                    className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-candlelight-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Jean"
-                  />
-                </div>
-                {errors.prenom && <p className="text-red-500 text-xs mt-1">{errors.prenom[0]}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="nom" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                  Nom
-                </label>
-                <input
-                  id="nom"
-                  name="nom"
-                  type="text"
-                  value={form.nom}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-candlelight-500 focus:border-transparent outline-none transition-all"
-                  placeholder="Dupont"
-                />
-                {errors.nom && <p className="text-red-500 text-xs mt-1">{errors.nom[0]}</p>}
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Adresse email
+      <form onSubmit={handleSubmit}>
+        <div className="fr-grid-row fr-grid-row--gutters">
+          <div className="fr-col-12 fr-col-md-6">
+            <div className={`fr-input-group${errors.prenom ? ' fr-input-group--error' : ''}`}>
+              <label className="fr-label" htmlFor="prenom">
+                Prénom
               </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-candlelight-500 focus:border-transparent outline-none transition-all"
-                  placeholder="vous@exemple.fr"
-                />
-              </div>
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email[0]}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Mot de passe
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={form.password}
-                  onChange={handleChange}
-                  required
-                  minLength={8}
-                  className="w-full pl-11 pr-12 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-candlelight-500 focus:border-transparent outline-none transition-all"
-                  placeholder="Minimum 8 caractères"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password[0]}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="password_confirmation" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Confirmer le mot de passe
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  id="password_confirmation"
-                  name="password_confirmation"
-                  type={showPassword ? 'text' : 'password'}
-                  value={form.password_confirmation}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-candlelight-500 focus:border-transparent outline-none transition-all"
-                  placeholder="Retapez votre mot de passe"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 pt-2">
               <input
-                id="consentement_rgpd"
-                name="consentement_rgpd"
-                type="checkbox"
-                checked={form.consentement_rgpd}
+                id="prenom"
+                name="prenom"
+                type="text"
+                value={form.prenom}
                 onChange={handleChange}
                 required
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-candlelight-500 focus:ring-candlelight-500"
+                className="fr-input"
+                placeholder="Jean"
+                aria-describedby={errors.prenom ? 'prenom-error' : undefined}
               />
-              <label htmlFor="consentement_rgpd" className="text-sm text-gray-600 dark:text-gray-400">
-                J&apos;accepte le traitement de mes données personnelles conformément à la{' '}
-                <Link href="/politique-de-confidentialite" className="text-malachite-600 dark:text-malachite-400 hover:underline">
-                  politique de confidentialité
-                </Link>
-                . Mes données sont chiffrées et je peux supprimer mon compte à tout moment.
-              </label>
-            </div>
-            {errors.consentement_rgpd && <p className="text-red-500 text-xs">{errors.consentement_rgpd[0]}</p>}
-
-            <button
-              type="submit"
-              disabled={loading || !form.consentement_rgpd}
-              className="w-full bg-malachite-500 hover:bg-malachite-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-200 hover:shadow-lg mt-2"
-            >
-              {loading ? (
-                <span className="inline-flex items-center gap-2">
-                  <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Inscription...
-                </span>
-              ) : (
-                'Créer mon compte'
+              {errors.prenom && (
+                <p id="prenom-error" className="fr-error-text">
+                  {errors.prenom[0]}
+                </p>
               )}
-            </button>
-          </form>
+            </div>
+          </div>
 
-          <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-            Déjà un compte ?{' '}
-            <Link href="/connexion" className="text-malachite-600 dark:text-malachite-400 font-medium hover:underline">
-              Se connecter
-            </Link>
+          <div className="fr-col-12 fr-col-md-6">
+            <div className={`fr-input-group${errors.nom ? ' fr-input-group--error' : ''}`}>
+              <label className="fr-label" htmlFor="nom">
+                Nom
+              </label>
+              <input
+                id="nom"
+                name="nom"
+                type="text"
+                value={form.nom}
+                onChange={handleChange}
+                required
+                className="fr-input"
+                placeholder="Dupont"
+                aria-describedby={errors.nom ? 'nom-error' : undefined}
+              />
+              {errors.nom && (
+                <p id="nom-error" className="fr-error-text">
+                  {errors.nom[0]}
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+
+        <div className={`fr-input-group${errors.email ? ' fr-input-group--error' : ''}`}>
+          <label className="fr-label" htmlFor="email">
+            Adresse email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="fr-input"
+            placeholder="vous@exemple.fr"
+            autoComplete="email"
+            aria-describedby={errors.email ? 'email-error' : undefined}
+          />
+          {errors.email && (
+            <p id="email-error" className="fr-error-text">
+              {errors.email[0]}
+            </p>
+          )}
+        </div>
+
+        <div className={`fr-password${errors.password ? ' fr-input-group--error' : ''}`}>
+          <label className="fr-label" htmlFor="password">
+            Mot de passe
+          </label>
+          <div className="fr-input-wrap">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              value={form.password}
+              onChange={handleChange}
+              required
+              minLength={8}
+              className="fr-password__input fr-input"
+              placeholder="Minimum 8 caractères"
+              autoComplete="new-password"
+              aria-describedby={errors.password ? 'password-error' : undefined}
+            />
+          </div>
+          {errors.password && (
+            <p id="password-error" className="fr-error-text">
+              {errors.password[0]}
+            </p>
+          )}
+        </div>
+
+        <div className="fr-input-group">
+          <label className="fr-label" htmlFor="password_confirmation">
+            Confirmer le mot de passe
+          </label>
+          <input
+            id="password_confirmation"
+            name="password_confirmation"
+            type={showPassword ? 'text' : 'password'}
+            value={form.password_confirmation}
+            onChange={handleChange}
+            required
+            className="fr-input"
+            placeholder="Retapez votre mot de passe"
+            autoComplete="new-password"
+          />
+        </div>
+
+        <div className="fr-checkbox-group fr-checkbox-group--sm">
+          <input
+            id="password-show"
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          <label className="fr-label" htmlFor="password-show">
+            Afficher les mots de passe
+          </label>
+        </div>
+
+        <div className={`fr-checkbox-group fr-mt-3w${errors.consentement_rgpd ? ' fr-input-group--error' : ''}`}>
+          <input
+            id="consentement_rgpd"
+            name="consentement_rgpd"
+            type="checkbox"
+            checked={form.consentement_rgpd}
+            onChange={handleChange}
+            required
+            aria-describedby={errors.consentement_rgpd ? 'consentement-error' : undefined}
+          />
+          <label className="fr-label" htmlFor="consentement_rgpd">
+            J&apos;accepte le traitement de mes données personnelles conformément à la{' '}
+            <Link href="/politique-de-confidentialite" className="fr-link">
+              politique de confidentialité
+            </Link>
+            . Mes données sont chiffrées et je peux supprimer mon compte à tout moment.
+          </label>
+          {errors.consentement_rgpd && (
+            <p id="consentement-error" className="fr-error-text">
+              {errors.consentement_rgpd[0]}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading || !form.consentement_rgpd}
+          className="fr-btn fr-btn--lg fr-mt-3w"
+        >
+          {loading ? 'Inscription…' : 'Créer mon compte'}
+        </button>
+      </form>
+
+      <p className="fr-mt-4w">
+        Déjà un compte ?{' '}
+        <Link href="/connexion" className="fr-link">
+          Se connecter
+        </Link>
+      </p>
+    </>
   );
 }

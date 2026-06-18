@@ -59,7 +59,7 @@ export default function NewEntryScreen() {
             disabled={!emotionId}
           >
             <Text style={styles.nextBtnText}>Suivant</Text>
-            <Ionicons name="arrow-forward" size={20} color={Colors.black} />
+            <Ionicons name="arrow-forward" size={20} color={Colors.white} />
           </TouchableOpacity>
         </View>
       )}
@@ -96,12 +96,12 @@ export default function NewEntryScreen() {
           </View>
           <View style={styles.navRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(1)}>
-              <Ionicons name="arrow-back" size={20} color={Colors.gray[600]} />
+              <Ionicons name="arrow-back" size={20} color={Colors.primary} />
               <Text style={styles.backBtnText}>Retour</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(3)}>
               <Text style={styles.nextBtnText}>Suivant</Text>
-              <Ionicons name="arrow-forward" size={20} color={Colors.black} />
+              <Ionicons name="arrow-forward" size={20} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -122,7 +122,7 @@ export default function NewEntryScreen() {
           />
           <View style={styles.navRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
-              <Ionicons name="arrow-back" size={20} color={Colors.gray[600]} />
+              <Ionicons name="arrow-back" size={20} color={Colors.primary} />
               <Text style={styles.backBtnText}>Retour</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -130,7 +130,7 @@ export default function NewEntryScreen() {
               onPress={handleSubmit}
               disabled={createSaisie.isPending}
             >
-              <Ionicons name="checkmark" size={20} color={Colors.black} />
+              <Ionicons name="checkmark" size={20} color={Colors.white} />
               <Text style={styles.nextBtnText}>{createSaisie.isPending ? 'Envoi...' : 'Enregistrer'}</Text>
             </TouchableOpacity>
           </View>
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
     width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.gray[200],
     justifyContent: 'center', alignItems: 'center',
   },
-  stepActive: { backgroundColor: Colors.secondary },
+  stepActive: { backgroundColor: Colors.primary },
   stepNumber: { fontSize: 14, fontWeight: '700', color: Colors.gray[500] },
   stepNumberActive: { color: Colors.white },
   stepLine: { width: 40, height: 3, backgroundColor: Colors.gray[200], marginHorizontal: 4 },
-  stepLineActive: { backgroundColor: Colors.secondary },
+  stepLineActive: { backgroundColor: Colors.primary },
   stepTitle: { fontSize: 20, fontWeight: '700', color: Colors.black, marginBottom: 20 },
   intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: 24 },
   intensityValue: { fontSize: 64, fontWeight: '800', color: Colors.black },
@@ -165,20 +165,21 @@ const styles = StyleSheet.create({
   sliderTrack: { height: 6, backgroundColor: Colors.gray[200], borderRadius: 3, marginBottom: 8 },
   sliderFill: { height: 6, backgroundColor: Colors.primary, borderRadius: 3 },
   sliderButtons: { flexDirection: 'row', justifyContent: 'space-between' },
-  sliderDot: { width: 28, height: 28, borderRadius: 14, backgroundColor: Colors.gray[100], justifyContent: 'center', alignItems: 'center' },
+  sliderDot: { width: 28, height: 28, borderRadius: 4, backgroundColor: Colors.gray[100], justifyContent: 'center', alignItems: 'center' },
   sliderDotActive: { backgroundColor: Colors.primary },
   sliderDotText: { fontSize: 12, fontWeight: '600', color: Colors.gray[500] },
-  sliderDotTextActive: { color: Colors.black },
+  sliderDotTextActive: { color: Colors.white },
   textArea: {
-    backgroundColor: Colors.gray[50], borderWidth: 1, borderColor: Colors.gray[200],
-    borderRadius: 16, padding: 16, fontSize: 15, color: Colors.black,
+    backgroundColor: Colors.gray[100], borderTopLeftRadius: 4, borderTopRightRadius: 4,
+    borderBottomWidth: 2, borderBottomColor: Colors.black,
+    padding: 16, fontSize: 15, color: Colors.black,
     minHeight: 120, marginBottom: 24,
   },
   navRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 },
-  backBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 20, borderRadius: 12, backgroundColor: Colors.gray[100] },
-  backBtnText: { fontSize: 15, fontWeight: '600', color: Colors.gray[600] },
-  nextBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 24, borderRadius: 12, backgroundColor: Colors.primary },
-  submitBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 24, borderRadius: 12, backgroundColor: Colors.secondary },
-  nextBtnText: { fontSize: 15, fontWeight: '700', color: Colors.black },
+  backBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 20, borderRadius: 4, backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.primary },
+  backBtnText: { fontSize: 15, fontWeight: '600', color: Colors.primary },
+  nextBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 24, borderRadius: 4, backgroundColor: Colors.primary },
+  submitBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 24, borderRadius: 4, backgroundColor: Colors.primary },
+  nextBtnText: { fontSize: 15, fontWeight: '700', color: Colors.white },
   btnDisabled: { opacity: 0.5 },
 });

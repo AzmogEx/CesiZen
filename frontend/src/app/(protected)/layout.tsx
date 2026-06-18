@@ -7,12 +7,15 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />
-      <main className="flex-1 bg-gray-50 dark:bg-gray-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {children}
-        </div>
+      <main
+        role="main"
+        id="contenu"
+        className="fr-background-alt--grey"
+        style={{ flex: 1 }}
+      >
+        <div className="fr-container fr-py-6w">{children}</div>
       </main>
       <Footer />
     </div>

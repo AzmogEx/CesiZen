@@ -1,22 +1,38 @@
+// Palette inspirée du Système de Design de l'État (DSFR / gouv.fr).
+// Le DSFR est un framework web (HTML/CSS) ; ici on en applique uniquement
+// l'identité visuelle via les couleurs des StyleSheet React Native.
 export const Colors = {
-  primary: '#fce117',
-  primaryDark: '#e5cc15',
-  secondary: '#06c656',
-  secondaryDark: '#05a348',
-  black: '#000000',
+  // Bleu France — couleur primaire / actions
+  primary: '#000091',
+  primaryDark: '#1212FF', // bleu survol / accent
+  blueFranceSun: '#6A6AF4',
+  // Rouge Marianne — accent institutionnel / alertes
+  secondary: '#000091', // conservé en bleu pour les accents secondaires institutionnels
+  secondaryDark: '#1212FF',
+  rougeMarianne: '#E1000F',
+  black: '#161616', // texte principal DSFR
   white: '#FFFFFF',
+  // Échelle de gris DSFR (du plus clair au plus foncé)
   gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
+    50: '#F6F6F6', // fond alternatif
+    100: '#EEEEEE', // gris contrasté
+    200: '#DDDDDD', // séparateurs / bordures
+    300: '#CECECE',
+    400: '#929292', // texte désactivé
+    500: '#666666', // texte secondaire / mention
+    600: '#3A3A3A',
+    700: '#2A2A2A',
+    800: '#1F1F1F',
+    900: '#161616',
   },
+  // États DSFR
+  success: '#18753C',
+  successBg: '#B8FEC9',
+  error: '#CE0500',
+  errorBg: '#FFE9E9',
+  info: '#0063CB',
+  warning: '#B34000',
+  // Couleurs par émotion — issues du référentiel, conservées telles quelles
   emotions: {
     joie: '#FFD700',
     colere: '#DC143C',

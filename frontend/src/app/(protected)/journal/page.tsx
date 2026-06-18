@@ -2,14 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Plus, Filter, Download } from 'lucide-react';
 import { useSaisies, useDeleteSaisie } from '@/hooks/useTracker';
 import { useEmotions } from '@/hooks/useEmotions';
 import TrackerTimeline from '@/components/features/TrackerTimeline';
 import EditSaisieModal from '@/components/features/EditSaisieModal';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import Skeleton from '@/components/ui/Skeleton';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import toast from 'react-hot-toast';
 import type { SaisieTracker } from '@/types';
@@ -71,107 +67,126 @@ export default function JournalPage() {
   };
 
   return (
-    <div>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-1">
-            Mon journal
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+    <div className="fr-container fr-py-6w">
+      <div className="fr-grid-row fr-grid-row--middle fr-mb-4w">
+        <div className="fr-col-12 fr-col-md">
+          <h1 className="fr-mb-1v">Mon journal</h1>
+          <p className="fr-text--lead fr-mb-0">
             Historique de vos émotions au quotidien
           </p>
         </div>
-        <div className="flex gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowFilters(!showFilters)}
-          >
-            <Filter size={16} />
-            Filtrer
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleExport} title="Exporter mes saisies (RGPD)">
-            <Download size={16} />
-            Export CSV
-          </Button>
-          <Link href="/journal/nouvelle-saisie">
-            <Button size="sm">
-              <Plus size={16} />
-              Nouvelle saisie
-            </Button>
-          </Link>
+        <div className="fr-col-12 fr-col-md--right">
+          <ul className="fr-btns-group fr-btns-group--inline-md fr-btns-group--right">
+            <li>
+              <button
+                type="button"
+                className="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-filter-line fr-btn--icon-left"
+                onClick={() => setShowFilters(!showFilters)}
+              >
+                Filtrer
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="fr-btn fr-btn--tertiary fr-btn--sm fr-icon-download-line fr-btn--icon-left"
+                onClick={handleExport}
+                title="Exporter mes saisies (RGPD)"
+              >
+                Export CSV
+              </button>
+            </li>
+            <li>
+              <Link
+                href="/journal/nouvelle-saisie"
+                className="fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left"
+              >
+                Nouvelle saisie
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
 
       {/* Filtres */}
       {showFilters && (
-        <Card className="mb-6">
-          <div className="grid sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Date début
-              </label>
-              <input
-                type="date"
-                value={filters.date_debut || ''}
-                onChange={(e) => setFilters({ ...filters, date_debut: e.target.value || undefined })}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-candlelight-500"
-              />
+        <div className="app-panel fr-p-3w fr-mb-4w">
+          <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="fr-col-12 fr-col-md-4">
+              <div className="fr-input-group">
+                <label className="fr-label" htmlFor="filtre-date-debut">
+                  Date début
+                </label>
+                <input
+                  id="filtre-date-debut"
+                  className="fr-input"
+                  type="date"
+                  value={filters.date_debut || ''}
+                  onChange={(e) =>
+                    setFilters({ ...filters, date_debut: e.target.value || undefined })
+                  }
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Date fin
-              </label>
-              <input
-                type="date"
-                value={filters.date_fin || ''}
-                onChange={(e) => setFilters({ ...filters, date_fin: e.target.value || undefined })}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-candlelight-500"
-              />
+            <div className="fr-col-12 fr-col-md-4">
+              <div className="fr-input-group">
+                <label className="fr-label" htmlFor="filtre-date-fin">
+                  Date fin
+                </label>
+                <input
+                  id="filtre-date-fin"
+                  className="fr-input"
+                  type="date"
+                  value={filters.date_fin || ''}
+                  onChange={(e) =>
+                    setFilters({ ...filters, date_fin: e.target.value || undefined })
+                  }
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                Émotion
-              </label>
-              <select
-                value={filters.emotion_id || ''}
-                onChange={(e) => setFilters({ ...filters, emotion_id: e.target.value ? Number(e.target.value) : undefined })}
-                className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-candlelight-500"
+            <div className="fr-col-12 fr-col-md-4">
+              <div className="fr-select-group">
+                <label className="fr-label" htmlFor="filtre-emotion">
+                  Émotion
+                </label>
+                <select
+                  id="filtre-emotion"
+                  className="fr-select"
+                  value={filters.emotion_id || ''}
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      emotion_id: e.target.value ? Number(e.target.value) : undefined,
+                    })
+                  }
+                >
+                  <option value="">Toutes</option>
+                  {emotions?.map((emotion) => (
+                    <option key={emotion.id} value={emotion.id}>
+                      {emotion.icone} {emotion.nom}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+          <ul className="fr-btns-group fr-btns-group--inline-md fr-mt-2w">
+            <li>
+              <button
+                type="button"
+                className="fr-btn fr-btn--tertiary fr-btn--sm"
+                onClick={() => setFilters({})}
               >
-                <option value="">Toutes</option>
-                {emotions?.map((emotion) => (
-                  <option key={emotion.id} value={emotion.id}>
-                    {emotion.icone} {emotion.nom}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="mt-4 flex gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setFilters({})}
-            >
-              Réinitialiser
-            </Button>
-          </div>
-        </Card>
+                Réinitialiser
+              </button>
+            </li>
+          </ul>
+        </div>
       )}
 
       {/* Timeline */}
       {isLoading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4 p-4 bg-white dark:bg-gray-900 rounded-xl">
-              <Skeleton variant="circle" className="w-12 h-12" />
-              <div className="flex-1">
-                <Skeleton className="h-4 w-32 mb-2" />
-                <Skeleton className="h-3 w-48" />
-              </div>
-            </div>
-          ))}
-        </div>
+        <p>Chargement…</p>
       ) : (
         <TrackerTimeline
           saisies={saisies || []}

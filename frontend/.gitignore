@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Assets DSFR copiés par le postinstall (régénérés depuis node_modules)
+/public/dsfr

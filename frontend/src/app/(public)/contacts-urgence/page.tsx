@@ -1,6 +1,3 @@
-import Card from '@/components/ui/Card';
-import { Phone } from 'lucide-react';
-
 export default function ContactsUrgencePage() {
   const contacts = [
     {
@@ -19,13 +16,13 @@ export default function ContactsUrgencePage() {
       name: 'Fil Santé Jeunes',
       number: '0 800 235 236',
       description:
-        'Ligne d\u2019écoute gratuite et anonyme pour les jeunes de 12 à 25 ans. Du lundi au dimanche de 9h à 23h.',
+        'Ligne d’écoute gratuite et anonyme pour les jeunes de 12 à 25 ans. Du lundi au dimanche de 9h à 23h.',
     },
     {
       name: 'SAMU',
       number: '15',
       description:
-        'Service d\u2019aide médicale urgente. En cas d\u2019urgence vitale, appelez immédiatement le 15 ou le 112.',
+        'Service d’aide médicale urgente. En cas d’urgence vitale, appelez immédiatement le 15 ou le 112.',
     },
     {
       name: 'SOS Médecins',
@@ -36,48 +33,51 @@ export default function ContactsUrgencePage() {
   ];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="font-display text-4xl font-bold text-gray-900 dark:text-white mb-4">
-        Contacts d&apos;urgence
-      </h1>
-      <p className="text-lg text-gray-500 dark:text-gray-400 mb-8">
-        Si vous ou un proche traversez une période difficile, n&apos;hésitez pas à
-        contacter l&apos;un de ces services. Vous n&apos;êtes pas seul(e).
+    <div className="fr-container fr-py-6w">
+      <h1>Contacts d&apos;urgence</h1>
+      <p className="fr-text--lead">
+        Si vous ou un proche traversez une période difficile, n&apos;hésitez pas
+        à contacter l&apos;un de ces services. Vous n&apos;êtes pas seul(e).
       </p>
 
-      <div className="space-y-4">
-        {contacts.map((contact) => (
-          <Card key={contact.number}>
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-red-50 dark:bg-red-950/50 flex items-center justify-center">
-                <Phone size={20} className="text-red-600 dark:text-red-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h2 className="font-display text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                  {contact.name}
-                </h2>
-                <a
-                  href={`tel:${contact.number.replace(/\s/g, '')}`}
-                  className="inline-block text-xl font-bold text-malachite-600 dark:text-malachite-400 mb-2 hover:underline"
-                >
-                  {contact.number}
-                </a>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                  {contact.description}
-                </p>
-              </div>
-            </div>
-          </Card>
-        ))}
+      <div className="fr-callout fr-callout--brown-caramel fr-icon-information-line fr-mb-6w">
+        <p className="fr-callout__title">En cas d&apos;urgence ou de détresse</p>
+        <p className="fr-callout__text">
+          Appelez le <strong>3114</strong> (numéro national de prévention du
+          suicide, gratuit, 24h/24) ou le <strong>15</strong> (SAMU). En cas
+          d&apos;urgence vitale, composez le <strong>112</strong> (numéro
+          d&apos;urgence européen).
+        </p>
       </div>
 
-      <Card className="mt-8 bg-red-50 dark:bg-red-950/30 border-red-100 dark:border-red-900">
-        <p className="text-sm text-red-700 dark:text-red-400 text-center leading-relaxed">
-          <strong>En cas d&apos;urgence vitale</strong>, appelez immédiatement le{' '}
-          <strong>15</strong> (SAMU) ou le <strong>112</strong> (numéro d&apos;urgence
-          européen).
-        </p>
-      </Card>
+      <div className="fr-grid-row fr-grid-row--gutters">
+        {contacts.map((contact) => (
+          <div className="fr-col-12 fr-col-md-6" key={contact.number}>
+            <div className="fr-card">
+              <div className="fr-card__body">
+                <div className="fr-card__content">
+                  <h2 className="fr-card__title">{contact.name}</h2>
+                  <p className="fr-card__desc">{contact.description}</p>
+                  <div className="fr-card__end">
+                    <p className="fr-card__detail">
+                      <a
+                        className="fr-link"
+                        href={`tel:${contact.number.replace(/\s/g, '')}`}
+                      >
+                        <span
+                          className="fr-icon-phone-line fr-mr-1w"
+                          aria-hidden="true"
+                        />
+                        {contact.number}
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

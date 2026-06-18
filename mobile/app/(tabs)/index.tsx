@@ -5,6 +5,7 @@ import { useAuthStore } from '@/lib/auth-store';
 import { useRapport } from '@/hooks/useRapport';
 import { useSaisies } from '@/hooks/useTracker';
 import { Colors } from '@/lib/colors';
+import RepubliqueHeader from '@/components/RepubliqueHeader';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -15,7 +16,9 @@ export default function DashboardScreen() {
   const recentSaisies = (saisies || []).slice(0, 3);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <View style={styles.screen}>
+      <RepubliqueHeader />
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.greeting}>Bonjour, {user?.prenom} 👋</Text>
       <Text style={styles.subtitle}>Comment allez-vous aujourd'hui ?</Text>
 
@@ -80,40 +83,42 @@ export default function DashboardScreen() {
           ))}
         </View>
       )}
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: Colors.white },
   container: { flex: 1, backgroundColor: Colors.white },
   content: { padding: 20 },
   greeting: { fontSize: 28, fontWeight: '800', color: Colors.black, marginTop: 8 },
   subtitle: { fontSize: 16, color: Colors.gray[500], marginTop: 4, marginBottom: 24 },
   actionsRow: { flexDirection: 'row', gap: 12, marginBottom: 24 },
   actionCard: {
-    flex: 1, backgroundColor: Colors.gray[50], borderRadius: 16, padding: 20,
-    alignItems: 'center', gap: 12, borderWidth: 1, borderColor: Colors.gray[100],
+    flex: 1, backgroundColor: Colors.white, borderRadius: 4, padding: 20,
+    alignItems: 'center', gap: 12, borderWidth: 1, borderColor: Colors.gray[200],
   },
-  actionIcon: { width: 56, height: 56, borderRadius: 16, justifyContent: 'center', alignItems: 'center' },
-  actionText: { fontSize: 14, fontWeight: '600', color: Colors.gray[700] },
+  actionIcon: { width: 56, height: 56, borderRadius: 4, justifyContent: 'center', alignItems: 'center' },
+  actionText: { fontSize: 14, fontWeight: '600', color: Colors.black },
   statsContainer: { marginBottom: 24 },
   sectionTitle: { fontSize: 18, fontWeight: '700', color: Colors.black, marginBottom: 12 },
   statsRow: { flexDirection: 'row', gap: 12 },
   statCard: {
-    flex: 1, backgroundColor: Colors.gray[50], borderRadius: 16, padding: 16,
-    alignItems: 'center', borderWidth: 1, borderColor: Colors.gray[100],
+    flex: 1, backgroundColor: Colors.gray[50], borderRadius: 4, padding: 16,
+    alignItems: 'center', borderWidth: 1, borderColor: Colors.gray[200],
   },
-  statValue: { fontSize: 24, fontWeight: '800', color: Colors.black },
+  statValue: { fontSize: 24, fontWeight: '800', color: Colors.primary },
   statLabel: { fontSize: 12, color: Colors.gray[500], marginTop: 4 },
   recentContainer: { marginBottom: 24 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-  seeAll: { fontSize: 14, fontWeight: '600', color: Colors.secondary },
+  seeAll: { fontSize: 14, fontWeight: '600', color: Colors.primary, textDecorationLine: 'underline' },
   saisieItem: {
     flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14,
-    backgroundColor: Colors.gray[50], borderRadius: 14, marginBottom: 8,
-    borderWidth: 1, borderColor: Colors.gray[100],
+    backgroundColor: Colors.white, borderRadius: 4, marginBottom: 8,
+    borderWidth: 1, borderColor: Colors.gray[200],
   },
-  emotionIcon: { width: 44, height: 44, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  emotionIcon: { width: 44, height: 44, borderRadius: 4, justifyContent: 'center', alignItems: 'center' },
   emotionEmoji: { fontSize: 22 },
   saisieContent: { flex: 1 },
   saisieEmotion: { fontSize: 15, fontWeight: '600', color: Colors.black },

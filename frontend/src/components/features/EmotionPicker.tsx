@@ -14,13 +14,7 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
   const [selectedParent, setSelectedParent] = useState<Emotion | null>(null);
 
   if (isLoading) {
-    return (
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <div key={i} className="h-20 rounded-xl bg-gray-100 dark:bg-gray-800 animate-pulse" />
-        ))}
-      </div>
-    );
+    return <p className="fr-text--sm fr-text-mention--grey">Chargement des émotions…</p>;
   }
 
   // Si une émotion parent est sélectionnée et qu'elle a des enfants, afficher les sous-émotions
@@ -30,76 +24,75 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
         <button
           type="button"
           onClick={() => setSelectedParent(null)}
-          className="mb-4 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 flex items-center gap-1"
+          className="fr-btn fr-btn--tertiary-no-outline fr-btn--sm fr-icon-arrow-left-line fr-btn--icon-left fr-mb-2w"
         >
-          ← Retour aux émotions
+          Retour aux émotions
         </button>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          Précisez votre émotion de <span className="font-medium" style={{ color: selectedParent.couleur }}>{selectedParent.nom}</span> :
+        <p className="fr-text--sm fr-mb-2w">
+          Précisez votre émotion de{' '}
+          <span className="fr-text--bold" style={{ color: selectedParent.couleur }}>
+            {selectedParent.nom}
+          </span>{' '}
+          :
         </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {selectedParent.enfants.map((child) => (
-            <button
-              key={child.id}
-              type="button"
-              onClick={() => onChange(child.id)}
-              className={`
-                flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200
-                ${value === child.id
-                  ? 'border-current shadow-lg scale-105'
-                  : 'border-gray-200 dark:border-gray-700 hover:border-current hover:shadow-md'
-                }
-              `}
-              style={{
-                color: child.couleur,
-                borderColor: value === child.id ? child.couleur : undefined,
-              }}
-            >
-              <span className="text-2xl">{child.icone || '🔵'}</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{child.nom}</span>
-            </button>
-          ))}
-        </div>
+        <ul className="fr-tags-group">
+          {selectedParent.enfants.map((child) => {
+            const isSelected = value === child.id;
+            return (
+              <li key={child.id}>
+                <button
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() => onChange(child.id)}
+                  className={`fr-tag${isSelected ? ' fr-tag--green-emeraude' : ''}`}
+                >
+                  <span aria-hidden="true" className="fr-mr-1v">
+                    {child.icone || '🔵'}
+                  </span>
+                  {child.nom}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+    <ul className="fr-tags-group">
       {emotions?.map((emotion) => {
         const hasChildren = emotion.enfants && emotion.enfants.length > 0;
-        const isSelected = value === emotion.id || emotion.enfants?.some(e => e.id === value);
+        const isSelected =
+          value === emotion.id || emotion.enfants?.some((e) => e.id === value);
 
         return (
-          <button
-            key={emotion.id}
-            type="button"
-            onClick={() => {
-              if (hasChildren) {
-                setSelectedParent(emotion);
-              } else {
-                onChange(emotion.id);
-              }
-            }}
-            className={`
-              flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200
-              ${isSelected
-                ? 'shadow-lg scale-105'
-                : 'border-gray-200 dark:border-gray-700 hover:shadow-md'
-              }
-            `}
-            style={{
-              borderColor: isSelected ? emotion.couleur : undefined,
-            }}
-          >
-            <span className="text-3xl">{emotion.icone || '🔵'}</span>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{emotion.nom}</span>
-            {hasChildren && (
-              <span className="text-xs text-gray-400">▼</span>
-            )}
-          </button>
+          <li key={emotion.id}>
+            <button
+              type="button"
+              aria-pressed={!!isSelected}
+              onClick={() => {
+                if (hasChildren) {
+                  setSelectedParent(emotion);
+                } else {
+                  onChange(emotion.id);
+                }
+              }}
+              className={`fr-tag fr-tag--md${isSelected ? ' fr-tag--green-emeraude' : ''}`}
+            >
+              <span aria-hidden="true" className="fr-mr-1v">
+                {emotion.icone || '🔵'}
+              </span>
+              {emotion.nom}
+              {hasChildren && (
+                <span aria-hidden="true" className="fr-ml-1v">
+                  ▾
+                </span>
+              )}
+            </button>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }

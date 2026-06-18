@@ -53,7 +53,7 @@ export default function ReportsScreen() {
               <Text style={styles.statLabel}>Intensite moy.</Text>
             </View>
             <View style={styles.statCard}>
-              <Ionicons name="heart" size={20} color="#FF69B4" />
+              <Ionicons name="heart" size={20} color={Colors.rougeMarianne} />
               <Text style={styles.statValue}>{rapport.stats.emotion_dominante?.icone || '—'}</Text>
               <Text style={styles.statLabel}>{rapport.stats.emotion_dominante?.nom || 'Aucune'}</Text>
             </View>
@@ -102,17 +102,17 @@ export default function ReportsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.white },
   content: { padding: 20, paddingBottom: 40 },
-  periodRow: { flexDirection: 'row', backgroundColor: Colors.gray[100], borderRadius: 12, padding: 4, marginBottom: 20 },
-  periodBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 10 },
-  periodBtnActive: { backgroundColor: Colors.white, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 2 },
+  periodRow: { flexDirection: 'row', backgroundColor: Colors.gray[100], borderRadius: 4, padding: 4, marginBottom: 20 },
+  periodBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 4 },
+  periodBtnActive: { backgroundColor: Colors.primary },
   periodText: { fontSize: 13, fontWeight: '600', color: Colors.gray[500] },
-  periodTextActive: { color: Colors.black },
+  periodTextActive: { color: Colors.white },
   loading: { padding: 40, alignItems: 'center' },
   loadingText: { color: Colors.gray[400] },
   statsRow: { flexDirection: 'row', gap: 10, marginBottom: 16 },
   statCard: {
-    flex: 1, backgroundColor: Colors.gray[50], borderRadius: 16, padding: 16,
-    alignItems: 'center', gap: 6, borderWidth: 1, borderColor: Colors.gray[100],
+    flex: 1, backgroundColor: Colors.gray[50], borderRadius: 4, padding: 16,
+    alignItems: 'center', gap: 6, borderWidth: 1, borderColor: Colors.gray[200],
   },
   statValue: { fontSize: 22, fontWeight: '800', color: Colors.black },
   statLabel: { fontSize: 11, color: Colors.gray[500] },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   repartitionItem: { marginBottom: 16 },
   repartitionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
   colorDot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },
-  repartitionName: { flex: 1, fontSize: 14, fontWeight: '600', color: Colors.gray[700] },
+  repartitionName: { flex: 1, fontSize: 14, fontWeight: '600', color: Colors.black },
   repartitionPct: { fontSize: 14, fontWeight: '700', color: Colors.black },
   progressBar: { height: 6, backgroundColor: Colors.gray[200], borderRadius: 3, marginBottom: 4 },
   progressFill: { height: 6, borderRadius: 3 },

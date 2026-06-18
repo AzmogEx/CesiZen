@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Assets DSFR vendorisés (minifiés) — à ne pas linter.
+    "public/**",
   ]),
 ]);
 

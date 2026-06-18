@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useCallback } from "react";
-import { X } from "lucide-react";
 
 type ModalSize = "sm" | "md" | "lg";
 
@@ -13,10 +12,10 @@ interface ModalProps {
   size?: ModalSize;
 }
 
-const sizeClasses: Record<ModalSize, string> = {
-  sm: "max-w-sm",
-  md: "max-w-lg",
-  lg: "max-w-2xl",
+const maxWidthBySize: Record<ModalSize, string> = {
+  sm: "480px",
+  md: "672px",
+  lg: "896px",
 };
 
 export default function Modal({
@@ -34,10 +33,9 @@ export default function Modal({
   );
 
   useEffect(() => {
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    }
+    if (!isOpen) return;
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
@@ -46,43 +44,51 @@ export default function Modal({
 
   if (!isOpen) return null;
 
+  // Overlay React maîtrisé (pas le JS DSFR) : fond assombri visible, fermeture
+  // au clic extérieur / Échap / bouton. Look DSFR via les classes fr-modal__*.
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-      {/* Overlay */}
+    <div
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1000,
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        overflowY: "auto",
+        padding: "2rem 1rem",
+        background: "rgba(22, 22, 22, 0.64)",
+      }}
+    >
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
-        onClick={onClose}
-      />
-
-      {/* Modal */}
-      <div
-        className={`
-          relative w-full ${sizeClasses[size]}
-          bg-white dark:bg-gray-900
-          rounded-2xl shadow-2xl
-          border border-gray-100 dark:border-gray-800
-          p-6
-          animate-in zoom-in-95 fade-in duration-200
-        `}
+        className="fr-modal__body"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: maxWidthBySize[size],
+          background: "var(--background-default-grey, #fff)",
+          borderRadius: "0.25rem",
+          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.32)",
+          padding: "1.5rem",
+        }}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          {title && (
-            <h2 className="text-xl font-bold font-display text-gray-900 dark:text-gray-100">
-              {title}
-            </h2>
-          )}
+        <div className="fr-modal__header">
           <button
-            onClick={onClose}
-            className="ml-auto p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
+            type="button"
+            className="fr-btn--close fr-btn"
             aria-label="Fermer"
+            onClick={onClose}
           >
-            <X size={20} />
+            Fermer
           </button>
         </div>
-
-        {/* Content */}
-        <div>{children}</div>
+        <div className="fr-modal__content">
+          {title && <h1 className="fr-modal__title">{title}</h1>}
+          {children}
+        </div>
       </div>
     </div>
   );

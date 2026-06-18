@@ -12,8 +12,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   Legend,
 } from 'recharts';
 import type { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
@@ -38,7 +36,7 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
     }
 
     return (
-      <div className="w-full h-80">
+      <div style={{ width: '100%', height: '20rem' }}>
         <ResponsiveContainer width="100%" height={320}>
           <PieChart>
             <Pie
@@ -88,12 +86,12 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
     }
 
     return (
-      <div className="w-full h-80">
+      <div style={{ width: '100%', height: '20rem' }}>
         <ResponsiveContainer width="100%" height={320}>
-          <LineChart data={lineData}>
-            <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+          <BarChart data={lineData}>
+            <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.3 }} />
             <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
             <Tooltip
               contentStyle={{
                 backgroundColor: 'rgba(255,255,255,0.95)',
@@ -104,17 +102,14 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
             />
             <Legend />
             {data.evolution.emotions.map((emotion) => (
-              <Line
+              <Bar
                 key={emotion.nom}
-                type="monotone"
                 dataKey={emotion.nom}
-                stroke={emotion.couleur}
-                strokeWidth={2}
-                dot={{ fill: emotion.couleur, r: 4 }}
-                activeDot={{ r: 6 }}
+                stackId="emotions"
+                fill={emotion.couleur}
               />
             ))}
-          </LineChart>
+          </BarChart>
         </ResponsiveContainer>
       </div>
     );
@@ -131,10 +126,10 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
     }
 
     return (
-      <div className="w-full h-80">
+      <div style={{ width: '100%', height: '20rem' }}>
         <ResponsiveContainer width="100%" height={320}>
           <BarChart data={barData}>
-            <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+            <CartesianGrid strokeDasharray="3 3" style={{ opacity: 0.3 }} />
             <XAxis dataKey="date" tick={{ fontSize: 12 }} />
             <YAxis domain={[0, 10]} tick={{ fontSize: 12 }} />
             <Tooltip
@@ -146,7 +141,7 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
               }}
               formatter={(value: ValueType | undefined) => [`${Number(value).toFixed(1)}`, 'Intensité moyenne']}
             />
-            <Bar dataKey="intensite" fill="#fce117" radius={[6, 6, 0, 0]} />
+            <Bar dataKey="intensite" fill="#000091" radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -158,8 +153,17 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
 
 function EmptyChart({ message }: { message: string }) {
   return (
-    <div className="w-full h-80 flex items-center justify-center text-gray-400 dark:text-gray-600">
-      <p className="text-lg">{message}</p>
+    <div
+      className="fr-text-mention--grey"
+      style={{
+        width: '100%',
+        height: '20rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <p className="fr-text--lead fr-mb-0">{message}</p>
     </div>
   );
 }

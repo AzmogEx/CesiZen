@@ -30,7 +30,7 @@ export default function ForgotPasswordScreen() {
       <View style={styles.container}>
         <View style={styles.success}>
           <View style={styles.successIcon}>
-            <Ionicons name="mail-open" size={32} color={Colors.secondary} />
+            <Ionicons name="mail-open" size={32} color={Colors.primary} />
           </View>
           <Text style={styles.successTitle}>Demande enregistrée</Text>
           <Text style={styles.successText}>
@@ -95,17 +95,17 @@ const styles = StyleSheet.create({
   header: { alignItems: 'center', marginBottom: 32 },
   logo: { fontSize: 26, fontWeight: '800', color: Colors.black, textAlign: 'center' },
   subtitle: { fontSize: 14, color: Colors.gray[500], marginTop: 10, textAlign: 'center', lineHeight: 20 },
-  form: { backgroundColor: Colors.gray[50], borderRadius: 24, padding: 24 },
+  form: { backgroundColor: Colors.gray[50], borderRadius: 4, padding: 24, borderWidth: 1, borderColor: Colors.gray[200] },
   inputGroup: { marginBottom: 16 },
-  label: { fontSize: 14, fontWeight: '600', color: Colors.gray[700], marginBottom: 6 },
-  input: { backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.gray[300], borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 16, color: Colors.black },
-  errorText: { color: '#DC2626', marginTop: 6, fontSize: 12 },
-  button: { backgroundColor: Colors.primary, borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginTop: 8 },
-  buttonText: { fontSize: 16, fontWeight: '700', color: Colors.black },
+  label: { fontSize: 14, fontWeight: '600', color: Colors.black, marginBottom: 6 },
+  input: { backgroundColor: Colors.gray[100], borderTopLeftRadius: 4, borderTopRightRadius: 4, borderBottomWidth: 2, borderBottomColor: Colors.black, paddingHorizontal: 16, paddingVertical: 14, fontSize: 16, color: Colors.black },
+  errorText: { color: Colors.error, marginTop: 6, fontSize: 12 },
+  button: { backgroundColor: Colors.primary, borderRadius: 4, paddingVertical: 16, alignItems: 'center', marginTop: 8 },
+  buttonText: { fontSize: 16, fontWeight: '700', color: Colors.white },
   footer: { alignItems: 'center', marginTop: 20 },
-  link: { color: Colors.secondary, fontSize: 14, fontWeight: '600' },
+  link: { color: Colors.primary, fontSize: 14, fontWeight: '600', textDecorationLine: 'underline' },
   success: { padding: 24, alignItems: 'center', flex: 1, justifyContent: 'center' },
-  successIcon: { width: 72, height: 72, borderRadius: 999, backgroundColor: `${Colors.secondary}15`, justifyContent: 'center', alignItems: 'center', marginBottom: 20 },
+  successIcon: { width: 72, height: 72, borderRadius: 999, backgroundColor: `${Colors.primary}15`, justifyContent: 'center', alignItems: 'center', marginBottom: 20 },
   successTitle: { fontSize: 22, fontWeight: '800', color: Colors.black, marginBottom: 12 },
   successText: { fontSize: 14, color: Colors.gray[600], textAlign: 'center', lineHeight: 20, marginBottom: 12 },
   bold: { fontWeight: '700', color: Colors.black },

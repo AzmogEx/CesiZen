@@ -57,63 +57,69 @@ export default function EditSaisieModal({ saisie, isOpen, onClose }: EditSaisieM
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Modifier la saisie" size="lg">
-      <div className="space-y-6">
-        {/* Émotion */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Émotion
-          </label>
-          <EmotionPicker value={emotionId} onChange={setEmotionId} />
-        </div>
+      {/* Émotion */}
+      <div className="fr-input-group">
+        <p className="fr-label">Émotion</p>
+        <EmotionPicker value={emotionId} onChange={setEmotionId} />
+      </div>
 
-        {/* Intensité */}
-        <div>
-          <Slider
-            value={intensite}
-            onChange={setIntensite}
-            min={1}
-            max={10}
-            label="Intensité de l'émotion"
-          />
-          <div className="flex justify-between text-xs text-gray-400 mt-1">
-            <span>Faible</span>
-            <span>Modérée</span>
-            <span>Forte</span>
-          </div>
+      {/* Intensité */}
+      <div className="fr-input-group">
+        <Slider
+          value={intensite}
+          onChange={setIntensite}
+          min={1}
+          max={10}
+          label="Intensité de l'émotion"
+        />
+        <div className="fr-grid-row fr-grid-row--middle fr-mt-1v">
+          <span className="fr-col fr-text--sm">Faible</span>
+          <span className="fr-col fr-text--sm" style={{ textAlign: 'center' }}>
+            Modérée
+          </span>
+          <span className="fr-col fr-text--sm" style={{ textAlign: 'right' }}>
+            Forte
+          </span>
         </div>
+      </div>
 
-        {/* Date */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-            Date de la saisie
-          </label>
-          <input
-            type="date"
-            value={dateSaisie}
-            onChange={(e) => setDateSaisie(e.target.value)}
-            className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-candlelight-500"
-          />
-        </div>
+      {/* Date */}
+      <div className="fr-input-group">
+        <label className="fr-label" htmlFor="edit-saisie-date">
+          Date de la saisie
+        </label>
+        <input
+          id="edit-saisie-date"
+          className="fr-input"
+          type="date"
+          value={dateSaisie}
+          onChange={(e) => setDateSaisie(e.target.value)}
+        />
+      </div>
 
-        {/* Note */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-            Note (optionnel)
-          </label>
-          <textarea
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Décrivez ce que vous ressentez..."
-            rows={3}
-            className="w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-candlelight-500 placeholder:text-gray-400 resize-none"
-          />
-        </div>
+      {/* Note */}
+      <div className="fr-input-group">
+        <label className="fr-label" htmlFor="edit-saisie-note">
+          Note (optionnel)
+        </label>
+        <textarea
+          id="edit-saisie-note"
+          className="fr-input"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Décrivez ce que vous ressentez..."
+          rows={3}
+        />
+      </div>
 
-        {/* Actions */}
-        <div className="flex justify-end gap-3 pt-2">
-          <Button variant="ghost" onClick={onClose}>
+      {/* Actions */}
+      <ul className="fr-btns-group fr-btns-group--inline-md fr-btns-group--right">
+        <li>
+          <Button variant="secondary" onClick={onClose}>
             Annuler
           </Button>
+        </li>
+        <li>
           <Button
             onClick={handleSubmit}
             loading={updateSaisie.isPending}
@@ -121,8 +127,8 @@ export default function EditSaisieModal({ saisie, isOpen, onClose }: EditSaisieM
           >
             Enregistrer
           </Button>
-        </div>
-      </div>
+        </li>
+      </ul>
     </Modal>
   );
 }

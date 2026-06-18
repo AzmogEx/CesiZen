@@ -2,10 +2,7 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import { User, Mail, Lock, Shield, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '@/lib/api';
 import Modal from '@/components/ui/Modal';
@@ -76,157 +73,229 @@ export default function ProfilPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="font-display text-3xl font-bold text-gray-900 dark:text-white mb-8">
-        Mon profil
-      </h1>
+    <div className="fr-container fr-py-6w">
+      <div className="fr-grid-row fr-grid-row--center">
+        <div className="fr-col-12 fr-col-md-8">
+          <h1>Mon profil</h1>
 
-      {/* Infos du profil */}
-      <Card className="mb-6">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-full bg-malachite-100 dark:bg-malachite-900 flex items-center justify-center">
-            <User size={28} className="text-malachite-600 dark:text-malachite-400" />
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          {/* Infos du profil */}
+          <div className="app-panel fr-p-3w fr-mb-3w">
+            <h2 className="fr-h4 fr-mb-1v">
               {user?.prenom} {user?.nom}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-              Membre depuis le {user?.created_at ? new Date(user.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '—'}
+            <p className="fr-text--sm fr-mb-1v">{user?.email}</p>
+            <p className="fr-text--xs fr-text-mention--grey fr-mb-3w">
+              Membre depuis le{' '}
+              {user?.created_at
+                ? new Date(user.created_at).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })
+                : '—'}
             </p>
+
+            {editing ? (
+              <form onSubmit={handleUpdateProfil}>
+                <div className="fr-grid-row fr-grid-row--gutters">
+                  <div className="fr-col-12 fr-col-md-6">
+                    <div className="fr-input-group">
+                      <label className="fr-label" htmlFor="profil-prenom">
+                        Prénom
+                      </label>
+                      <input
+                        id="profil-prenom"
+                        className="fr-input"
+                        value={form.prenom}
+                        onChange={(e) => setForm({ ...form, prenom: e.target.value })}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="fr-col-12 fr-col-md-6">
+                    <div className="fr-input-group">
+                      <label className="fr-label" htmlFor="profil-nom">
+                        Nom
+                      </label>
+                      <input
+                        id="profil-nom"
+                        className="fr-input"
+                        value={form.nom}
+                        onChange={(e) => setForm({ ...form, nom: e.target.value })}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="fr-input-group">
+                  <label className="fr-label" htmlFor="profil-email">
+                    Email
+                  </label>
+                  <input
+                    id="profil-email"
+                    className="fr-input"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    required
+                  />
+                </div>
+                <ul className="fr-btns-group fr-btns-group--inline-md">
+                  <li>
+                    <Button type="submit" loading={loading}>
+                      Enregistrer
+                    </Button>
+                  </li>
+                  <li>
+                    <Button variant="secondary" type="button" onClick={() => setEditing(false)}>
+                      Annuler
+                    </Button>
+                  </li>
+                </ul>
+              </form>
+            ) : (
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setForm({
+                    nom: user?.nom || '',
+                    prenom: user?.prenom || '',
+                    email: user?.email || '',
+                  });
+                  setEditing(true);
+                }}
+              >
+                Modifier mes informations
+              </Button>
+            )}
           </div>
-        </div>
 
-        {editing ? (
-          <form onSubmit={handleUpdateProfil} className="space-y-4">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Input
-                label="Prénom"
-                value={form.prenom}
-                onChange={(e) => setForm({ ...form, prenom: e.target.value })}
-                icon={<User size={18} />}
-                required
-              />
-              <Input
-                label="Nom"
-                value={form.nom}
-                onChange={(e) => setForm({ ...form, nom: e.target.value })}
-                icon={<User size={18} />}
-                required
-              />
-            </div>
-            <Input
-              label="Email"
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              icon={<Mail size={18} />}
-              required
-            />
-            <div className="flex gap-3">
-              <Button type="submit" loading={loading}>
-                Enregistrer
+          {/* Changer mot de passe */}
+          <div className="app-panel fr-p-3w fr-mb-3w">
+            <h2 className="fr-h5">
+              <span className="fr-icon-lock-line fr-mr-1w" aria-hidden="true" />
+              Mot de passe
+            </h2>
+
+            {changingPassword ? (
+              <form onSubmit={handleChangePassword}>
+                <div className="fr-password fr-input-group">
+                  <label className="fr-label" htmlFor="pwd-actuel">
+                    Mot de passe actuel
+                  </label>
+                  <input
+                    id="pwd-actuel"
+                    className="fr-input"
+                    type="password"
+                    value={passwordForm.ancien_mot_de_passe}
+                    onChange={(e) =>
+                      setPasswordForm({ ...passwordForm, ancien_mot_de_passe: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="fr-password fr-input-group">
+                  <label className="fr-label" htmlFor="pwd-nouveau">
+                    Nouveau mot de passe
+                  </label>
+                  <input
+                    id="pwd-nouveau"
+                    className="fr-input"
+                    type="password"
+                    value={passwordForm.password}
+                    onChange={(e) =>
+                      setPasswordForm({ ...passwordForm, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="fr-password fr-input-group">
+                  <label className="fr-label" htmlFor="pwd-confirm">
+                    Confirmer le nouveau mot de passe
+                  </label>
+                  <input
+                    id="pwd-confirm"
+                    className="fr-input"
+                    type="password"
+                    value={passwordForm.password_confirmation}
+                    onChange={(e) =>
+                      setPasswordForm({
+                        ...passwordForm,
+                        password_confirmation: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
+                <ul className="fr-btns-group fr-btns-group--inline-md">
+                  <li>
+                    <Button type="submit" loading={loading}>
+                      Changer le mot de passe
+                    </Button>
+                  </li>
+                  <li>
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={() => setChangingPassword(false)}
+                    >
+                      Annuler
+                    </Button>
+                  </li>
+                </ul>
+              </form>
+            ) : (
+              <Button variant="secondary" onClick={() => setChangingPassword(true)}>
+                Changer mon mot de passe
               </Button>
-              <Button variant="ghost" onClick={() => setEditing(false)}>
-                Annuler
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <Button variant="outline" onClick={() => {
-            setForm({ nom: user?.nom || '', prenom: user?.prenom || '', email: user?.email || '' });
-            setEditing(true);
-          }}>
-            Modifier mes informations
-          </Button>
-        )}
-      </Card>
+            )}
+          </div>
 
-      {/* Changer mot de passe */}
-      <Card className="mb-6">
-        <div className="flex items-center gap-3 mb-4">
-          <Lock size={20} className="text-gray-400" />
-          <h3 className="font-display font-semibold text-gray-900 dark:text-white">
-            Mot de passe
-          </h3>
+          {/* Zone dangereuse — RGPD */}
+          <div className="app-panel fr-p-3w">
+            <h2 className="fr-h5">
+              <span className="fr-icon-warning-line fr-mr-1w" aria-hidden="true" />
+              Zone dangereuse
+            </h2>
+            <p className="fr-text--sm">
+              La suppression de votre compte est irréversible. Toutes vos données
+              seront effacées conformément au RGPD.
+            </p>
+            <Button
+              variant="secondary"
+              className="fr-icon-delete-line fr-btn--icon-left"
+              onClick={() => setDeleteModalOpen(true)}
+            >
+              Supprimer mon compte
+            </Button>
+          </div>
+
+          {/* Modal confirmation suppression */}
+          <Modal
+            isOpen={deleteModalOpen}
+            onClose={() => setDeleteModalOpen(false)}
+            title="Confirmer la suppression"
+            size="sm"
+          >
+            <p>
+              Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est
+              irréversible.
+            </p>
+            <ul className="fr-btns-group fr-btns-group--inline-md">
+              <li>
+                <Button variant="secondary" onClick={handleDeleteAccount} loading={loading}>
+                  Oui, supprimer
+                </Button>
+              </li>
+              <li>
+                <Button variant="secondary" onClick={() => setDeleteModalOpen(false)}>
+                  Annuler
+                </Button>
+              </li>
+            </ul>
+          </Modal>
         </div>
-
-        {changingPassword ? (
-          <form onSubmit={handleChangePassword} className="space-y-4">
-            <Input
-              label="Mot de passe actuel"
-              type="password"
-              value={passwordForm.ancien_mot_de_passe}
-              onChange={(e) => setPasswordForm({ ...passwordForm, ancien_mot_de_passe: e.target.value })}
-              required
-            />
-            <Input
-              label="Nouveau mot de passe"
-              type="password"
-              value={passwordForm.password}
-              onChange={(e) => setPasswordForm({ ...passwordForm, password: e.target.value })}
-              required
-            />
-            <Input
-              label="Confirmer le nouveau mot de passe"
-              type="password"
-              value={passwordForm.password_confirmation}
-              onChange={(e) => setPasswordForm({ ...passwordForm, password_confirmation: e.target.value })}
-              required
-            />
-            <div className="flex gap-3">
-              <Button type="submit" loading={loading}>
-                Changer le mot de passe
-              </Button>
-              <Button variant="ghost" onClick={() => setChangingPassword(false)}>
-                Annuler
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <Button variant="outline" onClick={() => setChangingPassword(true)}>
-            Changer mon mot de passe
-          </Button>
-        )}
-      </Card>
-
-      {/* Zone dangereuse */}
-      <Card className="border-red-200 dark:border-red-900">
-        <div className="flex items-center gap-3 mb-4">
-          <Shield size={20} className="text-red-500" />
-          <h3 className="font-display font-semibold text-red-600 dark:text-red-400">
-            Zone dangereuse
-          </h3>
-        </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          La suppression de votre compte est irréversible. Toutes vos données seront effacées conformément au RGPD.
-        </p>
-        <Button variant="danger" onClick={() => setDeleteModalOpen(true)}>
-          <Trash2 size={16} />
-          Supprimer mon compte
-        </Button>
-      </Card>
-
-      {/* Modal confirmation suppression */}
-      <Modal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        title="Confirmer la suppression"
-        size="sm"
-      >
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
-        </p>
-        <div className="flex gap-3">
-          <Button variant="danger" onClick={handleDeleteAccount} loading={loading}>
-            Oui, supprimer
-          </Button>
-          <Button variant="ghost" onClick={() => setDeleteModalOpen(false)}>
-            Annuler
-          </Button>
-        </div>
-      </Modal>
+      </div>
     </div>
   );
 }
