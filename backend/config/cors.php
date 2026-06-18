@@ -19,7 +19,12 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => array_values(array_unique(array_filter([
+        env('FRONTEND_URL', 'http://localhost:3000'),
+        'http://localhost:3000',
+        // Preview de la refonte DSFR (port 3001)
+        'http://localhost:3001',
+    ]))),
 
     'allowed_origins_patterns' => [],
 
