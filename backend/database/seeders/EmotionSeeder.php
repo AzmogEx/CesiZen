@@ -12,6 +12,12 @@ class EmotionSeeder extends Seeder
      */
     public function run(): void
     {
+        // Idempotent : évite de dupliquer les émotions si le seed est relancé
+        // (le conteneur exécute `migrate --seed` à chaque démarrage).
+        if (DB::table('emotions')->exists()) {
+            return;
+        }
+
         // Référentiel d'émotions conforme au sujet détaillé CESIZen (§7) :
         // 6 émotions de base (niveau 1) et leurs sous-émotions (niveau 2).
         // La colonne « Surprise » du sujet liste « Étonnement » en double (coquille) :

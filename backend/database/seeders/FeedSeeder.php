@@ -12,6 +12,11 @@ class FeedSeeder extends Seeder
      */
     public function run(): void
     {
+        // Idempotent : évite de dupliquer les contenus si le seed est relancé.
+        if (DB::table('feeds')->exists()) {
+            return;
+        }
+
         $now = now();
 
         $feeds = [
