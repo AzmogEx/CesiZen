@@ -1,26 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "CESIZen - Votre sant\u00e9 mentale",
+  title: "CESIZen - Votre santé mentale",
   description:
-    "Plateforme de gestion du stress et suivi \u00e9motionnel. Suivez vos \u00e9motions, consultez des ressources et prenez soin de votre sant\u00e9 mentale.",
+    "Plateforme publique de gestion du stress et de suivi émotionnel. Suivez vos émotions, consultez des ressources et prenez soin de votre santé mentale.",
+  icons: {
+    icon: [{ url: "/dsfr/favicon/favicon.svg", type: "image/svg+xml" }],
+    shortcut: ["/dsfr/favicon/favicon.ico"],
+    apple: [{ url: "/dsfr/favicon/apple-touch-icon.png" }],
+  },
 };
 
 export default function RootLayout({
@@ -29,9 +20,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <body className={`${inter.variable} ${poppins.variable} antialiased`}>
+    <html lang="fr" data-fr-scheme="system" suppressHydrationWarning>
+      <body>
+        {/* Système de Design de l'État (DSFR) — feuilles de style officielles */}
+        <link rel="stylesheet" href="/dsfr/dsfr.min.css" />
+        <link rel="stylesheet" href="/dsfr/utility/utility.min.css" />
         <Providers>{children}</Providers>
+        {/* JS DSFR : comportements interactifs (menu, navigation, modales) */}
+        <Script src="/dsfr/dsfr.module.min.js" type="module" strategy="afterInteractive" />
+        <Script
+          src="/dsfr/dsfr.nomodule.min.js"
+          noModule
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
