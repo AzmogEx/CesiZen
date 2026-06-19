@@ -2,6 +2,8 @@
 
 **20 min (présentation + démo live de l'app) + 10 min Q/R · 16 slides · checkpoint à 12:30**
 
+> 🌐 App en ligne : **https://cesizen.cleanows.fr** (API : api.cesizen.cleanows.fr) · Interface au **Système de Design de l'État (DSFR)**
+
 ---
 
 ## 🔢 Chiffres à sortir sans hésiter
@@ -12,6 +14,8 @@
 - **8** entités au MCD · **1** API REST → **2** clients (web + mobile)
 - JWT **60 min** + refresh · throttle login **5/min**
 - **25** tests automatisés (15 back + 6 front + 4 mobile)
+- **DSFR** : interface au Système de Design de l'État (charte gouv.fr) — web + mobile
+- **Déployé en ligne** : https://cesizen.cleanows.fr (Docker + HTTPS, vrai service en prod)
 - Contraintes sujet : budget **75 000 €**, livraison **12 mois**
 
 ---
@@ -37,6 +41,7 @@
 **6:00–8:30 · Réponse fonctionnelle Comptes + Informations (slides 7-8)**
 - **Comptes** : JWT · RGPD · admin CRUD (maquette)
 - **Informations** : feeds · slug auto · modération (maquette)
+- 💬 **DSFR transversal** : toute l'interface (web + mobile) suit le **Système de Design de l'État** → en-tête « République Française », accessibilité RGAA, crédibilité institutionnelle
 - ➡️ *« Et pour le Tracker, je vais vous le montrer en direct. »*
 
 **8:30–12:30 · 🎬 DÉMO LIVE — le Tracker (voir script ci-dessous)**
@@ -57,6 +62,7 @@
 
 **17:30–19:00 · Prototype & perspectives (slide 14)**
 - Stack réelle : Laravel + Next.js + Expo + Docker · **25 tests automatisés**
+- **Déployé en ligne** : https://cesizen.cleanows.fr (Coolify, conteneurs Docker, HTTPS) → *« ce n'est pas qu'une maquette, c'est en production »*
 - Ouverture : activer les modules écartés sans réécrire · Mon Espace Santé (FHIR) · Open Data
 
 **19:00–20:00 · Conclusion**
@@ -68,7 +74,7 @@
 ## 🎬 Script de démo (≈ 4 min) — le Tracker en direct
 
 **AVANT de commencer l'oral** (à faire pendant l'installation, app déjà lancée) :
-- `docker compose up -d` lancé · onglet navigateur ouvert sur **http://localhost:3000**
+- onglet navigateur ouvert sur **https://cesizen.cleanows.fr** (en ligne) — repli **http://localhost:3000** si pas de réseau (`docker compose up -d`)
 - **déjà connecté** sur le compte de démo · zoom navigateur à **125 %** · notifications coupées
 - Compte : laisser le **journal pré-rempli** de quelques saisies (sinon le rapport est vide)
 
@@ -95,7 +101,9 @@
 - **Soft delete vs anonymisation ?** → soft delete = réversible 30j ; anonymisation = dissocie identité
 - **JWT, risques ?** → stateless/scalable · expiration courte + refresh · throttle anti-bruteforce · MFA prévu
 - **Scalabilité 5000 users ?** → API stateless · index Postgres · pagination · cache TanStack Query
-- **Réellement développé ?** → prototype 3 modules (API+web+mobile) + 25 tests automatisés
+- **Réellement développé ?** → prototype 3 modules (API+web+mobile) + 25 tests automatisés · **déployé en ligne** (Coolify/Docker/HTTPS)
+- **Pourquoi le DSFR ?** → service de l'État → charte obligatoire gouv.fr · accessibilité RGAA native · cohérence + confiance · gain de temps (composants prêts)
+- **Vraiment en production ?** → oui : https://cesizen.cleanows.fr · conteneurs Docker · base PostgreSQL · CI de build · HTTPS
 
 ### 🛡️ Si une question pique (écarts assumés à défendre calmement)
 - **« Mot de passe oublié »** → écran présent, flux backend prévu en v2

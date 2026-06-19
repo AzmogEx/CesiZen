@@ -3,6 +3,7 @@
 **Apprenant :** Adam Marzuk · **Bloc :** INFCDAAL1 — Concevoir les solutions logicielles
 **Format :** 20 min de présentation + ~10 min de questions/réponses
 **Support :** `CESIZen_Soutenance.pptx` (16 slides : 14 + 2 annexes) + **démo live de l'app** (compte `demo@cesizen.fr` / `Demo123!`)
+**App déployée en ligne :** https://cesizen.cleanows.fr (API : https://api.cesizen.cleanows.fr) · **Interface au Système de Design de l'État (DSFR)** — charte officielle gouv.fr
 **Antisèche à garder en main :** `Plan2_Oral_CESIZen.md` · **Lancement :** voir `Guide_Lancement_CESIZen.md`
 
 > Objectif : montrer la **démarche** (recueil → analyse → modélisation) autant que le résultat.
@@ -17,11 +18,11 @@
 | **0:00 – 2:00** (2′) | 1 — 2 | **Introduction** | Se présenter. Annoncer le commanditaire (Ministère) et l'objet : une plateforme grand public de santé mentale. Donner le fil rouge : « je vais dérouler le recueil du besoin, la priorisation, la réponse fonctionnelle **avec une démonstration de l'application**, puis la modélisation technique et la conformité RGPD. » Présenter le sommaire (slide 2). |
 | **2:00 – 4:30** (2′30) | 3 — 4 | **Contexte, enjeux, parties prenantes** | Rappeler l'enjeu sociétal (22 % des Français, SPF 2023) et la stigmatisation. Énoncer les 4 objectifs stratégiques. Présenter les parties prenantes et les 3 acteurs (Visiteur, Utilisateur, Administrateur). Insister : « le besoin a été **reformulé**, pas recopié. » |
 | **4:30 – 6:00** (1′30) | 5 — 6 | **Besoins & priorisation** | Périmètre : 2 modules obligatoires + Tracker au choix ; modules écartés assumés. Grille pondérée /15 (5 critères). Conclusion : « le Tracker cumule 4 fonctionnalités à 9-10/15, c'est le module au choix le plus rentable. » |
-| **6:00 – 8:30** (2′30) | 7 — 8 | **Réponse fonctionnelle (Comptes + Informations)** | Module Comptes : JWT, RGPD, admin (slide 7 + maquette). Module Informations : feeds, modération, slug auto (slide 8 + maquette). Enchaîner : « pour le Tracker, je vais vous le montrer en direct. » |
-| **8:30 – 12:30** (4′) | démo live | **🎬 Démo de l'application — Tracker** | Sur l'app web (compte `demo@cesizen.fr` **déjà connecté**) : page Informations → journal de bord → **nouvelle saisie** (wizard 3 étapes : émotion → sous-émotion + intensité → date + note) → **Rapports** (changer la période : camembert + courbe d'évolution). 🛟 Si ça plante : basculer sur les maquettes (slide 9) sans s'excuser. |
+| **6:00 – 8:30** (2′30) | 7 — 8 | **Réponse fonctionnelle (Comptes + Informations)** | Module Comptes : JWT, RGPD, admin (slide 7 + maquette). Module Informations : feeds, modération, slug auto (slide 8 + maquette). 💬 Point fort transversal : **toute l'interface (web + mobile) suit le Système de Design de l'État (DSFR)** — la charte officielle gouv.fr → crédibilité institutionnelle + accessibilité native. Enchaîner : « pour le Tracker, je vais vous le montrer en direct. » |
+| **8:30 – 12:30** (4′) | démo live | **🎬 Démo de l'application — Tracker** | Sur l'app (compte `demo@cesizen.fr` **déjà connecté**) — **en ligne** sur https://cesizen.cleanows.fr **ou** en local : page Informations → journal de bord → **nouvelle saisie** (wizard 3 étapes : émotion → sous-émotion + intensité → date + note) → **Rapports** (changer la période : camembert + courbe d'évolution). 💬 Insister sur l'en-tête « République Française » (DSFR). 🛟 Si ça plante : basculer sur les maquettes (slide 9) sans s'excuser. |
 | **12:30 – 16:00** (3′30) | 10 — 11 — 12 | **Modélisation** | Cas d'usage UML (slide 10) : couverture par acteur. MCD Merise (slide 11) : 8 entités, cardinalités, hiérarchie d'émotions auto-référencée. Architecture MVC découplée (slide 12) : 1 API REST Laravel → 2 clients ; justifier le pattern (testabilité, évolutivité, non-duplication). |
 | **16:00 – 17:30** (1′30) | 13 | **RGPD & données sensibles** | Données de santé = sensibles (art. 9). Consentement, droits CNIL (export/anonymisation), soft delete. Sécurité : bcrypt (mots de passe), JWT, HDS, table audits ; chiffrement AES-256 au repos prévu en production. |
-| **17:30 – 19:00** (1′30) | 14 | **Prototype & perspectives** | Prototype fonctionnel (Laravel + Next.js + Expo + Docker), **25 tests automatisés** (15 back + 6 front + 4 mobile). Ouverture : activer les modules écartés sans réécrire le modèle, Open Data, Mon Espace Santé (FHIR). |
+| **17:30 – 19:00** (1′30) | 14 | **Prototype & perspectives** | Prototype fonctionnel (Laravel + Next.js + Expo + Docker), **25 tests automatisés** (15 back + 6 front + 4 mobile), **interface conforme DSFR** et **déployé en ligne** (Coolify, conteneurs Docker, HTTPS) sur https://cesizen.cleanows.fr — pas qu'une maquette, un vrai service en production. Ouverture : activer les modules écartés sans réécrire le modèle, Open Data, Mon Espace Santé (FHIR). |
 | **19:00 – 20:00** (1′) | 14 | **Conclusion** | Synthèse : besoin reformulé → périmètre priorisé → réponse fonctionnelle → architecture pérenne → conformité. Remercier, ouvrir les questions. |
 
 **Repères de rythme :** checkpoint mental à **12:30** (fin de la démo). Si retard, raccourcir la modélisation (garder MCD + MVC, survoler les cas d'usage) et garder 1 min pour conclure. ⚠️ **Lance la stack et connecte-toi AVANT d'entrer** dans la salle (sois déjà sur le journal de bord).
@@ -82,6 +83,13 @@
 
 **Q16. Comment testez-vous la qualité du code ?**
 > Tests automatisés sur les 3 briques, lançables en une commande : `php artisan test` (15 tests : auth, tracker, admin, RGPD), `npm test` côté web (Vitest : composants + store) et mobile (Jest : appels API). Plus le type-checking strict (TypeScript) et le linting (ESLint, Pint).
+
+### Design & déploiement
+**Q17. Pourquoi avoir choisi le Système de Design de l'État (DSFR) ?**
+> Le commanditaire est le Ministère : une appli grand public de l'État doit suivre la charte officielle gouv.fr. Le DSFR (`@codegouvfr/react-dsfr`) m'apporte gratuitement la crédibilité institutionnelle (en-tête « République Française », typographie Marianne), l'accessibilité RGAA native, et un design system maintenu. Sur le web c'est le vrai framework ; sur mobile (React Native, où le DSFR ne tourne pas) j'en applique l'identité visuelle (bleu France #000091, bloc Marianne).
+
+**Q18. L'application est-elle réellement déployée ?**
+> Oui, elle tourne **en ligne en production** : https://cesizen.cleanows.fr (front) et https://api.cesizen.cleanows.fr (API). Déploiement par **conteneurs Docker** orchestrés (PostgreSQL + API Laravel + front Next.js), via Coolify, avec HTTPS, migrations et seed automatiques au démarrage, et des secrets générés hors dépôt. Ce n'est donc pas une maquette mais un service réellement déployé et accessible.
 
 ---
 
