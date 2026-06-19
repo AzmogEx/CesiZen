@@ -15,7 +15,7 @@ services:
       POSTGRES_USER: cesizen
       POSTGRES_PASSWORD: cesizen_secret_change_me
     volumes:
-      - cesizen_pg_data:/var/lib/postgresql/data
+      - cesizen_pgdata_v2:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U cesizen -d cesizen"]
       interval: 10s
@@ -67,4 +67,4 @@ services:
       - backend
 
 volumes:
-  cesizen_pg_data:
+  cesizen_pgdata_v2:
