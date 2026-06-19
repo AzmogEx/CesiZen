@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/lib/colors';
 import { FontSize, FontWeight, LetterSpacing, LineHeight, Spacing } from '@/lib/theme';
 
@@ -16,8 +17,9 @@ interface AppBarProps {
  * du service, avec un titre/sous-titre de page optionnel.
  */
 export default function AppBar({ title, subtitle, right }: AppBarProps) {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={styles.wrapper} accessibilityRole="header">
+    <View style={[styles.wrapper, { paddingTop: insets.top }]} accessibilityRole="header">
       <View style={styles.brandRow}>
         <View style={styles.marianne}>
           <Text style={styles.republique}>RÉPUBLIQUE</Text>
