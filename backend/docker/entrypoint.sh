@@ -24,6 +24,12 @@ sed -i \
   -e "s|^DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|" \
   .env
 
+# URLs publiques : forcées dans .env si fournies par le conteneur. Indispensable
+# pour le CORS : un FRONTEND_URL=http://localhost du .env bloquait l'origine de
+# production (-> "is not allowed by Access-Control-Allow-Origin").
+if [ -n "$APP_URL" ]; then sed -i "s|^APP_URL=.*|APP_URL=${APP_URL}|" .env; fi
+if [ -n "$FRONTEND_URL" ]; then sed -i "s|^FRONTEND_URL=.*|FRONTEND_URL=${FRONTEND_URL}|" .env; fi
+
 # --- APP_KEY ---
 # Si fournie (Coolify) : on la force dans .env. Sinon : on en génère une et on
 # l'EXPORTE, sinon une variable d'env vide masquerait la valeur du .env
