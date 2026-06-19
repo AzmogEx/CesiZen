@@ -37,9 +37,10 @@ export default function PolitiqueConfidentialitePage() {
 
       <h2>Sécurité des données</h2>
       <p>
-        Les données sont chiffrées en transit (HTTPS) et au repos. Les mots de
-        passe sont hachés avec des algorithmes sécurisés. L&apos;accès aux
-        données est strictement limité aux personnes habilitées.
+        Les données sont chiffrées en transit (HTTPS/TLS) et les mots de passe
+        sont hachés avec des algorithmes sécurisés (bcrypt). Le chiffrement au
+        repos est prévu pour la mise en production (hébergement certifié HDS).
+        L&apos;accès aux données est strictement limité aux personnes habilitées.
       </p>
 
       <h2>Vos droits</h2>

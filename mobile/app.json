@@ -9,7 +9,7 @@
     "newArchEnabled": true,
     "scheme": "cesizen",
     "splash": {
-      "backgroundColor": "#fce117",
+      "backgroundColor": "#FFFFFF",
       "resizeMode": "contain"
     },
     "ios": {
@@ -19,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#fce117"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.cesi.cesizen"
     },

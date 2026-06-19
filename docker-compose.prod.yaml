@@ -1,6 +1,6 @@
 # Stack de production CESIZen — pour déploiement sur Coolify (type "Docker Compose").
-# Les valeurs ${...} sont à définir dans l'onglet "Environment Variables" de Coolify.
-# Voir DEPLOIEMENT_COOLIFY.md pour la liste complète.
+# Les valeurs (DB, domaines) sont figées en dur ci-dessous ; APP_KEY et JWT_SECRET
+# sont générés au démarrage par l'entrypoint du backend (aucun secret versionné).
 
 services:
   postgres:

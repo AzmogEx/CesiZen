@@ -197,7 +197,7 @@ export default function InscriptionPage() {
             <Link href="/politique-de-confidentialite" className="fr-link">
               politique de confidentialité
             </Link>
-            . Mes données sont chiffrées et je peux supprimer mon compte à tout moment.
+            . Mes données sont protégées et je peux supprimer mon compte à tout moment.
           </label>
           {errors.consentement_rgpd && (
             <p id="consentement-error" className="fr-error-text">

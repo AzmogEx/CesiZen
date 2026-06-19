@@ -1,88 +1,12 @@
 @import "tailwindcss";
 
-/* Panneau neutre (remplace l'usage détourné de .fr-card comme conteneur).
-   Utilise les variables DSFR pour s'adapter aux thèmes clair/sombre. */
+/* Le Système de Design de l'État (DSFR) gère la typographie (Marianne), les
+   couleurs et le thème clair/sombre via /dsfr/dsfr.min.css. On ne déclare donc
+   ici qu'un utilitaire neutre, sans surcharger la police ni les couleurs. */
+
+/* Panneau neutre (remplace l'usage détourné de .fr-card comme conteneur). */
 .app-panel {
   background-color: var(--background-default-grey);
   border: 1px solid var(--border-default-grey);
   border-radius: 0.25rem;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Poppins", system-ui, sans-serif;
-
-  /* Candlelight */
-  --color-candlelight-50: #fffde6;
-  --color-candlelight-100: #fffacc;
-  --color-candlelight-200: #fff599;
-  --color-candlelight-300: #ffef66;
-  --color-candlelight-400: #ffe833;
-  --color-candlelight-500: #fce117;
-  --color-candlelight-600: #e5c800;
-  --color-candlelight-700: #b39c00;
-  --color-candlelight-800: #806f00;
-  --color-candlelight-900: #4d4300;
-  --color-candlelight-950: #332d00;
-
-  /* Malachite */
-  --color-malachite-50: #e6fdf0;
-  --color-malachite-100: #ccfbe0;
-  --color-malachite-200: #99f7c2;
-  --color-malachite-300: #66f3a3;
-  --color-malachite-400: #33ef85;
-  --color-malachite-500: #06c656;
-  --color-malachite-600: #05a348;
-  --color-malachite-700: #047d37;
-  --color-malachite-800: #035827;
-  --color-malachite-900: #023316;
-  --color-malachite-950: #01220f;
-}
-
-/* Variables de thème clair */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #fce117;
-  --primary-foreground: #332d00;
-  --secondary: #06c656;
-  --secondary-foreground: #01220f;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --border: #e5e5e5;
-  --ring: #fce117;
-}
-
-/* Variables de thème sombre */
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --primary: #fce117;
-  --primary-foreground: #332d00;
-  --secondary: #06c656;
-  --secondary-foreground: #01220f;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --border: #404040;
-  --ring: #fce117;
-}
-
-/* Styles de base */
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Inter", system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Poppins", system-ui, sans-serif;
 }
