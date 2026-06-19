@@ -6,7 +6,7 @@ Le mobile (Expo) n'est pas concerné (ce n'est pas une appli web).
 Fichiers fournis :
 - `backend/Dockerfile.prod` — API Laravel (PHP 8.4, migrations + seed au démarrage)
 - `frontend/Dockerfile.prod` — Next.js en sortie *standalone* (image légère)
-- `docker-compose.prod.yml` — orchestration des 3 services
+- `docker-compose.prod.yaml` — orchestration des 3 services
 - `backend/docker/entrypoint.sh` — démarrage de l'API
 
 ---
@@ -14,7 +14,7 @@ Fichiers fournis :
 ## Option recommandée : « Docker Compose » dans Coolify
 
 1. **Créer une ressource** → *Docker Compose* → connecter le dépôt GitHub `AzmogEx/CesiZen`, branche `main`.
-2. **Compose file** : `docker-compose.prod.yml`.
+2. **Compose file** : `docker-compose.prod.yaml`.
 3. Renseigner les **variables d'environnement** (ci-dessous).
 4. **Domaines** : dans Coolify, mapper
    - le service **frontend** (port `3000`) sur ton domaine principal (ex. `cesizen.tondomaine.fr`)
