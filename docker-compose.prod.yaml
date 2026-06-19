@@ -9,14 +9,17 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-cesizen}
       POSTGRES_USER: ${POSTGRES_USER:-cesizen}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Défini une valeur par défaut pour que la base démarre même sans variable.
+      # À surcharger via la variable POSTGRES_PASSWORD dans Coolify (recommandé).
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cesizen_secret_change_me}
     volumes:
       - cesizen_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cesizen}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cesizen} -d ${POSTGRES_DB:-cesizen}"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 40s
 
   backend:
     build:
@@ -34,7 +37,7 @@ services:
       DB_PORT: 5432
       DB_DATABASE: ${POSTGRES_DB:-cesizen}
       DB_USERNAME: ${POSTGRES_USER:-cesizen}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-cesizen_secret_change_me}
       JWT_SECRET: ${JWT_SECRET}
       JWT_TTL: ${JWT_TTL:-60}
       FRONTEND_URL: ${FRONTEND_URL}
