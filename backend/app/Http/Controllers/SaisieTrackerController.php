@@ -53,7 +53,9 @@ class SaisieTrackerController extends Controller
 
     public function update(StoreSaisieRequest $request, int $id): JsonResponse
     {
-        $saisie = auth()->user()->tracker->saisies()->findOrFail($id);
+        $tracker = auth()->user()->tracker;
+        abort_unless($tracker, 404, 'Aucun tracker trouvé.');
+        $saisie = $tracker->saisies()->findOrFail($id);
         $saisie->update($request->validated());
         $saisie->load('emotion');
 
@@ -65,7 +67,9 @@ class SaisieTrackerController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
-        $saisie = auth()->user()->tracker->saisies()->findOrFail($id);
+        $tracker = auth()->user()->tracker;
+        abort_unless($tracker, 404, 'Aucun tracker trouvé.');
+        $saisie = $tracker->saisies()->findOrFail($id);
         $saisie->delete();
 
         return response()->json([

@@ -86,6 +86,10 @@ class AdminUtilisateurController extends Controller
 
     public function toggleActive(int $id): JsonResponse
     {
+        if (auth()->id() === $id) {
+            return response()->json(['message' => 'Vous ne pouvez pas désactiver votre propre compte.'], 422);
+        }
+
         $utilisateur = Utilisateur::findOrFail($id);
         $utilisateur->update(['est_actif' => ! $utilisateur->est_actif]);
 
@@ -97,6 +101,10 @@ class AdminUtilisateurController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
+        if (auth()->id() === $id) {
+            return response()->json(['message' => 'Vous ne pouvez pas supprimer votre propre compte administrateur.'], 422);
+        }
+
         $utilisateur = Utilisateur::findOrFail($id);
         $utilisateur->delete();
 
