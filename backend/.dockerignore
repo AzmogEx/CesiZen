@@ -1,4 +1,14 @@
 vendor
 node_modules
-storage/logs/*.log
+.git
+.gitignore
 .env
+.env.backup
+.env.production
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+.phpunit.result.cache
+Dockerfile*
+.dockerignore

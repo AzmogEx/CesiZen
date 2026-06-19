@@ -1,0 +1,40 @@
+# syntax=docker/dockerfile:1
+# Image de production du frontend Next.js (CESIZen) — sortie "standalone".
+
+# ─── Étape build ───────────────────────────────────────────────
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+# Dépendances. On ignore les scripts ici : le postinstall (copy-dsfr) a besoin
+# de scripts/copy-dsfr.mjs, qui n'est copié qu'avec le code source plus bas.
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+
+# Code source
+COPY . .
+
+# Génère les assets DSFR dans public/dsfr (hors git) depuis node_modules
+RUN node scripts/copy-dsfr.mjs
+
+# L'URL publique de l'API est injectée AU BUILD (variables NEXT_PUBLIC_*)
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN npm run build
+
+# ─── Étape runtime ─────────────────────────────────────────────
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+# Assets statiques (dont public/dsfr) + sortie standalone
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+EXPOSE 3000
+CMD ["node", "server.js"]

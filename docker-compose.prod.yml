@@ -1,0 +1,64 @@
+# Stack de production CESIZen — pour déploiement sur Coolify (type "Docker Compose").
+# Les valeurs ${...} sont à définir dans l'onglet "Environment Variables" de Coolify.
+# Voir DEPLOIEMENT_COOLIFY.md pour la liste complète.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cesizen}
+      POSTGRES_USER: ${POSTGRES_USER:-cesizen}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - cesizen_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cesizen}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    environment:
+      APP_NAME: CESIZen
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL}
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB:-cesizen}
+      DB_USERNAME: ${POSTGRES_USER:-cesizen}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_TTL: ${JWT_TTL:-60}
+      FRONTEND_URL: ${FRONTEND_URL}
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+      QUEUE_CONNECTION: database
+    expose:
+      - "8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        # URL PUBLIQUE de l'API (injectée au build, visible côté navigateur)
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    restart: unless-stopped
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+
+volumes:
+  cesizen_pg_data:
