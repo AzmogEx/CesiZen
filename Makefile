@@ -3,7 +3,7 @@
 # Tape simplement `make` pour voir l'aide.
 
 .DEFAULT_GOAL := help
-.PHONY: help back back-logs back-stop web mobile mobile-reset up down stop ps seed migrate fresh test kill-3000
+.PHONY: help back back-logs back-stop web mobile mobile-tunnel mobile-reset up down stop ps seed migrate fresh test kill-3000
 
 ## help : affiche cette aide
 help:
@@ -13,6 +13,7 @@ help:
 	@echo "  \033[36mmake back\033[0m      Lance le BACKEND (API + PostgreSQL + Redis) dans Docker   -> http://localhost:8000"
 	@echo "  \033[36mmake web\033[0m       Lance le SITE WEB / landing page (Next.js, local)         -> http://localhost:3000"
 	@echo "  \033[36mmake mobile\033[0m    Lance l'APP MOBILE (Expo) + QR code"
+	@echo "  \033[36mmake mobile-tunnel\033[0m Expo en mode tunnel (sans WiFi commun : partage de connexion)"
 	@echo "  \033[36mmake mobile-reset\033[0m  Répare watchman puis relance Expo (si plantage/recrawl)"
 	@echo ""
 	@echo "  \033[36mmake up\033[0m        Lance TOUT dans Docker (api + db + redis + front)"
@@ -60,6 +61,10 @@ web:
 ## mobile : lance le serveur Expo (scanne le QR code avec Expo Go)
 mobile:
 	cd mobile && npx expo start --clear
+
+## mobile-tunnel : lance Expo en mode tunnel (marche sans WiFi commun, ex. partage de connexion)
+mobile-tunnel:
+	cd mobile && npx expo start --tunnel --clear
 
 ## mobile-reset : répare watchman + relance Expo (si "Recrawled this watch" ou plantage)
 mobile-reset:
