@@ -7,15 +7,29 @@ cd /app
 # définies par Coolify, ont la priorité sur ce fichier).
 [ -f .env ] || cp .env.example .env
 
-# Clés générées au démarrage si absentes (À DÉFINIR EN PROD via Coolify :
-# APP_KEY et JWT_SECRET, pour qu'elles restent stables entre déploiements).
-if [ -z "$APP_KEY" ]; then
-  echo "[entrypoint] APP_KEY absent — génération (pensez à la fixer dans Coolify)."
+# --- APP_KEY ---
+# Si fournie (Coolify) : on la force dans .env. Sinon : on en génère une et on
+# l'EXPORTE, sinon une variable d'env vide masquerait la valeur du .env
+# (phpdotenv n'écrase pas une variable déjà présente) -> MissingAppKeyException.
+if [ -n "$APP_KEY" ]; then
+  echo "[entrypoint] APP_KEY fournie."
+  sed -i "s|^APP_KEY=.*|APP_KEY=${APP_KEY}|" .env
+else
+  echo "[entrypoint] APP_KEY absente — génération (pensez à la fixer dans Coolify)."
   php artisan key:generate --force
+  APP_KEY="$(grep '^APP_KEY=' .env | cut -d '=' -f 2-)"
+  export APP_KEY
 fi
-if [ -z "$JWT_SECRET" ]; then
+
+# --- JWT_SECRET ---
+if [ -n "$JWT_SECRET" ]; then
+  echo "[entrypoint] JWT_SECRET fourni."
+  sed -i "s|^JWT_SECRET=.*|JWT_SECRET=${JWT_SECRET}|" .env
+else
   echo "[entrypoint] JWT_SECRET absent — génération (pensez à le fixer dans Coolify)."
   php artisan jwt:secret --force
+  JWT_SECRET="$(grep '^JWT_SECRET=' .env | cut -d '=' -f 2-)"
+  export JWT_SECRET
 fi
 
 # Base de données : migrations + seed (les seeders sont idempotents).
