@@ -32,6 +32,9 @@ else
   export JWT_SECRET
 fi
 
+# Purge tout cache de config/route résiduel (pour relire les variables d'env).
+php artisan optimize:clear || true
+
 # Base de données : migrations + seed (les seeders sont idempotents).
 echo "[entrypoint] Migrations..."
 php artisan migrate --force
