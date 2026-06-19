@@ -1,0 +1,12 @@
+{
+  "ignore_dirs": [
+    ".git",
+    ".venv",
+    "backend/vendor",
+    "backend/node_modules",
+    "backend/storage",
+    "frontend/node_modules",
+    "frontend/.next",
+    "mobile/.expo"
+  ]
+}
