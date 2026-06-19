@@ -52,6 +52,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      # Route santé native de Laravel (/up). On utilise php (présent dans l'image,
+      # contrairement à curl) ; exit 0 si l'API répond, 1 sinon.
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1:8000/up') !== false ? 0 : 1);"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      # Laisse le temps aux migrations + seed du démarrage avant de vérifier.
+      start_period: 90s
 
   frontend:
     build:
@@ -65,6 +74,14 @@ services:
       - "3000"
     depends_on:
       - backend
+    healthcheck:
+      # node est présent dans l'image (node:20-alpine) ; on interroge la page
+      # d'accueil. exit 0 si le serveur Next répond (<400), 1 sinon.
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
 volumes:
   cesizen_pgdata_v2:
