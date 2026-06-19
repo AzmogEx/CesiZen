@@ -3,9 +3,26 @@ set -e
 
 cd /app
 
-# Laravel a besoin d'un fichier .env (les variables d'env du conteneur,
-# définies par Coolify, ont la priorité sur ce fichier).
+# Laravel a besoin d'un fichier .env.
 [ -f .env ] || cp .env.example .env
+
+# Aligne les paramètres de connexion à la base DANS le .env (avec valeurs par
+# défaut). Indispensable : un DB_PASSWORD vide dans .env masquait la valeur du
+# conteneur -> "fe_sendauth: no password supplied".
+: "${DB_HOST:=postgres}"
+: "${DB_PORT:=5432}"
+: "${DB_DATABASE:=cesizen}"
+: "${DB_USERNAME:=cesizen}"
+: "${DB_PASSWORD:=cesizen_secret_change_me}"
+export DB_CONNECTION DB_HOST DB_PORT DB_DATABASE DB_USERNAME DB_PASSWORD
+sed -i \
+  -e "s|^DB_CONNECTION=.*|DB_CONNECTION=pgsql|" \
+  -e "s|^DB_HOST=.*|DB_HOST=${DB_HOST}|" \
+  -e "s|^DB_PORT=.*|DB_PORT=${DB_PORT}|" \
+  -e "s|^DB_DATABASE=.*|DB_DATABASE=${DB_DATABASE}|" \
+  -e "s|^DB_USERNAME=.*|DB_USERNAME=${DB_USERNAME}|" \
+  -e "s|^DB_PASSWORD=.*|DB_PASSWORD=${DB_PASSWORD}|" \
+  .env
 
 # --- APP_KEY ---
 # Si fournie (Coolify) : on la force dans .env. Sinon : on en génère une et on
