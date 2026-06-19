@@ -7,15 +7,17 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-cesizen}
-      POSTGRES_USER: ${POSTGRES_USER:-cesizen}
-      # Défini une valeur par défaut pour que la base démarre même sans variable.
-      # À surcharger via la variable POSTGRES_PASSWORD dans Coolify (recommandé).
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cesizen_secret_change_me}
+      # Identifiants de la base figés en dur : la base n'est PAS exposée
+      # publiquement (réseau interne Coolify), et cela évite les soucis de
+      # substitution ${...} non fiables côté Coolify (postgres et backend
+      # doivent partager exactement le même mot de passe).
+      POSTGRES_DB: cesizen
+      POSTGRES_USER: cesizen
+      POSTGRES_PASSWORD: cesizen_secret_change_me
     volumes:
       - cesizen_pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cesizen} -d ${POSTGRES_DB:-cesizen}"]
+      test: ["CMD-SHELL", "pg_isready -U cesizen -d cesizen"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -30,17 +32,18 @@ services:
       APP_NAME: CESIZen
       APP_ENV: production
       APP_DEBUG: "false"
-      APP_KEY: ${APP_KEY}
-      APP_URL: ${APP_URL}
+      # APP_KEY et JWT_SECRET ne sont PAS dans ce fichier (pas de secret versionné) :
+      # l'entrypoint du backend les génère au démarrage s'ils sont absents.
+      # Domaines figés en dur (Coolify ne propage pas les ${...} de façon fiable).
+      APP_URL: https://api.cesizen.cleanows.fr
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_DATABASE: ${POSTGRES_DB:-cesizen}
-      DB_USERNAME: ${POSTGRES_USER:-cesizen}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-cesizen_secret_change_me}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_TTL: ${JWT_TTL:-60}
-      FRONTEND_URL: ${FRONTEND_URL}
+      DB_DATABASE: cesizen
+      DB_USERNAME: cesizen
+      DB_PASSWORD: cesizen_secret_change_me
+      JWT_TTL: "60"
+      FRONTEND_URL: https://cesizen.cleanows.fr
       CACHE_STORE: database
       SESSION_DRIVER: database
       QUEUE_CONNECTION: database
@@ -56,7 +59,7 @@ services:
       dockerfile: Dockerfile.prod
       args:
         # URL PUBLIQUE de l'API (injectée au build, visible côté navigateur)
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_API_URL: https://api.cesizen.cleanows.fr/api/v1
     restart: unless-stopped
     expose:
       - "3000"
