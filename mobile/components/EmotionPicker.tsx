@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useEmotions } from '@/hooks/useEmotions';
 import { Colors } from '@/lib/colors';
+import { Spacing, Radius, FontSize, FontWeight, MIN_TOUCH, HIT_SLOP } from '@/lib/theme';
+import { Loader } from '@/components/ui';
 import type { Emotion } from '@/types';
 
 interface EmotionPickerProps {
@@ -14,40 +17,29 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
   const [selectedParent, setSelectedParent] = useState<Emotion | null>(null);
 
   if (isLoading) {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+    return <Loader label="Chargement des émotions…" />;
   }
 
   if (selectedParent?.enfants && selectedParent.enfants.length > 0) {
     return (
       <View>
-        <TouchableOpacity style={styles.backBtn} onPress={() => setSelectedParent(null)}>
-          <Text style={styles.backText}>← Retour aux émotions</Text>
+        <TouchableOpacity style={styles.backBtn} hitSlop={HIT_SLOP} onPress={() => setSelectedParent(null)}>
+          <Ionicons name="arrow-back" size={16} color={Colors.primary} />
+          <Text style={styles.backText}>Retour aux émotions</Text>
         </TouchableOpacity>
         <Text style={styles.subTitle}>
           Précisez votre émotion de{' '}
-          <Text style={{ color: selectedParent.couleur, fontWeight: '700' }}>{selectedParent.nom}</Text> :
+          <Text style={[styles.subTitleAccent, { color: selectedParent.couleur }]}>{selectedParent.nom}</Text> :
         </Text>
         <View style={styles.grid}>
-          {selectedParent.enfants.map((child) => {
-            const isSelected = value === child.id;
-            return (
-              <TouchableOpacity
-                key={child.id}
-                style={[
-                  styles.emotionCard,
-                  isSelected && { borderColor: child.couleur, borderWidth: 2.5 },
-                ]}
-                onPress={() => onChange(child.id)}
-              >
-                <Text style={styles.emotionEmoji}>{child.icone || '🔵'}</Text>
-                <Text style={styles.emotionName}>{child.nom}</Text>
-              </TouchableOpacity>
-            );
-          })}
+          {selectedParent.enfants.map((child) => (
+            <EmotionTile
+              key={child.id}
+              emotion={child}
+              selected={value === child.id}
+              onPress={() => onChange(child.id)}
+            />
+          ))}
         </View>
       </View>
     );
@@ -58,14 +50,12 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
       {emotions?.map((emotion) => {
         const hasChildren = emotion.enfants && emotion.enfants.length > 0;
         const isSelected = value === emotion.id || emotion.enfants?.some((e) => e.id === value);
-
         return (
-          <TouchableOpacity
+          <EmotionTile
             key={emotion.id}
-            style={[
-              styles.emotionCard,
-              isSelected && { borderColor: emotion.couleur, borderWidth: 2.5 },
-            ]}
+            emotion={emotion}
+            selected={!!isSelected}
+            hasChildren={hasChildren}
             onPress={() => {
               if (hasChildren) {
                 setSelectedParent(emotion);
@@ -73,34 +63,62 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
                 onChange(emotion.id);
               }
             }}
-          >
-            <Text style={styles.emotionEmoji}>{emotion.icone || '🔵'}</Text>
-            <Text style={styles.emotionName}>{emotion.nom}</Text>
-            {hasChildren && <Text style={styles.arrow}>▼</Text>}
-          </TouchableOpacity>
+          />
         );
       })}
     </View>
   );
 }
 
+function EmotionTile({
+  emotion,
+  selected,
+  hasChildren,
+  onPress,
+}: {
+  emotion: Emotion;
+  selected: boolean;
+  hasChildren?: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <TouchableOpacity
+      style={[
+        styles.tile,
+        selected && { borderColor: emotion.couleur, borderWidth: 2.5, backgroundColor: `${emotion.couleur}12` },
+      ]}
+      onPress={onPress}
+      accessibilityLabel={emotion.nom}
+    >
+      <Text style={styles.tileEmoji}>{emotion.icone || '🔵'}</Text>
+      <Text style={styles.tileName} numberOfLines={2}>
+        {emotion.nom}
+      </Text>
+      {hasChildren && <Ionicons name="chevron-down" size={12} color={Colors.gray[400]} style={styles.chevron} />}
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
-  loading: { padding: 40, alignItems: 'center' },
-  backBtn: { marginBottom: 12 },
-  backText: { fontSize: 14, color: Colors.primary, textDecorationLine: 'underline' },
-  subTitle: { fontSize: 14, color: Colors.gray[600], marginBottom: 12 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  emotionCard: {
+  backBtn: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs, marginBottom: Spacing.md, minHeight: MIN_TOUCH },
+  backText: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.primary },
+  subTitle: { fontSize: FontSize.sm, color: Colors.gray[600], marginBottom: Spacing.md },
+  subTitleAccent: { fontWeight: FontWeight.bold },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, justifyContent: 'space-between' },
+  tile: {
     width: '30%',
+    minHeight: 92,
     backgroundColor: Colors.white,
-    borderRadius: 4,
-    padding: 14,
+    borderRadius: Radius.sm,
+    paddingVertical: Spacing.md,
+    paddingHorizontal: Spacing.sm,
     alignItems: 'center',
-    gap: 6,
+    justifyContent: 'center',
+    gap: Spacing.xs,
     borderWidth: 1.5,
     borderColor: Colors.gray[200],
   },
-  emotionEmoji: { fontSize: 30 },
-  emotionName: { fontSize: 12, fontWeight: '600', color: Colors.black, textAlign: 'center' },
-  arrow: { fontSize: 10, color: Colors.gray[400] },
+  tileEmoji: { fontSize: 30 },
+  tileName: { fontSize: FontSize.xs, fontWeight: FontWeight.semibold, color: Colors.black, textAlign: 'center' },
+  chevron: { marginTop: 2 },
 });

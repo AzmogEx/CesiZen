@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/lib/auth-store';
 import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
-import RepubliqueHeader from '@/components/RepubliqueHeader';
+import { FontSize, FontWeight, MIN_TOUCH, Radius, Spacing } from '@/lib/theme';
+import { AppBar, Button, Card, TextField } from '@/components/ui';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -60,70 +61,112 @@ export default function RegisterScreen() {
     }
   };
 
+  const consentError = errors.consentement || errors.consentement_rgpd;
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <RepubliqueHeader />
+      <AppBar title="Inscription" subtitle="Créez votre compte CESIZen" />
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <View style={styles.header}>
-          <Text style={styles.logo}>CESIZen</Text>
-          <Text style={styles.subtitle}>Créez votre compte</Text>
-        </View>
-
-        <View style={styles.form}>
-          <Text style={styles.title}>Inscription</Text>
-
-          <View style={styles.row}>
-            <View style={[styles.inputGroup, { flex: 1, marginRight: 8 }]}>
-              <Text style={styles.label}>Nom</Text>
-              <TextInput style={styles.input} value={nom} onChangeText={setNom} placeholder="Dupont" />
-              {errors.nom && <Text style={styles.errorText}>{errors.nom}</Text>}
-            </View>
-            <View style={[styles.inputGroup, { flex: 1, marginLeft: 8 }]}>
-              <Text style={styles.label}>Prénom</Text>
-              <TextInput style={styles.input} value={prenom} onChangeText={setPrenom} placeholder="Jean" />
-              {errors.prenom && <Text style={styles.errorText}>{errors.prenom}</Text>}
-            </View>
+        <Card padding={Spacing.xl} elevated>
+          <View style={styles.nameRow}>
+            <TextField
+              label="Nom"
+              value={nom}
+              onChangeText={setNom}
+              placeholder="Dupont"
+              autoCapitalize="words"
+              error={errors.nom}
+              required
+              style={styles.nameField}
+            />
+            <TextField
+              label="Prénom"
+              value={prenom}
+              onChangeText={setPrenom}
+              placeholder="Jean"
+              autoCapitalize="words"
+              error={errors.prenom}
+              required
+              style={styles.nameField}
+            />
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="votre@email.com" keyboardType="email-address" autoCapitalize="none" autoCorrect={false} />
-            {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-          </View>
+          <TextField
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="votre@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            error={errors.email}
+            required
+          />
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mot de passe (min. 8 caractères)</Text>
-            <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="Mot de passe" secureTextEntry />
-            {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-          </View>
+          <TextField
+            label="Mot de passe"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Mot de passe"
+            secureTextEntry
+            error={errors.password}
+            helper="Au moins 8 caractères"
+            required
+          />
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Confirmer le mot de passe</Text>
-            <TextInput style={styles.input} value={passwordConfirmation} onChangeText={setPasswordConfirmation} placeholder="Confirmer" secureTextEntry />
-            {errors.passwordConfirmation && <Text style={styles.errorText}>{errors.passwordConfirmation}</Text>}
-          </View>
+          <TextField
+            label="Confirmer le mot de passe"
+            value={passwordConfirmation}
+            onChangeText={setPasswordConfirmation}
+            placeholder="Confirmer"
+            secureTextEntry
+            error={errors.passwordConfirmation}
+            required
+          />
 
-          <TouchableOpacity style={styles.consentRow} onPress={() => setConsentement(!consentement)} activeOpacity={0.7}>
-            <View style={[styles.checkbox, consentement && styles.checkboxChecked]}>
-              {consentement && <Ionicons name="checkmark" size={16} color={Colors.white} />}
-            </View>
+          <Pressable
+            style={styles.consentRow}
+            onPress={() => setConsentement(!consentement)}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: consentement }}
+          >
+            <Ionicons
+              name={consentement ? 'checkbox' : 'square-outline'}
+              size={24}
+              color={consentement ? Colors.primary : Colors.gray[500]}
+              style={styles.consentIcon}
+            />
             <Text style={styles.consentText}>
-              J'accepte le traitement de mes données de bien-être conformément à la <Text style={styles.consentLink}>politique de confidentialité</Text> (RGPD).
+              J'accepte le traitement de mes données de bien-être conformément à la{' '}
+              <Text style={styles.consentLink}>politique de confidentialité</Text> (RGPD).
             </Text>
-          </TouchableOpacity>
-          {errors.consentement && <Text style={styles.errorText}>{errors.consentement}</Text>}
-          {errors.consentement_rgpd && <Text style={styles.errorText}>{errors.consentement_rgpd}</Text>}
+          </Pressable>
+          {consentError ? (
+            <View style={styles.consentErrorRow}>
+              <Ionicons name="alert-circle" size={14} color={Colors.error} />
+              <Text style={styles.consentErrorText}>{consentError}</Text>
+            </View>
+          ) : null}
 
-          <TouchableOpacity style={[styles.button, loading && styles.buttonDisabled]} onPress={handleRegister} disabled={loading}>
-            <Text style={styles.buttonText}>{loading ? 'Inscription...' : 'S\'inscrire'}</Text>
-          </TouchableOpacity>
-
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Déjà un compte ? </Text>
-            <Link href="/auth/login" asChild>
-              <TouchableOpacity><Text style={styles.link}>Se connecter</Text></TouchableOpacity>
-            </Link>
+          <View style={styles.submit}>
+            <Button
+              title="Créer mon compte"
+              onPress={handleRegister}
+              loading={loading}
+              icon="person-add-outline"
+              fullWidth
+            />
           </View>
+        </Card>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Déjà un compte ?</Text>
+          <Button
+            title="Se connecter"
+            variant="tertiary"
+            size="sm"
+            onPress={() => router.push('/auth/login')}
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -131,27 +174,23 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.white },
-  scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
-  header: { alignItems: 'center', marginBottom: 32 },
-  logo: { fontSize: 36, fontWeight: '800', color: Colors.primary },
-  subtitle: { fontSize: 16, color: Colors.gray[500], marginTop: 8 },
-  form: { backgroundColor: Colors.gray[50], borderRadius: 4, padding: 24, borderWidth: 1, borderColor: Colors.gray[200] },
-  title: { fontSize: 24, fontWeight: '700', color: Colors.black, marginBottom: 24 },
-  row: { flexDirection: 'row' },
-  inputGroup: { marginBottom: 16 },
-  label: { fontSize: 14, fontWeight: '600', color: Colors.black, marginBottom: 6 },
-  input: { backgroundColor: Colors.gray[100], borderTopLeftRadius: 4, borderTopRightRadius: 4, borderBottomWidth: 2, borderBottomColor: Colors.black, paddingHorizontal: 16, paddingVertical: 14, fontSize: 16, color: Colors.black },
-  errorText: { color: Colors.error, marginTop: 4, fontSize: 12 },
-  consentRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginVertical: 12 },
-  checkbox: { width: 22, height: 22, borderRadius: 4, borderWidth: 2, borderColor: Colors.black, backgroundColor: Colors.white, justifyContent: 'center', alignItems: 'center', marginTop: 1 },
-  checkboxChecked: { backgroundColor: Colors.primary, borderColor: Colors.primary },
-  consentText: { flex: 1, fontSize: 13, color: Colors.black, lineHeight: 18 },
-  consentLink: { color: Colors.primary, fontWeight: '600', textDecorationLine: 'underline' },
-  button: { backgroundColor: Colors.primary, borderRadius: 4, paddingVertical: 16, alignItems: 'center', marginTop: 12 },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { fontSize: 16, fontWeight: '700', color: Colors.white },
-  footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 20 },
-  footerText: { color: Colors.gray[500], fontSize: 14 },
-  link: { color: Colors.primary, fontSize: 14, fontWeight: '600', textDecorationLine: 'underline' },
+  container: { flex: 1, backgroundColor: Colors.gray[50] },
+  scrollContent: { flexGrow: 1, justifyContent: 'center', padding: Spacing.xl },
+  nameRow: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md },
+  nameField: { flexGrow: 1, flexBasis: 130 },
+  consentRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: Spacing.sm,
+    paddingVertical: Spacing.sm,
+    minHeight: MIN_TOUCH,
+  },
+  consentIcon: { marginTop: 1 },
+  consentText: { flex: 1, fontSize: FontSize.xs, color: Colors.black, lineHeight: 19 },
+  consentLink: { color: Colors.primary, fontWeight: FontWeight.semibold, textDecorationLine: 'underline' },
+  consentErrorRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs, marginTop: Spacing.xs },
+  consentErrorText: { fontSize: FontSize.xs, color: Colors.error },
+  submit: { marginTop: Spacing.lg },
+  footer: { marginTop: Spacing.xl, alignItems: 'center' },
+  footerText: { fontSize: FontSize.sm, color: Colors.gray[500] },
 });

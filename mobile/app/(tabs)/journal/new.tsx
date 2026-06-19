@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useCreateSaisie } from '@/hooks/useTracker';
 import EmotionPicker from '@/components/EmotionPicker';
 import { Colors } from '@/lib/colors';
+import { Spacing, Radius, FontSize, FontWeight } from '@/lib/theme';
+import { Button, TextField } from '@/components/ui';
+
 export default function NewEntryScreen() {
   const router = useRouter();
   const createSaisie = useCreateSaisie();
@@ -22,11 +25,9 @@ export default function NewEntryScreen() {
         note: note.trim() || undefined,
         date_saisie: new Date().toISOString().split('T')[0],
       });
-      Alert.alert('Succès', 'Saisie enregistrée !', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
+      Alert.alert('Succès', 'Saisie enregistrée !', [{ text: 'OK', onPress: () => router.back() }]);
     } catch {
-      Alert.alert('Erreur', 'Impossible d\'enregistrer la saisie');
+      Alert.alert('Erreur', "Impossible d'enregistrer la saisie");
     }
   };
 
@@ -38,7 +39,7 @@ export default function NewEntryScreen() {
           <View key={s} style={styles.stepRow}>
             <View style={[styles.stepCircle, step >= s && styles.stepActive]}>
               {step > s ? (
-                <Ionicons name="checkmark" size={16} color={Colors.white} />
+                <Ionicons name="checkmark" size={18} color={Colors.white} />
               ) : (
                 <Text style={[styles.stepNumber, step >= s && styles.stepNumberActive]}>{s}</Text>
               )}
@@ -48,23 +49,23 @@ export default function NewEntryScreen() {
         ))}
       </View>
 
-      {/* Step 1: Emotion */}
+      {/* Step 1: Émotion */}
       {step === 1 && (
         <View>
           <Text style={styles.stepTitle}>Comment vous sentez-vous ?</Text>
           <EmotionPicker value={emotionId} onChange={setEmotionId} />
-          <TouchableOpacity
-            style={[styles.nextBtn, !emotionId && styles.btnDisabled]}
-            onPress={() => emotionId && setStep(2)}
-            disabled={!emotionId}
-          >
-            <Text style={styles.nextBtnText}>Suivant</Text>
-            <Ionicons name="arrow-forward" size={20} color={Colors.white} />
-          </TouchableOpacity>
+          <View style={styles.navRowEnd}>
+            <Button
+              title="Suivant"
+              icon="arrow-forward"
+              onPress={() => emotionId && setStep(2)}
+              disabled={!emotionId}
+            />
+          </View>
         </View>
       )}
 
-      {/* Step 2: Intensity */}
+      {/* Step 2: Intensité */}
       {step === 2 && (
         <View>
           <Text style={styles.stepTitle}>À quel point ressentez-vous cette émotion ?</Text>
@@ -72,37 +73,14 @@ export default function NewEntryScreen() {
             <Text style={styles.intensityValue}>{intensite}</Text>
             <Text style={styles.intensityLabel}>/10</Text>
           </View>
-          <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>Faible</Text>
-            <View style={styles.sliderWrapper}>
-              <View style={styles.nativeSlider}>
-                <View style={styles.sliderTrack}>
-                  <View style={[styles.sliderFill, { width: `${(intensite - 1) * 11.11}%` }]} />
-                </View>
-                <View style={styles.sliderButtons}>
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
-                    <TouchableOpacity
-                      key={v}
-                      style={[styles.sliderDot, intensite === v && styles.sliderDotActive]}
-                      onPress={() => setIntensite(v)}
-                    >
-                      <Text style={[styles.sliderDotText, intensite === v && styles.sliderDotTextActive]}>{v}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            </View>
-            <Text style={styles.sliderLabel}>Forte</Text>
+          <IntensityPicker value={intensite} onChange={setIntensite} />
+          <View style={styles.scaleLabels}>
+            <Text style={styles.scaleLabel}>Faible</Text>
+            <Text style={styles.scaleLabel}>Forte</Text>
           </View>
           <View style={styles.navRow}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => setStep(1)}>
-              <Ionicons name="arrow-back" size={20} color={Colors.primary} />
-              <Text style={styles.backBtnText}>Retour</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(3)}>
-              <Text style={styles.nextBtnText}>Suivant</Text>
-              <Ionicons name="arrow-forward" size={20} color={Colors.white} />
-            </TouchableOpacity>
+            <Button title="Retour" variant="secondary" icon="arrow-back" onPress={() => setStep(1)} />
+            <Button title="Suivant" icon="arrow-forward" onPress={() => setStep(3)} />
           </View>
         </View>
       )}
@@ -111,28 +89,22 @@ export default function NewEntryScreen() {
       {step === 3 && (
         <View>
           <Text style={styles.stepTitle}>Souhaitez-vous ajouter un commentaire ?</Text>
-          <TextInput
-            style={styles.textArea}
+          <TextField
+            label="Note (optionnel)"
             value={note}
             onChangeText={setNote}
-            placeholder="Décrivez ce que vous ressentez, ce qui a déclenché cette émotion..."
+            placeholder="Décrivez ce que vous ressentez, ce qui a déclenché cette émotion…"
             multiline
             numberOfLines={5}
-            textAlignVertical="top"
           />
           <View style={styles.navRow}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
-              <Ionicons name="arrow-back" size={20} color={Colors.primary} />
-              <Text style={styles.backBtnText}>Retour</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.submitBtn, createSaisie.isPending && styles.btnDisabled]}
+            <Button title="Retour" variant="secondary" icon="arrow-back" onPress={() => setStep(2)} />
+            <Button
+              title="Enregistrer"
+              icon="checkmark"
+              loading={createSaisie.isPending}
               onPress={handleSubmit}
-              disabled={createSaisie.isPending}
-            >
-              <Ionicons name="checkmark" size={20} color={Colors.white} />
-              <Text style={styles.nextBtnText}>{createSaisie.isPending ? 'Envoi...' : 'Enregistrer'}</Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
       )}
@@ -140,46 +112,68 @@ export default function NewEntryScreen() {
   );
 }
 
+/** Sélecteur d'intensité 1–10, boutons ≥40px, sur deux rangées (wrap). */
+export function IntensityPicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  return (
+    <View style={pickerStyles.grid}>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => {
+        const active = value === v;
+        return (
+          <TouchableOpacity
+            key={v}
+            style={[pickerStyles.dot, active && pickerStyles.dotActive]}
+            onPress={() => onChange(v)}
+            accessibilityLabel={`Intensité ${v}`}
+          >
+            <Text style={[pickerStyles.dotText, active && pickerStyles.dotTextActive]}>{v}</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
+const pickerStyles = StyleSheet.create({
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, justifyContent: 'center' },
+  dot: {
+    width: 44,
+    height: 44,
+    borderRadius: Radius.sm,
+    backgroundColor: Colors.gray[100],
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dotActive: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+  dotText: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.gray[500] },
+  dotTextActive: { color: Colors.white },
+});
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.white },
-  content: { padding: 20, paddingBottom: 40 },
-  stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 32 },
+  container: { flex: 1, backgroundColor: Colors.gray[50] },
+  content: { padding: Spacing.lg, paddingBottom: Spacing.xxxl },
+  stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: Spacing.xxl },
   stepRow: { flexDirection: 'row', alignItems: 'center' },
   stepCircle: {
-    width: 32, height: 32, borderRadius: 16, backgroundColor: Colors.gray[200],
-    justifyContent: 'center', alignItems: 'center',
+    width: 36,
+    height: 36,
+    borderRadius: Radius.pill,
+    backgroundColor: Colors.gray[200],
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   stepActive: { backgroundColor: Colors.primary },
-  stepNumber: { fontSize: 14, fontWeight: '700', color: Colors.gray[500] },
+  stepNumber: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[500] },
   stepNumberActive: { color: Colors.white },
-  stepLine: { width: 40, height: 3, backgroundColor: Colors.gray[200], marginHorizontal: 4 },
+  stepLine: { width: 40, height: 3, backgroundColor: Colors.gray[200], marginHorizontal: Spacing.xs },
   stepLineActive: { backgroundColor: Colors.primary },
-  stepTitle: { fontSize: 20, fontWeight: '700', color: Colors.black, marginBottom: 20 },
-  intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: 24 },
-  intensityValue: { fontSize: 64, fontWeight: '800', color: Colors.black },
-  intensityLabel: { fontSize: 24, color: Colors.gray[400], marginLeft: 4 },
-  sliderContainer: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 32 },
-  sliderLabel: { fontSize: 12, color: Colors.gray[400] },
-  sliderWrapper: { flex: 1 },
-  nativeSlider: {},
-  sliderTrack: { height: 6, backgroundColor: Colors.gray[200], borderRadius: 3, marginBottom: 8 },
-  sliderFill: { height: 6, backgroundColor: Colors.primary, borderRadius: 3 },
-  sliderButtons: { flexDirection: 'row', justifyContent: 'space-between' },
-  sliderDot: { width: 28, height: 28, borderRadius: 4, backgroundColor: Colors.gray[100], justifyContent: 'center', alignItems: 'center' },
-  sliderDotActive: { backgroundColor: Colors.primary },
-  sliderDotText: { fontSize: 12, fontWeight: '600', color: Colors.gray[500] },
-  sliderDotTextActive: { color: Colors.white },
-  textArea: {
-    backgroundColor: Colors.gray[100], borderTopLeftRadius: 4, borderTopRightRadius: 4,
-    borderBottomWidth: 2, borderBottomColor: Colors.black,
-    padding: 16, fontSize: 15, color: Colors.black,
-    minHeight: 120, marginBottom: 24,
-  },
-  navRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 },
-  backBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 20, borderRadius: 4, backgroundColor: Colors.white, borderWidth: 1, borderColor: Colors.primary },
-  backBtnText: { fontSize: 15, fontWeight: '600', color: Colors.primary },
-  nextBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 24, borderRadius: 4, backgroundColor: Colors.primary },
-  submitBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 14, paddingHorizontal: 24, borderRadius: 4, backgroundColor: Colors.primary },
-  nextBtnText: { fontSize: 15, fontWeight: '700', color: Colors.white },
-  btnDisabled: { opacity: 0.5 },
+  stepTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.black, marginBottom: Spacing.xl },
+  intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: Spacing.xl },
+  intensityValue: { fontSize: FontSize.display, fontWeight: FontWeight.heavy, color: Colors.primary, lineHeight: 60 },
+  intensityLabel: { fontSize: FontSize.xxl, color: Colors.gray[400], marginLeft: Spacing.xs },
+  scaleLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: Spacing.md, marginBottom: Spacing.xxl },
+  scaleLabel: { fontSize: FontSize.xs, color: Colors.gray[500] },
+  navRow: { flexDirection: 'row', justifyContent: 'space-between', gap: Spacing.md, marginTop: Spacing.md },
+  navRowEnd: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: Spacing.xl },
 });

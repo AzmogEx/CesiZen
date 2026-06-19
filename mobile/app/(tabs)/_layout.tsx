@@ -47,6 +47,7 @@ export default function TabLayout() {
         name="urgence"
         options={{
           title: 'Urgence',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <Ionicons name="call" size={size} color={color} />,
         }}
       />
@@ -54,6 +55,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Profil',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
       />

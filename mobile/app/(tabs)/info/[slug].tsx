@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useFeed } from '@/hooks/useFeeds';
 import { Colors } from '@/lib/colors';
+import { FontSize, FontWeight, Spacing } from '@/lib/theme';
+import { Badge, EmptyState, Loader } from '@/components/ui';
 
 export default function FeedDetailScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -10,17 +11,22 @@ export default function FeedDetailScreen() {
 
   if (isLoading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+      <View style={styles.fill}>
+        <Stack.Screen options={{ title: 'Article' }} />
+        <Loader label="Chargement de l'article…" />
       </View>
     );
   }
 
   if (isError || !feed) {
     return (
-      <View style={styles.centered}>
-        <Ionicons name="alert-circle-outline" size={48} color={Colors.gray[400]} />
-        <Text style={styles.errorText}>Article introuvable</Text>
+      <View style={styles.fill}>
+        <Stack.Screen options={{ title: 'Article' }} />
+        <EmptyState
+          icon="alert-circle-outline"
+          title="Article introuvable"
+          message="Cet article n'existe plus ou n'est pas accessible."
+        />
       </View>
     );
   }
@@ -28,34 +34,40 @@ export default function FeedDetailScreen() {
   const texteNettoye = (feed.contenu ?? '').replace(/<[^>]*>/g, '');
 
   return (
-    <>
-      <Stack.Screen options={{ title: feed.titre ?? '' }} />
+    <View style={styles.fill}>
+      <Stack.Screen options={{ title: feed.titre ?? 'Article' }} />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <View style={styles.badge}>
-          <Ionicons name="information-circle" size={14} color={Colors.primary} />
-          <Text style={styles.badgeText}>Information santé mentale</Text>
-        </View>
+        <Badge label="Information santé mentale" tone="primary" />
 
         <Text style={styles.title}>{feed.titre}</Text>
 
         <Text style={styles.date}>
-          Publié le {new Date(feed.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+          Publié le{' '}
+          {new Date(feed.created_at).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
         </Text>
 
         <Text style={styles.body}>{texteNettoye}</Text>
       </ScrollView>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.white },
-  content: { padding: 20, paddingBottom: 40 },
-  centered: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.white },
-  badge: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', backgroundColor: `${Colors.primary}15`, paddingHorizontal: 10, paddingVertical: 5, borderRadius: 4, marginBottom: 12 },
-  badgeText: { fontSize: 12, fontWeight: '600', color: Colors.primary },
-  title: { fontSize: 24, fontWeight: '800', color: Colors.black, marginBottom: 8, lineHeight: 30 },
-  date: { fontSize: 13, color: Colors.gray[400], marginBottom: 20 },
-  body: { fontSize: 15, lineHeight: 24, color: Colors.black },
-  errorText: { marginTop: 12, fontSize: 16, color: Colors.gray[400] },
+  fill: { flex: 1, backgroundColor: Colors.gray[50] },
+  container: { flex: 1, backgroundColor: Colors.gray[50] },
+  content: { padding: Spacing.xl, paddingBottom: Spacing.xxxl },
+  title: {
+    fontSize: FontSize.xxl,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    marginTop: Spacing.md,
+    marginBottom: Spacing.sm,
+    lineHeight: 30,
+  },
+  date: { fontSize: FontSize.xs, color: Colors.gray[400], marginBottom: Spacing.xl },
+  body: { fontSize: FontSize.body, lineHeight: 24, color: Colors.black },
 });

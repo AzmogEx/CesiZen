@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/lib/auth-store';
 import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
-import RepubliqueHeader from '@/components/RepubliqueHeader';
+import { FontSize, FontWeight, Radius, Spacing } from '@/lib/theme';
+import { AppBar, Button, Card, TextField } from '@/components/ui';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -12,18 +14,22 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
+    setError(null);
     if (!email || !password) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs');
+      setError('Veuillez remplir tous les champs.');
       return;
     }
     setLoading(true);
     try {
       await login(email, password);
       router.replace('/(tabs)');
-    } catch (error) {
-      Alert.alert('Erreur', getApiError(error).message || 'Identifiants incorrects');
+    } catch (err) {
+      const message = getApiError(err).message || 'Identifiants incorrects';
+      setError(message);
+      Alert.alert('Erreur', message);
     } finally {
       setLoading(false);
     }
@@ -31,62 +37,69 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <RepubliqueHeader />
+      <AppBar title="Connexion" subtitle="Accédez à votre espace personnel" />
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <View style={styles.header}>
-          <Text style={styles.logo}>CESIZen</Text>
-          <Text style={styles.subtitle}>Votre compagnon de santé mentale</Text>
+        <View style={styles.intro}>
+          <Text style={styles.welcome}>Bienvenue sur CESIZen</Text>
+          <Text style={styles.welcomeSub}>Votre compagnon de santé mentale.</Text>
         </View>
 
-        <View style={styles.form}>
-          <Text style={styles.title}>Connexion</Text>
+        <Card padding={Spacing.xl} elevated>
+          {error ? (
+            <View style={styles.errorBanner}>
+              <Ionicons name="alert-circle" size={18} color={Colors.error} />
+              <Text style={styles.errorBannerText}>{error}</Text>
+            </View>
+          ) : null}
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="votre@email.com"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </View>
+          <TextField
+            label="Email"
+            value={email}
+            onChangeText={(v) => { setEmail(v); setError(null); }}
+            placeholder="votre@email.com"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoComplete="email"
+            required
+          />
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mot de passe</Text>
-            <TextInput
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Votre mot de passe"
-              secureTextEntry
-            />
-          </View>
+          <TextField
+            label="Mot de passe"
+            value={password}
+            onChangeText={(v) => { setPassword(v); setError(null); }}
+            placeholder="Votre mot de passe"
+            secureTextEntry
+            autoComplete="password"
+            required
+          />
 
-          <TouchableOpacity
-            style={[styles.button, loading && styles.buttonDisabled]}
+          <Button
+            title="Se connecter"
             onPress={handleLogin}
-            disabled={loading}
-          >
-            <Text style={styles.buttonText}>{loading ? 'Connexion...' : 'Se connecter'}</Text>
-          </TouchableOpacity>
+            loading={loading}
+            icon="log-in-outline"
+            fullWidth
+          />
 
-          <Link href="/auth/forgot-password" asChild>
-            <TouchableOpacity style={styles.forgotLink}>
-              <Text style={styles.link}>Mot de passe oublié ?</Text>
-            </TouchableOpacity>
-          </Link>
-
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>Pas encore de compte ? </Text>
-            <Link href="/auth/register" asChild>
-              <TouchableOpacity>
-                <Text style={styles.link}>S'inscrire</Text>
-              </TouchableOpacity>
-            </Link>
+          <View style={styles.forgotRow}>
+            <Button
+              title="Mot de passe oublié ?"
+              variant="tertiary"
+              size="sm"
+              onPress={() => router.push('/auth/forgot-password')}
+            />
           </View>
+        </Card>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Pas encore de compte ?</Text>
+          <Button
+            title="Créer un compte"
+            variant="secondary"
+            onPress={() => router.push('/auth/register')}
+            icon="person-add-outline"
+            fullWidth
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -94,37 +107,24 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.white },
-  scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
-  header: { alignItems: 'center', marginBottom: 40 },
-  logo: { fontSize: 36, fontWeight: '800', color: Colors.primary },
-  subtitle: { fontSize: 16, color: Colors.gray[500], marginTop: 8 },
-  form: { backgroundColor: Colors.gray[50], borderRadius: 4, padding: 24, borderWidth: 1, borderColor: Colors.gray[200] },
-  title: { fontSize: 24, fontWeight: '700', color: Colors.black, marginBottom: 24 },
-  inputGroup: { marginBottom: 16 },
-  label: { fontSize: 14, fontWeight: '600', color: Colors.black, marginBottom: 6 },
-  input: {
-    backgroundColor: Colors.gray[100],
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.black,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 16,
-    color: Colors.black,
-  },
-  button: {
-    backgroundColor: Colors.primary,
-    borderRadius: 4,
-    paddingVertical: 16,
+  container: { flex: 1, backgroundColor: Colors.gray[50] },
+  scrollContent: { flexGrow: 1, justifyContent: 'center', padding: Spacing.xl },
+  intro: { alignItems: 'center', marginBottom: Spacing.xl },
+  welcome: { fontSize: FontSize.xxl, fontWeight: FontWeight.heavy, color: Colors.black, textAlign: 'center' },
+  welcomeSub: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: Spacing.xs, textAlign: 'center' },
+  errorBanner: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    gap: Spacing.sm,
+    backgroundColor: Colors.errorBg,
+    borderRadius: Radius.sm,
+    borderLeftWidth: 3,
+    borderLeftColor: Colors.error,
+    padding: Spacing.md,
+    marginBottom: Spacing.lg,
   },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { fontSize: 16, fontWeight: '700', color: Colors.white },
-  forgotLink: { alignItems: 'center', marginTop: 12 },
-  footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 16 },
-  footerText: { color: Colors.gray[500], fontSize: 14 },
-  link: { color: Colors.primary, fontSize: 14, fontWeight: '600', textDecorationLine: 'underline' },
+  errorBannerText: { flex: 1, fontSize: FontSize.xs, color: Colors.error, fontWeight: FontWeight.medium },
+  forgotRow: { alignItems: 'center', marginTop: Spacing.sm },
+  footer: { marginTop: Spacing.xl, alignItems: 'center' },
+  footerText: { fontSize: FontSize.sm, color: Colors.gray[500], marginBottom: Spacing.sm },
 });

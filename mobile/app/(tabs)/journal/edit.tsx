@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useSaisies, useUpdateSaisie } from '@/hooks/useTracker';
 import EmotionPicker from '@/components/EmotionPicker';
+import { IntensityPicker } from './new';
 import { Colors } from '@/lib/colors';
+import { Spacing, FontSize, FontWeight } from '@/lib/theme';
+import { Button, TextField, Loader } from '@/components/ui';
 
 export default function EditEntryScreen() {
   const router = useRouter();
@@ -38,126 +40,76 @@ export default function EditEntryScreen() {
         note: note.trim() || undefined,
         date_saisie: dateSaisie,
       });
-      Alert.alert('Succès', 'Saisie modifiée !', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
+      Alert.alert('Succès', 'Saisie modifiée !', [{ text: 'OK', onPress: () => router.back() }]);
     } catch {
       Alert.alert('Erreur', 'Impossible de modifier la saisie');
     }
   };
 
   if (!saisie) {
-    return (
-      <View style={styles.loading}>
-        <Text style={styles.loadingText}>Chargement...</Text>
-      </View>
-    );
+    return <Loader label="Chargement…" />;
   }
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Modifier la saisie</Text>
-
-      {/* Emotion */}
+      {/* Émotion */}
       <View style={styles.section}>
         <Text style={styles.label}>Émotion</Text>
         <EmotionPicker value={emotionId} onChange={setEmotionId} />
       </View>
 
-      {/* Intensite */}
+      {/* Intensité */}
       <View style={styles.section}>
         <Text style={styles.label}>Intensité</Text>
         <View style={styles.intensityContainer}>
           <Text style={styles.intensityValue}>{intensite}</Text>
           <Text style={styles.intensityUnit}>/10</Text>
         </View>
-        <View style={styles.sliderButtons}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
-            <TouchableOpacity
-              key={v}
-              style={[styles.sliderDot, intensite === v && styles.sliderDotActive]}
-              onPress={() => setIntensite(v)}
-            >
-              <Text style={[styles.sliderDotText, intensite === v && styles.sliderDotTextActive]}>{v}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <View style={styles.sliderLabels}>
-          <Text style={styles.sliderLabel}>Faible</Text>
-          <Text style={styles.sliderLabel}>Forte</Text>
+        <IntensityPicker value={intensite} onChange={setIntensite} />
+        <View style={styles.scaleLabels}>
+          <Text style={styles.scaleLabel}>Faible</Text>
+          <Text style={styles.scaleLabel}>Forte</Text>
         </View>
       </View>
 
       {/* Note */}
       <View style={styles.section}>
-        <Text style={styles.label}>Note (optionnel)</Text>
-        <TextInput
-          style={styles.textArea}
+        <TextField
+          label="Note (optionnel)"
           value={note}
           onChangeText={setNote}
-          placeholder="Décrivez ce que vous ressentez..."
+          placeholder="Décrivez ce que vous ressentez…"
           multiline
           numberOfLines={4}
-          textAlignVertical="top"
         />
       </View>
 
       {/* Actions */}
       <View style={styles.actionsRow}>
-        <TouchableOpacity style={styles.cancelBtn} onPress={() => router.back()}>
-          <Text style={styles.cancelBtnText}>Annuler</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.submitBtn, updateSaisie.isPending && styles.btnDisabled]}
+        <Button title="Annuler" variant="secondary" onPress={() => router.back()} style={styles.flex} />
+        <Button
+          title="Enregistrer"
+          icon="checkmark"
+          loading={updateSaisie.isPending}
+          disabled={!emotionId}
           onPress={handleSubmit}
-          disabled={updateSaisie.isPending || !emotionId}
-        >
-          <Ionicons name="checkmark" size={20} color={Colors.white} />
-          <Text style={styles.submitBtnText}>
-            {updateSaisie.isPending ? 'Envoi...' : 'Enregistrer'}
-          </Text>
-        </TouchableOpacity>
+          style={styles.flex}
+        />
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.white },
-  content: { padding: 20, paddingBottom: 40 },
-  loading: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  loadingText: { color: Colors.gray[400], fontSize: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: Colors.black, marginBottom: 24 },
-  section: { marginBottom: 24 },
-  label: { fontSize: 15, fontWeight: '700', color: Colors.black, marginBottom: 10 },
-  intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: 16 },
-  intensityValue: { fontSize: 48, fontWeight: '800', color: Colors.black },
-  intensityUnit: { fontSize: 20, color: Colors.gray[400], marginLeft: 4 },
-  sliderButtons: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  sliderDot: {
-    width: 28, height: 28, borderRadius: 4,
-    backgroundColor: Colors.gray[100], justifyContent: 'center', alignItems: 'center',
-  },
-  sliderDotActive: { backgroundColor: Colors.primary },
-  sliderDotText: { fontSize: 12, fontWeight: '600', color: Colors.gray[500] },
-  sliderDotTextActive: { color: Colors.white },
-  sliderLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  sliderLabel: { fontSize: 12, color: Colors.gray[400] },
-  textArea: {
-    backgroundColor: Colors.gray[100], borderTopLeftRadius: 4, borderTopRightRadius: 4,
-    borderBottomWidth: 2, borderBottomColor: Colors.black,
-    padding: 16, fontSize: 15, color: Colors.black, minHeight: 100,
-  },
-  actionsRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 8, gap: 12 },
-  cancelBtn: {
-    flex: 1, paddingVertical: 16, borderRadius: 4,
-    backgroundColor: Colors.white, alignItems: 'center', borderWidth: 1, borderColor: Colors.primary,
-  },
-  cancelBtnText: { fontSize: 15, fontWeight: '600', color: Colors.primary },
-  submitBtn: {
-    flex: 1, flexDirection: 'row', gap: 8, paddingVertical: 16, borderRadius: 4,
-    backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center',
-  },
-  submitBtnText: { fontSize: 15, fontWeight: '700', color: Colors.white },
-  btnDisabled: { opacity: 0.5 },
+  container: { flex: 1, backgroundColor: Colors.gray[50] },
+  content: { padding: Spacing.lg, paddingBottom: Spacing.xxxl },
+  section: { marginBottom: Spacing.xl },
+  label: { fontSize: FontSize.body, fontWeight: FontWeight.bold, color: Colors.black, marginBottom: Spacing.md },
+  intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: Spacing.lg },
+  intensityValue: { fontSize: FontSize.display, fontWeight: FontWeight.heavy, color: Colors.primary, lineHeight: 56 },
+  intensityUnit: { fontSize: FontSize.xl, color: Colors.gray[400], marginLeft: Spacing.xs },
+  scaleLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: Spacing.md },
+  scaleLabel: { fontSize: FontSize.xs, color: Colors.gray[500] },
+  actionsRow: { flexDirection: 'row', justifyContent: 'space-between', gap: Spacing.md, marginTop: Spacing.sm },
+  flex: { flex: 1 },
 });
