@@ -22,7 +22,7 @@ export default function NewEntryScreen() {
         note: note.trim() || undefined,
         date_saisie: new Date().toISOString().split('T')[0],
       });
-      Alert.alert('Succes', 'Saisie enregistree !', [
+      Alert.alert('Succès', 'Saisie enregistrée !', [
         { text: 'OK', onPress: () => router.back() },
       ]);
     } catch {
@@ -67,7 +67,7 @@ export default function NewEntryScreen() {
       {/* Step 2: Intensity */}
       {step === 2 && (
         <View>
-          <Text style={styles.stepTitle}>A quel point ressentez-vous cette emotion ?</Text>
+          <Text style={styles.stepTitle}>À quel point ressentez-vous cette émotion ?</Text>
           <View style={styles.intensityContainer}>
             <Text style={styles.intensityValue}>{intensite}</Text>
             <Text style={styles.intensityLabel}>/10</Text>
@@ -115,7 +115,7 @@ export default function NewEntryScreen() {
             style={styles.textArea}
             value={note}
             onChangeText={setNote}
-            placeholder="Decrivez ce que vous ressentez, ce qui a declenche cette emotion..."
+            placeholder="Décrivez ce que vous ressentez, ce qui a déclenché cette émotion..."
             multiline
             numberOfLines={5}
             textAlignVertical="top"

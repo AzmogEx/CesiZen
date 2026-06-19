@@ -10,3 +10,16 @@
   border: 1px solid var(--border-default-grey);
   border-radius: 0.25rem;
 }
+
+/* Bouton d'action destructive (rouge) — le DSFR ne fournit pas de variante
+   « danger » native, on surcharge donc les couleurs avec les tokens d'erreur. */
+.fr-btn.app-btn--danger {
+  color: var(--text-inverted-grey);
+  background-color: var(--background-action-high-error);
+}
+.fr-btn.app-btn--danger:hover {
+  background-color: var(--background-action-high-error-hover);
+}
+.fr-btn.app-btn--danger:active {
+  background-color: var(--background-action-high-error-active);
+}

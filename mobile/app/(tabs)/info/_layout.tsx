@@ -7,7 +7,7 @@ export default function InfoLayout() {
       screenOptions={{
         headerStyle: { backgroundColor: Colors.white },
         headerTitleStyle: { fontWeight: '700', color: Colors.black },
-        headerTintColor: Colors.secondary,
+        headerTintColor: Colors.primary,
       }}
     >
       <Stack.Screen name="index" options={{ title: 'Infos' }} />

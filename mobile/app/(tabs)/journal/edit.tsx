@@ -38,7 +38,7 @@ export default function EditEntryScreen() {
         note: note.trim() || undefined,
         date_saisie: dateSaisie,
       });
-      Alert.alert('Succes', 'Saisie modifiee !', [
+      Alert.alert('Succès', 'Saisie modifiée !', [
         { text: 'OK', onPress: () => router.back() },
       ]);
     } catch {
@@ -60,13 +60,13 @@ export default function EditEntryScreen() {
 
       {/* Emotion */}
       <View style={styles.section}>
-        <Text style={styles.label}>Emotion</Text>
+        <Text style={styles.label}>Émotion</Text>
         <EmotionPicker value={emotionId} onChange={setEmotionId} />
       </View>
 
       {/* Intensite */}
       <View style={styles.section}>
-        <Text style={styles.label}>Intensite</Text>
+        <Text style={styles.label}>Intensité</Text>
         <View style={styles.intensityContainer}>
           <Text style={styles.intensityValue}>{intensite}</Text>
           <Text style={styles.intensityUnit}>/10</Text>
@@ -95,7 +95,7 @@ export default function EditEntryScreen() {
           style={styles.textArea}
           value={note}
           onChangeText={setNote}
-          placeholder="Decrivez ce que vous ressentez..."
+          placeholder="Décrivez ce que vous ressentez..."
           multiline
           numberOfLines={4}
           textAlignVertical="top"

@@ -9,10 +9,10 @@ export default function ProfileScreen() {
   const { user, logout } = useAuthStore();
 
   const handleLogout = () => {
-    Alert.alert('Deconnexion', 'Voulez-vous vous deconnecter ?', [
+    Alert.alert('Déconnexion', 'Voulez-vous vous déconnecter ?', [
       { text: 'Annuler', style: 'cancel' },
       {
-        text: 'Se deconnecter',
+        text: 'Se déconnecter',
         style: 'destructive',
         onPress: async () => {
           await logout();
@@ -44,14 +44,14 @@ export default function ProfileScreen() {
         <View style={styles.menuCard}>
           <MenuItem icon="person-outline" label="Informations personnelles" />
           <MenuItem icon="lock-closed-outline" label="Changer le mot de passe" />
-          <MenuItem icon="shield-checkmark-outline" label="Donnees personnelles (RGPD)" />
+          <MenuItem icon="shield-checkmark-outline" label="Données personnelles (RGPD)" />
         </View>
       </View>
 
       <View style={styles.menuSection}>
         <Text style={styles.sectionTitle}>Application</Text>
         <View style={styles.menuCard}>
-          <MenuItem icon="information-circle-outline" label="A propos de CESIZen" />
+          <MenuItem icon="information-circle-outline" label="À propos de CESIZen" />
           <MenuItem icon="document-text-outline" label="Conditions d'utilisation" />
         </View>
       </View>
@@ -59,7 +59,7 @@ export default function ProfileScreen() {
       {/* Logout */}
       <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
         <Ionicons name="log-out-outline" size={20} color={Colors.error} />
-        <Text style={styles.logoutText}>Se deconnecter</Text>
+        <Text style={styles.logoutText}>Se déconnecter</Text>
       </TouchableOpacity>
 
       <Text style={styles.version}>CESIZen v1.0.0</Text>

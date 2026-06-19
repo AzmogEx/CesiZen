@@ -49,7 +49,7 @@ export default function DashboardScreen() {
             </View>
             <View style={styles.statCard}>
               <Text style={styles.statValue}>{rapport.stats.intensite_moyenne?.toFixed(1) || '—'}</Text>
-              <Text style={styles.statLabel}>Intensite moy.</Text>
+              <Text style={styles.statLabel}>Intensité moy.</Text>
             </View>
             <View style={styles.statCard}>
               <Text style={styles.statValue}>{rapport.stats.emotion_dominante?.icone || '—'}</Text>
@@ -63,7 +63,7 @@ export default function DashboardScreen() {
       {recentSaisies.length > 0 && (
         <View style={styles.recentContainer}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Dernieres emotions</Text>
+            <Text style={styles.sectionTitle}>Dernières émotions</Text>
             <TouchableOpacity onPress={() => router.push('/(tabs)/journal')}>
               <Text style={styles.seeAll}>Tout voir</Text>
             </TouchableOpacity>
@@ -76,7 +76,7 @@ export default function DashboardScreen() {
               <View style={styles.saisieContent}>
                 <Text style={styles.saisieEmotion}>{saisie.emotion?.nom}</Text>
                 <Text style={styles.saisieDate}>
-                  {new Date(saisie.date_saisie).toLocaleDateString('fr-FR')} — Intensite: {saisie.intensite}/10
+                  {new Date(saisie.date_saisie).toLocaleDateString('fr-FR')} — Intensité: {saisie.intensite}/10
                 </Text>
               </View>
             </View>

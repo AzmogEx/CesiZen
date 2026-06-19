@@ -25,10 +25,10 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
     return (
       <View>
         <TouchableOpacity style={styles.backBtn} onPress={() => setSelectedParent(null)}>
-          <Text style={styles.backText}>← Retour aux emotions</Text>
+          <Text style={styles.backText}>← Retour aux émotions</Text>
         </TouchableOpacity>
         <Text style={styles.subTitle}>
-          Precisez votre emotion de{' '}
+          Précisez votre émotion de{' '}
           <Text style={{ color: selectedParent.couleur, fontWeight: '700' }}>{selectedParent.nom}</Text> :
         </Text>
         <View style={styles.grid}>

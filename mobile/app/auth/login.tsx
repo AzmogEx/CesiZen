@@ -35,7 +35,7 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.header}>
           <Text style={styles.logo}>CESIZen</Text>
-          <Text style={styles.subtitle}>Votre compagnon de sante mentale</Text>
+          <Text style={styles.subtitle}>Votre compagnon de santé mentale</Text>
         </View>
 
         <View style={styles.form}>

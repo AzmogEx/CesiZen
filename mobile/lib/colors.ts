@@ -6,9 +6,9 @@ export const Colors = {
   primary: '#000091',
   primaryDark: '#1212FF', // bleu survol / accent
   blueFranceSun: '#6A6AF4',
-  // Rouge Marianne — accent institutionnel / alertes
-  secondary: '#000091', // conservé en bleu pour les accents secondaires institutionnels
-  secondaryDark: '#1212FF',
+  // Rouge Marianne — accent institutionnel secondaire (DSFR officiel)
+  secondary: '#E1000F',
+  secondaryDark: '#C9000E',
   rougeMarianne: '#E1000F',
   black: '#161616', // texte principal DSFR
   white: '#FFFFFF',

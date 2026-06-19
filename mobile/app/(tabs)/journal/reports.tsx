@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { useRapport } from '@/hooks/useRapport';
 import { Colors } from '@/lib/colors';
+import EmotionPieChart from '@/components/EmotionPieChart';
 
 type Period = 'week' | 'month' | 'quarter' | 'year';
 
@@ -10,7 +11,7 @@ const PERIODS: { value: Period; label: string }[] = [
   { value: 'week', label: 'Semaine' },
   { value: 'month', label: 'Mois' },
   { value: 'quarter', label: 'Trimestre' },
-  { value: 'year', label: 'Annee' },
+  { value: 'year', label: 'Année' },
 ];
 
 export default function ReportsScreen() {
@@ -50,10 +51,10 @@ export default function ReportsScreen() {
             <View style={styles.statCard}>
               <Ionicons name="trending-up" size={20} color={Colors.secondary} />
               <Text style={styles.statValue}>{rapport.stats.intensite_moyenne?.toFixed(1) || '—'}</Text>
-              <Text style={styles.statLabel}>Intensite moy.</Text>
+              <Text style={styles.statLabel}>Intensité moy.</Text>
             </View>
             <View style={styles.statCard}>
-              <Ionicons name="heart" size={20} color={Colors.rougeMarianne} />
+              <Ionicons name="heart" size={20} color={rapport.stats.emotion_dominante?.couleur || Colors.blueFranceSun} />
               <Text style={styles.statValue}>{rapport.stats.emotion_dominante?.icone || '—'}</Text>
               <Text style={styles.statLabel}>{rapport.stats.emotion_dominante?.nom || 'Aucune'}</Text>
             </View>
@@ -69,7 +70,19 @@ export default function ReportsScreen() {
           {/* Repartition */}
           {rapport.repartition.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Repartition des emotions</Text>
+              <Text style={styles.sectionTitle}>Répartition des émotions</Text>
+
+              {/* Camembert (donut) — équivalent mobile du graphique Recharts du web */}
+              <EmotionPieChart
+                data={rapport.repartition.map((item) => ({
+                  nom: item.nom,
+                  couleur: item.couleur,
+                  count: item.count,
+                  pourcentage: item.pourcentage,
+                }))}
+              />
+
+              <Text style={styles.subSectionTitle}>Détail par émotion</Text>
               {rapport.repartition.map((item) => (
                 <View key={item.nom} style={styles.repartitionItem}>
                   <View style={styles.repartitionHeader}>
@@ -92,7 +105,7 @@ export default function ReportsScreen() {
       ) : (
         <View style={styles.empty}>
           <Ionicons name="bar-chart-outline" size={48} color={Colors.gray[300]} />
-          <Text style={styles.emptyText}>Pas de donnees pour cette periode</Text>
+          <Text style={styles.emptyText}>Pas de données pour cette période</Text>
         </View>
       )}
     </ScrollView>
@@ -120,6 +133,7 @@ const styles = StyleSheet.create({
   periodInfoText: { fontSize: 13, color: Colors.gray[400], textAlign: 'center' },
   section: { marginBottom: 24 },
   sectionTitle: { fontSize: 18, fontWeight: '700', color: Colors.black, marginBottom: 16 },
+  subSectionTitle: { fontSize: 14, fontWeight: '700', color: Colors.gray[600], marginBottom: 12, marginTop: 4 },
   repartitionItem: { marginBottom: 16 },
   repartitionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
   colorDot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },

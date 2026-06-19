@@ -45,7 +45,7 @@ export default function JournalScreen() {
           <View style={[styles.badge, { backgroundColor: `${item.emotion?.couleur}20` }]}>
             <Text style={[styles.badgeText, { color: item.emotion?.couleur }]}>{item.emotion?.nom}</Text>
           </View>
-          <Text style={styles.intensityText}>Intensite: {item.intensite}/10</Text>
+          <Text style={styles.intensityText}>Intensité: {item.intensite}/10</Text>
         </View>
         <View style={styles.intensityBar}>
           <View style={[styles.intensityFill, { width: `${item.intensite * 10}%`, backgroundColor: item.emotion?.couleur || Colors.primary }]} />
@@ -76,7 +76,7 @@ export default function JournalScreen() {
           <View style={styles.empty}>
             <Ionicons name="book-outline" size={48} color={Colors.gray[300]} />
             <Text style={styles.emptyTitle}>Aucune saisie</Text>
-            <Text style={styles.emptyText}>Commencez par enregistrer votre premiere emotion</Text>
+            <Text style={styles.emptyText}>Commencez par enregistrer votre première émotion</Text>
           </View>
         }
       />

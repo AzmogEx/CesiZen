@@ -13,7 +13,7 @@
 - **6** émotions de base **+ 36** sous-émotions (référentiel du sujet)
 - **8** entités au MCD · **1** API REST → **2** clients (web + mobile)
 - JWT **60 min** + refresh · throttle login **5/min**
-- **25** tests automatisés (15 back + 6 front + 4 mobile)
+- **29** tests automatisés (19 back + 6 front + 4 mobile)
 - **DSFR** : interface au Système de Design de l'État (charte gouv.fr) — web + mobile
 - **Déployé en ligne** : https://cesizen.cleanows.fr (Docker + HTTPS, vrai service en prod)
 - Contraintes sujet : budget **75 000 €**, livraison **12 mois**
@@ -57,11 +57,11 @@
 
 **16:00–17:30 · RGPD & sécurité (slide 13)**
 - Données de santé = sensibles (art. 9) · consentement · droits CNIL (export/anonymisation)
-- bcrypt (mdp) · soft delete · table audits · AES-256 prévu en prod HDS · TLS
+- bcrypt (mdp) · soft delete · **table audits alimentée** (observers Eloquent : création/modif/suppression tracées) · AES-256 prévu en prod HDS · TLS
 - ➡️ *« Tout cela est concrétisé par un prototype. »*
 
 **17:30–19:00 · Prototype & perspectives (slide 14)**
-- Stack réelle : Laravel + Next.js + Expo + Docker · **25 tests automatisés**
+- Stack réelle : Laravel + Next.js + Expo + Docker · **29 tests automatisés**
 - **Déployé en ligne** : https://cesizen.cleanows.fr (Coolify, conteneurs Docker, HTTPS) → *« ce n'est pas qu'une maquette, c'est en production »*
 - Ouverture : activer les modules écartés sans réécrire · Mon Espace Santé (FHIR) · Open Data
 
@@ -100,8 +100,10 @@
 - **Données sensibles / RGPD ?** → consentement · droits CNIL implémentés · HDS · bcrypt + AES prévu
 - **Soft delete vs anonymisation ?** → soft delete = réversible 30j ; anonymisation = dissocie identité
 - **JWT, risques ?** → stateless/scalable · expiration courte + refresh · throttle anti-bruteforce · MFA prévu
+- **Où est stocké le token ?** → mobile = SecureStore (chiffré OS) · web = localStorage (limite XSS assumée, cible = cookie HttpOnly en v2)
+- **Traçabilité ?** → table audits **réellement alimentée** par observers Eloquent (qui/quoi/quand : action, table, anciennes/nouvelles valeurs, IP) · mdp jamais loggé
 - **Scalabilité 5000 users ?** → API stateless · index Postgres · pagination · cache TanStack Query
-- **Réellement développé ?** → prototype 3 modules (API+web+mobile) + 25 tests automatisés · **déployé en ligne** (Coolify/Docker/HTTPS)
+- **Réellement développé ?** → prototype 3 modules (API+web+mobile) + 29 tests automatisés · **déployé en ligne** (Coolify/Docker/HTTPS)
 - **Pourquoi le DSFR ?** → service de l'État → charte obligatoire gouv.fr · accessibilité RGAA native · cohérence + confiance · gain de temps (composants prêts)
 - **Vraiment en production ?** → oui : https://cesizen.cleanows.fr · conteneurs Docker · base PostgreSQL · CI de build · HTTPS
 
