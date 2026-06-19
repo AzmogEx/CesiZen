@@ -1,4 +1,11 @@
-import { Pressable, StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  type AccessibilityRole,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import { Colors } from '@/lib/colors';
 import { Radius, Shadow, Spacing } from '@/lib/theme';
 
@@ -9,18 +16,31 @@ interface CardProps {
   padding?: number;
   /** Légère ombre portée. */
   elevated?: boolean;
+  /** Libellé d'accessibilité (lecteurs d'écran), utile sur une carte cliquable. */
+  accessibilityLabel?: string;
+  /** Rôle d'accessibilité (défaut « button » si cliquable). */
+  accessibilityRole?: AccessibilityRole;
   style?: StyleProp<ViewStyle>;
 }
 
 /** Conteneur DSFR : fond blanc, bordure grise fine, coins peu arrondis. */
-export default function Card({ children, onPress, padding = Spacing.lg, elevated = false, style }: CardProps) {
+export default function Card({
+  children,
+  onPress,
+  padding = Spacing.lg,
+  elevated = false,
+  accessibilityLabel,
+  accessibilityRole,
+  style,
+}: CardProps) {
   const content = [styles.card, { padding }, elevated && Shadow.card, style];
 
   if (onPress) {
     return (
       <Pressable
         onPress={onPress}
-        accessibilityRole="button"
+        accessibilityRole={accessibilityRole ?? 'button'}
+        accessibilityLabel={accessibilityLabel}
         style={({ pressed }) => [content, pressed && styles.pressed]}
       >
         {children}
@@ -28,7 +48,11 @@ export default function Card({ children, onPress, padding = Spacing.lg, elevated
     );
   }
 
-  return <View style={content}>{children}</View>;
+  return (
+    <View style={content} accessibilityRole={accessibilityRole} accessibilityLabel={accessibilityLabel}>
+      {children}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

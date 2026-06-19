@@ -15,8 +15,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { Button, Card, EmptyState, Loader, SectionTitle, TextField } from '@/components/ui';
 import { useAdminEmotions, useSaveEmotion, useDeleteEmotion } from '@/hooks/useAdmin';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, HIT_SLOP, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, HIT_SLOP, MIN_TOUCH, Radius, Spacing, Tint } from '@/lib/theme';
 import type { Emotion } from '@/types';
+
+/** Voile sombre derrière la modale (noir DSFR à 40 % d'opacité). */
+const OVERLAY = 'rgba(22, 22, 22, 0.4)';
+/** Format hexadécimal #RRGGBB attendu pour une couleur d'émotion. */
+const HEX_RE = /^#([0-9A-Fa-f]{6})$/;
+/** Diamètre de la pastille de couleur d'une émotion en liste. */
+const PASTILLE = 36;
+/** Côté de l'aperçu de couleur dans le formulaire (cible tactile). */
+const APERCU = MIN_TOUCH;
+/** Diamètre de la pastille de couleur d'une émotion parente (chip). */
+const PARENT_DOT = 14;
 
 interface FormState {
   id?: number;
@@ -28,7 +39,7 @@ interface FormState {
   est_actif: boolean;
 }
 
-const FORM_VIDE: FormState = { nom: '', couleur: '#000091', icone: '', niveau: 1, parent_id: null, est_actif: true };
+const FORM_VIDE: FormState = { nom: '', couleur: Colors.primary, icone: '', niveau: 1, parent_id: null, est_actif: true };
 
 function messageErreur(e: unknown, defaut: string): string {
   const err = e as { response?: { data?: { message?: string } } };
@@ -83,7 +94,7 @@ export default function AdminEmotionsScreen() {
       Alert.alert('Champs requis', 'Le nom est obligatoire.');
       return;
     }
-    if (!/^#([0-9A-Fa-f]{6})$/.test(form.couleur.trim())) {
+    if (!HEX_RE.test(form.couleur.trim())) {
       Alert.alert('Couleur', 'Saisissez une couleur hexadécimale (ex. #000091).');
       return;
     }
@@ -127,7 +138,7 @@ export default function AdminEmotionsScreen() {
   const renderEmotion = (e: Emotion, estEnfant: boolean) => (
     <Card key={e.id} style={[styles.emotionCard, estEnfant && styles.emotionEnfant]}>
       <View style={styles.emotionRow}>
-        <View style={[styles.pastille, { backgroundColor: e.couleur }]}>
+        <View style={[styles.pastille, { backgroundColor: e.couleur }]} accessibilityElementsHidden>
           {e.icone ? <Text style={styles.pastilleIcone}>{e.icone}</Text> : null}
         </View>
         <View style={styles.emotionInfo}>
@@ -195,7 +206,12 @@ export default function AdminEmotionsScreen() {
                     required
                   />
                 </View>
-                <View style={[styles.couleurApercu, { backgroundColor: /^#([0-9A-Fa-f]{6})$/.test(form.couleur) ? form.couleur : Colors.gray[200] }]} />
+                <View
+                  style={[
+                    styles.couleurApercu,
+                    { backgroundColor: HEX_RE.test(form.couleur) ? form.couleur : Colors.gray[200] },
+                  ]}
+                />
               </View>
               <TextField
                 label="Icône (emoji, optionnel)"
@@ -206,8 +222,10 @@ export default function AdminEmotionsScreen() {
               />
 
               <Text style={styles.fieldLabel}>Niveau</Text>
-              <View style={styles.segment}>
+              <View style={styles.segment} accessibilityRole="radiogroup">
                 <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: form.niveau === 1 }}
                   style={[styles.segmentItem, form.niveau === 1 && styles.segmentItemActive]}
                   onPress={() => setForm((f) => ({ ...f, niveau: 1, parent_id: null }))}
                 >
@@ -216,6 +234,8 @@ export default function AdminEmotionsScreen() {
                   </Text>
                 </Pressable>
                 <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: form.niveau === 2 }}
                   style={[styles.segmentItem, form.niveau === 2 && styles.segmentItemActive]}
                   onPress={() => setForm((f) => ({ ...f, niveau: 2 }))}
                 >
@@ -228,7 +248,7 @@ export default function AdminEmotionsScreen() {
               {form.niveau === 2 ? (
                 <>
                   <Text style={styles.fieldLabel}>Émotion parente</Text>
-                  <View style={styles.parentList}>
+                  <View style={styles.parentList} accessibilityRole="radiogroup">
                     {parents.length === 0 ? (
                       <Text style={styles.switchHelper}>Aucune émotion de niveau 1 disponible.</Text>
                     ) : (
@@ -237,6 +257,9 @@ export default function AdminEmotionsScreen() {
                         return (
                           <Pressable
                             key={p.id}
+                            accessibilityRole="radio"
+                            accessibilityState={{ selected: actif }}
+                            accessibilityLabel={p.nom}
                             style={[styles.parentChip, actif && styles.parentChipActive]}
                             onPress={() => setForm((f) => ({ ...f, parent_id: p.id }))}
                           >
@@ -260,6 +283,7 @@ export default function AdminEmotionsScreen() {
                 <Switch
                   value={form.est_actif}
                   onValueChange={(v) => setForm((f) => ({ ...f, est_actif: v }))}
+                  accessibilityLabel="Émotion active dans le tracker"
                   trackColor={{ true: Colors.primary, false: Colors.gray[300] }}
                   thumbColor={Colors.white}
                 />
@@ -285,13 +309,21 @@ const styles = StyleSheet.create({
   emotionCard: { padding: Spacing.md, gap: Spacing.sm },
   emotionEnfant: { marginLeft: Spacing.xl, borderColor: Colors.gray[100] },
   emotionRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  pastille: { width: 36, height: 36, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
-  pastilleIcone: { fontSize: 18 },
+  pastille: {
+    width: PASTILLE,
+    height: PASTILLE,
+    borderRadius: Radius.pill,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pastilleIcone: { fontSize: FontSize.lg },
   emotionInfo: { flex: 1 },
   emotionNom: { fontSize: FontSize.md, fontWeight: FontWeight.semibold, color: Colors.black },
   emotionMeta: { fontSize: FontSize.xs, color: Colors.gray[500], marginTop: 2 },
   actions: { flexDirection: 'row', gap: Spacing.sm },
-  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(22,22,22,0.4)' },
+  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: OVERLAY },
   modalSheet: {
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.md,
@@ -312,12 +344,12 @@ const styles = StyleSheet.create({
   couleurRow: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.md },
   couleurField: { flex: 1 },
   couleurApercu: {
-    width: 44,
-    height: 44,
+    width: APERCU,
+    height: APERCU,
     borderRadius: Radius.sm,
     borderWidth: 1,
     borderColor: Colors.gray[200],
-    marginTop: 24,
+    marginTop: Spacing.xl,
   },
   segment: {
     flexDirection: 'row',
@@ -344,8 +376,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     minHeight: 44,
   },
-  parentChipActive: { borderColor: Colors.primary, backgroundColor: '#E3E3FD' },
-  parentDot: { width: 14, height: 14, borderRadius: Radius.pill },
+  parentChipActive: { borderColor: Colors.primary, backgroundColor: Tint.primary },
+  parentDot: {
+    width: PARENT_DOT,
+    height: PARENT_DOT,
+    borderRadius: Radius.pill,
+    borderWidth: 1,
+    borderColor: Colors.gray[200],
+  },
   parentChipText: { fontSize: FontSize.sm, color: Colors.gray[600] },
   parentChipTextActive: { color: Colors.primary, fontWeight: FontWeight.semibold },
   switchRow: {

@@ -4,7 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { Card, SectionTitle } from '@/components/ui';
 import { useAdminUtilisateurs, useAdminFeeds, useAdminEmotions } from '@/hooks/useAdmin';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, MIN_TOUCH, Radius, Spacing, Tint } from '@/lib/theme';
+
+/** Diamètre du rond d'icône de section (cible tactile confortable). */
+const ICON_CIRCLE = 48;
+/** Largeur minimale de la pastille compteur (alignement des chiffres). */
+const COUNT_MIN_WIDTH = MIN_TOUCH / 2;
 
 interface HubItem {
   href: '/admin/utilisateurs' | '/admin/contenus' | '/admin/emotions';
@@ -83,10 +88,10 @@ const styles = StyleSheet.create({
   card: { padding: Spacing.lg },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   iconCircle: {
-    width: 48,
-    height: 48,
+    width: ICON_CIRCLE,
+    height: ICON_CIRCLE,
     borderRadius: Radius.md,
-    backgroundColor: '#E3E3FD',
+    backgroundColor: Tint.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.sm,
     fontWeight: FontWeight.bold,
     color: Colors.primary,
-    minWidth: 22,
+    minWidth: COUNT_MIN_WIDTH,
     textAlign: 'right',
   },
 });

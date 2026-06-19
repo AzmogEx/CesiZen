@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, LetterSpacing, LineHeight, Spacing } from '@/lib/theme';
 
 interface AppBarProps {
   /** Titre de la page, affiché sous le bandeau institutionnel. */
@@ -17,7 +17,7 @@ interface AppBarProps {
  */
 export default function AppBar({ title, subtitle, right }: AppBarProps) {
   return (
-    <View style={styles.wrapper}>
+    <View style={styles.wrapper} accessibilityRole="header">
       <View style={styles.brandRow}>
         <View style={styles.marianne}>
           <Text style={styles.republique}>RÉPUBLIQUE</Text>
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     fontSize: FontSize.tiny,
     fontWeight: FontWeight.bold,
     color: Colors.black,
-    letterSpacing: 0.5,
-    lineHeight: 13,
+    letterSpacing: LetterSpacing.sm,
+    lineHeight: LineHeight.tight,
   },
   serviceBlock: { flex: 1 },
   serviceName: { fontSize: FontSize.lg, fontWeight: FontWeight.heavy, color: Colors.primary },
-  serviceTagline: { fontSize: FontSize.tiny, color: Colors.gray[500], marginTop: 1 },
+  serviceTagline: { fontSize: FontSize.tiny, color: Colors.gray[500], marginTop: Spacing.xs / 4 },
   right: { marginLeft: Spacing.sm },
   titleRow: {
     paddingHorizontal: Spacing.lg,
@@ -74,5 +74,5 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.xs,
   },
   title: { fontSize: FontSize.xxl, fontWeight: FontWeight.bold, color: Colors.black },
-  subtitle: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: 2 },
+  subtitle: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: Spacing.xs / 2 },
 });

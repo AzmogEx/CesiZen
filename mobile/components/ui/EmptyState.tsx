@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, ICON_CIRCLE, IconSize, LineHeight, Radius, Spacing, Tint } from '@/lib/theme';
 import Button from './Button';
 
 interface EmptyStateProps {
@@ -17,7 +17,7 @@ export default function EmptyState({ icon = 'document-text-outline', title, mess
   return (
     <View style={styles.container}>
       <View style={styles.iconCircle}>
-        <Ionicons name={icon} size={32} color={Colors.primary} />
+        <Ionicons name={icon} size={IconSize.xl} color={Colors.primary} />
       </View>
       <Text style={styles.title}>{title}</Text>
       {message ? <Text style={styles.message}>{message}</Text> : null}
@@ -33,15 +33,15 @@ export default function EmptyState({ icon = 'document-text-outline', title, mess
 const styles = StyleSheet.create({
   container: { alignItems: 'center', justifyContent: 'center', paddingVertical: Spacing.xxxl, paddingHorizontal: Spacing.xl },
   iconCircle: {
-    width: 72,
-    height: 72,
+    width: ICON_CIRCLE,
+    height: ICON_CIRCLE,
     borderRadius: Radius.pill,
-    backgroundColor: '#E3E3FD',
+    backgroundColor: Tint.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: Spacing.lg,
   },
   title: { fontSize: FontSize.lg, fontWeight: FontWeight.bold, color: Colors.black, textAlign: 'center' },
-  message: { fontSize: FontSize.sm, color: Colors.gray[500], textAlign: 'center', marginTop: Spacing.sm, lineHeight: 20 },
+  message: { fontSize: FontSize.sm, color: Colors.gray[500], textAlign: 'center', marginTop: Spacing.sm, lineHeight: LineHeight.normal },
   action: { marginTop: Spacing.xl },
 });

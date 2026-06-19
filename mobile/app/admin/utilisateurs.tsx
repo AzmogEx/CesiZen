@@ -26,6 +26,9 @@ import type { Utilisateur } from '@/types';
 const ROLE_MEMBRE = 2;
 const ROLE_ADMIN = 3;
 
+/** Voile sombre derrière la modale (noir DSFR à 40 % d'opacité). */
+const OVERLAY = 'rgba(22, 22, 22, 0.4)';
+
 interface FormState {
   prenom: string;
   nom: string;
@@ -192,8 +195,10 @@ export default function AdminUtilisateursScreen() {
               />
 
               <Text style={styles.fieldLabel}>Rôle</Text>
-              <View style={styles.segment}>
+              <View style={styles.segment} accessibilityRole="radiogroup">
                 <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: form.role_id === ROLE_MEMBRE }}
                   style={[styles.segmentItem, form.role_id === ROLE_MEMBRE && styles.segmentItemActive]}
                   onPress={() => setForm((f) => ({ ...f, role_id: ROLE_MEMBRE }))}
                 >
@@ -202,6 +207,8 @@ export default function AdminUtilisateursScreen() {
                   </Text>
                 </Pressable>
                 <Pressable
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: form.role_id === ROLE_ADMIN }}
                   style={[styles.segmentItem, form.role_id === ROLE_ADMIN && styles.segmentItemActive]}
                   onPress={() => setForm((f) => ({ ...f, role_id: ROLE_ADMIN }))}
                 >
@@ -234,7 +241,7 @@ const styles = StyleSheet.create({
   email: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: 2 },
   badges: { flexDirection: 'row', gap: Spacing.sm, flexWrap: 'wrap' },
   actions: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.xs },
-  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(22,22,22,0.4)' },
+  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: OVERLAY },
   modalSheet: {
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.md,

@@ -3,9 +3,14 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { useRapport } from '@/hooks/useRapport';
 import { Colors } from '@/lib/colors';
-import { Spacing, Radius, FontSize, FontWeight } from '@/lib/theme';
+import { Spacing, Radius, FontSize, FontWeight, MIN_TOUCH } from '@/lib/theme';
 import { AppBar, Card, Badge, SectionTitle, EmptyState, Loader } from '@/components/ui';
 import EmotionPieChart from '@/components/EmotionPieChart';
+
+/** Dimensions locales (multiples de l'échelle 4px du DSFR). */
+const STAT_ICON = 20;
+const SEGMENT_MIN_HEIGHT = MIN_TOUCH;
+const BAR_HEIGHT = 6;
 
 type Period = 'week' | 'month' | 'quarter' | 'year';
 
@@ -33,6 +38,8 @@ export default function ReportsScreen() {
                 key={p.value}
                 style={[styles.segmentBtn, active && styles.segmentBtnActive]}
                 onPress={() => setPeriod(p.value)}
+                accessibilityRole="button"
+                accessibilityState={{ selected: active }}
                 accessibilityLabel={p.label}
               >
                 <Text style={[styles.segmentText, active && styles.segmentTextActive]}>{p.label}</Text>
@@ -49,13 +56,13 @@ export default function ReportsScreen() {
             <Card padding={Spacing.lg} style={styles.statsCard}>
               <View style={styles.statsRow}>
                 <View style={styles.statCell}>
-                  <Ionicons name="bar-chart" size={20} color={Colors.primary} />
+                  <Ionicons name="bar-chart" size={STAT_ICON} color={Colors.primary} />
                   <Text style={styles.statValue}>{rapport.stats.total_saisies}</Text>
                   <Text style={styles.statLabel}>Saisies</Text>
                 </View>
                 <View style={styles.statDivider} />
                 <View style={styles.statCell}>
-                  <Ionicons name="trending-up" size={20} color={Colors.primary} />
+                  <Ionicons name="trending-up" size={STAT_ICON} color={Colors.primary} />
                   <Text style={styles.statValue}>{rapport.stats.intensite_moyenne?.toFixed(1) || '—'}</Text>
                   <Text style={styles.statLabel}>Intensité moy.</Text>
                 </View>
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: Spacing.lg, paddingBottom: Spacing.xxxl },
   segment: { flexDirection: 'row', backgroundColor: Colors.gray[100], borderRadius: Radius.sm, padding: Spacing.xs, marginBottom: Spacing.lg },
-  segmentBtn: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: Radius.sm, minHeight: 40, justifyContent: 'center' },
+  segmentBtn: { flex: 1, paddingVertical: Spacing.sm, alignItems: 'center', borderRadius: Radius.sm, minHeight: SEGMENT_MIN_HEIGHT, justifyContent: 'center' },
   segmentBtnActive: { backgroundColor: Colors.primary },
   segmentText: { fontSize: FontSize.xs, fontWeight: FontWeight.semibold, color: Colors.gray[500] },
   segmentTextActive: { color: Colors.white },
@@ -152,8 +159,8 @@ const styles = StyleSheet.create({
   repItemBorder: { borderTopWidth: 1, borderTopColor: Colors.gray[200] },
   repHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: Spacing.sm },
   repPct: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.black },
-  progressBar: { height: 6, backgroundColor: Colors.gray[200], borderRadius: Radius.sm, marginBottom: Spacing.xs },
-  progressFill: { height: 6, borderRadius: Radius.sm },
+  progressBar: { height: BAR_HEIGHT, backgroundColor: Colors.gray[200], borderRadius: Radius.sm, marginBottom: Spacing.xs },
+  progressFill: { height: BAR_HEIGHT, borderRadius: Radius.sm },
   repFooter: { flexDirection: 'row', justifyContent: 'space-between' },
   repDetail: { fontSize: FontSize.xs, color: Colors.gray[500] },
 });

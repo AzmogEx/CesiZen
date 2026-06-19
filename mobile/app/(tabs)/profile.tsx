@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/lib/auth-store';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, MIN_TOUCH, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, HIT_SLOP, MIN_TOUCH, Radius, Spacing, Tint } from '@/lib/theme';
 import { AppBar, Badge, Button, Card, SectionTitle } from '@/components/ui';
 
 export default function ProfileScreen() {
@@ -101,7 +101,12 @@ function MenuItem({
   last?: boolean;
 }) {
   return (
-    <TouchableOpacity style={[styles.menuItem, last && styles.menuItemLast]} accessibilityRole="button">
+    <TouchableOpacity
+      style={[styles.menuItem, last && styles.menuItemLast]}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      hitSlop={HIT_SLOP}
+    >
       <Ionicons name={icon} size={20} color={Colors.gray[600]} />
       <Text style={styles.menuLabel}>{label}</Text>
       <Ionicons name="chevron-forward" size={18} color={Colors.gray[400]} />
@@ -133,7 +138,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: Radius.sm,
-    backgroundColor: '#E3E3FD',
+    backgroundColor: Tint.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },

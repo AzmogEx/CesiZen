@@ -6,12 +6,15 @@ import EmotionPicker from '@/components/EmotionPicker';
 import { IntensityPicker } from './new';
 import { Colors } from '@/lib/colors';
 import { Spacing, FontSize, FontWeight } from '@/lib/theme';
-import { Button, TextField, Loader } from '@/components/ui';
+import { Button, TextField, Loader, EmptyState } from '@/components/ui';
+
+/** Hauteur de ligne du grand chiffre d'intensité. */
+const INTENSITY_LINE_HEIGHT = 56;
 
 export default function EditEntryScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: saisies } = useSaisies();
+  const { data: saisies, isLoading } = useSaisies();
   const updateSaisie = useUpdateSaisie();
 
   const saisie = saisies?.find((s) => s.id === Number(id));
@@ -46,8 +49,22 @@ export default function EditEntryScreen() {
     }
   };
 
-  if (!saisie) {
+  if (isLoading) {
     return <Loader label="Chargement…" />;
+  }
+
+  if (!saisie) {
+    return (
+      <View style={styles.container}>
+        <EmptyState
+          icon="alert-circle-outline"
+          title="Saisie introuvable"
+          message="Cette saisie n'existe plus ou a été supprimée."
+          actionLabel="Retour"
+          onAction={() => router.back()}
+        />
+      </View>
+    );
   }
 
   return (
@@ -106,7 +123,7 @@ const styles = StyleSheet.create({
   section: { marginBottom: Spacing.xl },
   label: { fontSize: FontSize.body, fontWeight: FontWeight.bold, color: Colors.black, marginBottom: Spacing.md },
   intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: Spacing.lg },
-  intensityValue: { fontSize: FontSize.display, fontWeight: FontWeight.heavy, color: Colors.primary, lineHeight: 56 },
+  intensityValue: { fontSize: FontSize.display, fontWeight: FontWeight.heavy, color: Colors.primary, lineHeight: INTENSITY_LINE_HEIGHT },
   intensityUnit: { fontSize: FontSize.xl, color: Colors.gray[400], marginLeft: Spacing.xs },
   scaleLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: Spacing.md },
   scaleLabel: { fontSize: FontSize.xs, color: Colors.gray[500] },

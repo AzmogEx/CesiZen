@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useFeeds } from '@/hooks/useFeeds';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, Radius, Spacing, Tint } from '@/lib/theme';
 import { AppBar, Card, EmptyState, Loader } from '@/components/ui';
 import type { Feed } from '@/types';
 
@@ -12,7 +12,14 @@ export default function InfoListScreen() {
   const router = useRouter();
 
   const renderItem = ({ item }: { item: Feed }) => {
-    const extrait = (item.contenu ?? '').replace(/<[^>]*>/g, '').trim();
+    const extrait = (item.contenu ?? '')
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&#39;|&apos;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/\s+/g, ' ')
+      .trim();
     return (
       <Card onPress={() => router.push(`/(tabs)/info/${item.slug}`)} style={styles.card}>
         <View style={styles.cardRow}>
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: Radius.sm,
-    backgroundColor: '#E3E3FD',
+    backgroundColor: Tint.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -7,6 +7,14 @@ import { Spacing, Radius, FontSize, FontWeight, MIN_TOUCH, HIT_SLOP } from '@/li
 import { Loader } from '@/components/ui';
 import type { Emotion } from '@/types';
 
+/** Dimensions locales (multiples de l'échelle 4px du DSFR). */
+const TILE_MIN_HEIGHT = 92;
+const TILE_EMOJI = 30;
+const BACK_ICON = 16;
+const CHEVRON_ICON = 12;
+const BORDER_DEFAULT = 1.5;
+const BORDER_SELECTED = 2.5;
+
 interface EmotionPickerProps {
   value?: number;
   onChange: (emotionId: number) => void;
@@ -23,8 +31,14 @@ export default function EmotionPicker({ value, onChange }: EmotionPickerProps) {
   if (selectedParent?.enfants && selectedParent.enfants.length > 0) {
     return (
       <View>
-        <TouchableOpacity style={styles.backBtn} hitSlop={HIT_SLOP} onPress={() => setSelectedParent(null)}>
-          <Ionicons name="arrow-back" size={16} color={Colors.primary} />
+        <TouchableOpacity
+          style={styles.backBtn}
+          hitSlop={HIT_SLOP}
+          accessibilityRole="button"
+          accessibilityLabel="Retour aux émotions"
+          onPress={() => setSelectedParent(null)}
+        >
+          <Ionicons name="arrow-back" size={BACK_ICON} color={Colors.primary} />
           <Text style={styles.backText}>Retour aux émotions</Text>
         </TouchableOpacity>
         <Text style={styles.subTitle}>
@@ -85,16 +99,18 @@ function EmotionTile({
     <TouchableOpacity
       style={[
         styles.tile,
-        selected && { borderColor: emotion.couleur, borderWidth: 2.5, backgroundColor: `${emotion.couleur}12` },
+        selected && { borderColor: emotion.couleur, borderWidth: BORDER_SELECTED, backgroundColor: `${emotion.couleur}12` },
       ]}
       onPress={onPress}
-      accessibilityLabel={emotion.nom}
+      accessibilityRole="button"
+      accessibilityState={{ selected }}
+      accessibilityLabel={hasChildren ? `${emotion.nom}, ouvrir les sous-émotions` : emotion.nom}
     >
       <Text style={styles.tileEmoji}>{emotion.icone || '🔵'}</Text>
       <Text style={styles.tileName} numberOfLines={2}>
         {emotion.nom}
       </Text>
-      {hasChildren && <Ionicons name="chevron-down" size={12} color={Colors.gray[400]} style={styles.chevron} />}
+      {hasChildren && <Ionicons name="chevron-down" size={CHEVRON_ICON} color={Colors.gray[400]} style={styles.chevron} />}
     </TouchableOpacity>
   );
 }
@@ -107,7 +123,7 @@ const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md, justifyContent: 'space-between' },
   tile: {
     width: '30%',
-    minHeight: 92,
+    minHeight: TILE_MIN_HEIGHT,
     backgroundColor: Colors.white,
     borderRadius: Radius.sm,
     paddingVertical: Spacing.md,
@@ -115,10 +131,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: Spacing.xs,
-    borderWidth: 1.5,
+    borderWidth: BORDER_DEFAULT,
     borderColor: Colors.gray[200],
   },
-  tileEmoji: { fontSize: 30 },
+  tileEmoji: { fontSize: TILE_EMOJI },
   tileName: { fontSize: FontSize.xs, fontWeight: FontWeight.semibold, color: Colors.black, textAlign: 'center' },
-  chevron: { marginTop: 2 },
+  chevron: { marginTop: Spacing.xs / 2 },
 });

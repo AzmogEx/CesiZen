@@ -19,6 +19,9 @@ import { Colors } from '@/lib/colors';
 import { FontSize, FontWeight, HIT_SLOP, Radius, Spacing } from '@/lib/theme';
 import type { Feed } from '@/types';
 
+/** Voile sombre derrière la modale (noir DSFR à 40 % d'opacité). */
+const OVERLAY = 'rgba(22, 22, 22, 0.4)';
+
 interface FormState {
   id?: number;
   titre: string;
@@ -160,6 +163,7 @@ export default function AdminContenusScreen() {
                 <Switch
                   value={form.est_publie}
                   onValueChange={(v) => setForm((f) => ({ ...f, est_publie: v }))}
+                  accessibilityLabel="Publier le contenu"
                   trackColor={{ true: Colors.primary, false: Colors.gray[300] }}
                   thumbColor={Colors.white}
                 />
@@ -186,7 +190,7 @@ const styles = StyleSheet.create({
   badges: { flexDirection: 'row', gap: Spacing.sm, flexWrap: 'wrap' },
   extrait: { fontSize: FontSize.sm, color: Colors.gray[500], lineHeight: 20 },
   actions: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.xs },
-  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(22,22,22,0.4)' },
+  modalOverlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: OVERLAY },
   modalSheet: {
     backgroundColor: Colors.white,
     borderTopLeftRadius: Radius.md,

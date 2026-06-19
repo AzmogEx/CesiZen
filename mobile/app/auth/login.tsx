@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/lib/auth-store';
 import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, IconSize, Radius, Spacing } from '@/lib/theme';
 import { AppBar, Button, Card, TextField } from '@/components/ui';
 
 export default function LoginScreen() {
@@ -46,8 +46,8 @@ export default function LoginScreen() {
 
         <Card padding={Spacing.xl} elevated>
           {error ? (
-            <View style={styles.errorBanner}>
-              <Ionicons name="alert-circle" size={18} color={Colors.error} />
+            <View style={styles.errorBanner} accessibilityLiveRegion="polite">
+              <Ionicons name="alert-circle" size={IconSize.md} color={Colors.error} />
               <Text style={styles.errorBannerText}>{error}</Text>
             </View>
           ) : null}
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     gap: Spacing.sm,
     backgroundColor: Colors.errorBg,
     borderRadius: Radius.sm,
-    borderLeftWidth: 3,
+    borderLeftWidth: Spacing.xs - 1,
     borderLeftColor: Colors.error,
     padding: Spacing.md,
     marginBottom: Spacing.lg,

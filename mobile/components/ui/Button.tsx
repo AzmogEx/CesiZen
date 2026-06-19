@@ -1,7 +1,7 @@
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, MIN_TOUCH, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, MIN_TOUCH, MIN_TOUCH_SM, Radius, Spacing } from '@/lib/theme';
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'tertiary';
 type Size = 'md' | 'sm';
@@ -36,8 +36,9 @@ export default function Button({
 }: ButtonProps) {
   const isDisabled = disabled || loading;
   const palette = VARIANTS[variant];
-  const minHeight = size === 'sm' ? 40 : MIN_TOUCH;
+  const minHeight = size === 'sm' ? MIN_TOUCH_SM : MIN_TOUCH;
   const fontSize = size === 'sm' ? FontSize.sm : FontSize.md;
+  const iconSize = fontSize + Spacing.xs - 1;
 
   return (
     <Pressable
@@ -64,7 +65,7 @@ export default function Button({
         <ActivityIndicator color={palette.text} size="small" />
       ) : (
         <View style={styles.content}>
-          {icon && <Ionicons name={icon} size={fontSize + 3} color={palette.text} />}
+          {icon && <Ionicons name={icon} size={iconSize} color={palette.text} />}
           <Text style={[styles.label, { color: palette.text, fontSize }]}>{title}</Text>
         </View>
       )}

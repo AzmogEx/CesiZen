@@ -8,6 +8,12 @@ import { Colors } from '@/lib/colors';
 import { Spacing, Radius, FontSize, FontWeight, MIN_TOUCH } from '@/lib/theme';
 import { AppBar, Card, Badge, SectionTitle, EmptyState, Loader } from '@/components/ui';
 
+/** Tailles d'icônes et de pastilles (multiples de l'échelle 4px du DSFR). */
+const ICON_LG = 28;
+const ACTION_ICON = 56;
+const EMOTION_ICON = 44;
+const EMOJI_SIZE = 22;
+
 export default function DashboardScreen() {
   const router = useRouter();
   const { user } = useAuthStore();
@@ -27,13 +33,13 @@ export default function DashboardScreen() {
         <View style={styles.actionsRow}>
           <Card onPress={() => router.push('/(tabs)/journal/new')} padding={Spacing.lg} style={styles.actionPrimary}>
             <View style={[styles.actionIcon, styles.actionIconPrimary]}>
-              <Ionicons name="add-circle" size={28} color={Colors.white} />
+              <Ionicons name="add-circle" size={ICON_LG} color={Colors.white} />
             </View>
             <Text style={styles.actionTextPrimary}>Nouvelle saisie</Text>
           </Card>
           <Card onPress={() => router.push('/(tabs)/journal/reports')} padding={Spacing.lg} style={styles.actionCard}>
             <View style={[styles.actionIcon, styles.actionIconSecondary]}>
-              <Ionicons name="bar-chart" size={28} color={Colors.primary} />
+              <Ionicons name="bar-chart" size={ICON_LG} color={Colors.primary} />
             </View>
             <Text style={styles.actionText}>Mes rapports</Text>
           </Card>
@@ -73,7 +79,11 @@ export default function DashboardScreen() {
           <View style={styles.sectionHeader}>
             <SectionTitle>Dernières saisies</SectionTitle>
             {recentSaisies.length > 0 && (
-              <Text style={styles.seeAll} onPress={() => router.push('/(tabs)/journal')}>
+              <Text
+                style={styles.seeAll}
+                onPress={() => router.push('/(tabs)/journal')}
+                accessibilityRole="link"
+              >
                 Tout voir
               </Text>
             )}
@@ -97,7 +107,7 @@ export default function DashboardScreen() {
                 padding={Spacing.md}
                 style={styles.saisieCard}
               >
-                <View style={[styles.emotionIcon, { backgroundColor: `${saisie.emotion?.couleur}20` }]}>
+                <View style={[styles.emotionIcon, { backgroundColor: `${saisie.emotion?.couleur || Colors.primary}20` }]}>
                   <Text style={styles.emotionEmoji}>{saisie.emotion?.icone || '🔵'}</Text>
                 </View>
                 <View style={styles.saisieContent}>
@@ -132,9 +142,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderColor: Colors.primary,
   },
-  actionIcon: { width: 56, height: 56, borderRadius: Radius.sm, justifyContent: 'center', alignItems: 'center' },
+  actionIcon: { width: ACTION_ICON, height: ACTION_ICON, borderRadius: Radius.sm, justifyContent: 'center', alignItems: 'center' },
   actionIconPrimary: { backgroundColor: Colors.primaryDark },
-  actionIconSecondary: { backgroundColor: '#E3E3FD' },
+  actionIconSecondary: { backgroundColor: Colors.gray[100] },
   actionText: { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.black },
   actionTextPrimary: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.white },
   block: { marginBottom: Spacing.xl },
@@ -153,8 +163,8 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.xs,
   },
   saisieCard: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, marginBottom: Spacing.sm },
-  emotionIcon: { width: 44, height: 44, borderRadius: Radius.sm, justifyContent: 'center', alignItems: 'center' },
-  emotionEmoji: { fontSize: 22 },
+  emotionIcon: { width: EMOTION_ICON, height: EMOTION_ICON, borderRadius: Radius.sm, justifyContent: 'center', alignItems: 'center' },
+  emotionEmoji: { fontSize: EMOJI_SIZE },
   saisieContent: { flex: 1, gap: Spacing.xs, alignItems: 'flex-start' },
   saisieDate: { fontSize: FontSize.xs, color: Colors.gray[500] },
 });

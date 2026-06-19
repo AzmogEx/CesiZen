@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '@/lib/auth-store';
 import { View, ActivityIndicator } from 'react-native';
+import { Colors } from '@/lib/colors';
 
 const queryClient = new QueryClient();
 
@@ -33,7 +34,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
-        <ActivityIndicator size="large" color="#000091" />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } fr
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, ICON_CIRCLE, IconSize, LineHeight, Radius, Spacing, Tint } from '@/lib/theme';
 import { AppBar, Button, Card, TextField } from '@/components/ui';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,7 +33,7 @@ export default function ForgotPasswordScreen() {
         <AppBar title="Demande enregistrée" />
         <View style={styles.successWrap}>
           <View style={styles.iconCircle}>
-            <Ionicons name="mail-open" size={32} color={Colors.primary} />
+            <Ionicons name="mail-open" size={IconSize.xl} color={Colors.primary} />
           </View>
           <Text style={styles.successTitle}>Vérifiez votre boîte mail</Text>
           <Text style={styles.successText}>
@@ -102,20 +102,20 @@ export default function ForgotPasswordScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.gray[50] },
   scrollContent: { flexGrow: 1, justifyContent: 'center', padding: Spacing.xl },
-  intro: { fontSize: FontSize.sm, color: Colors.gray[600], lineHeight: 20, marginBottom: Spacing.xl, textAlign: 'center' },
+  intro: { fontSize: FontSize.sm, color: Colors.gray[600], lineHeight: LineHeight.normal, marginBottom: Spacing.xl, textAlign: 'center' },
   backRow: { alignItems: 'center', marginTop: Spacing.sm },
   successWrap: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: Spacing.xl },
   iconCircle: {
-    width: 72,
-    height: 72,
+    width: ICON_CIRCLE,
+    height: ICON_CIRCLE,
     borderRadius: Radius.pill,
-    backgroundColor: '#E3E3FD',
+    backgroundColor: Tint.primary,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: Spacing.lg,
   },
   successTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.heavy, color: Colors.black, marginBottom: Spacing.md, textAlign: 'center' },
-  successText: { fontSize: FontSize.sm, color: Colors.gray[600], textAlign: 'center', lineHeight: 20, marginBottom: Spacing.md },
+  successText: { fontSize: FontSize.sm, color: Colors.gray[600], textAlign: 'center', lineHeight: LineHeight.normal, marginBottom: Spacing.md },
   bold: { fontWeight: FontWeight.bold, color: Colors.black },
   successAction: { alignSelf: 'stretch', marginTop: Spacing.lg },
 });

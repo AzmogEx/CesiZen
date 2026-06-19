@@ -8,6 +8,16 @@ import { Spacing, Radius, FontSize, FontWeight, Shadow, MIN_TOUCH, HIT_SLOP } fr
 import { AppBar, Card, Badge, EmptyState, Loader } from '@/components/ui';
 import type { SaisieTracker } from '@/types';
 
+/** Dimensions locales (multiples de l'échelle 4px du DSFR). */
+const EMOTION_ICON = 48;
+const EMOJI_SIZE = 24;
+const ACTION_ICON_SIZE = 20;
+const FAB_SIZE = 56;
+const FAB_ICON = 30;
+const BAR_HEIGHT = 6;
+/** Marge basse de la liste : laisse passer le FAB sans qu'il chevauche le contenu. */
+const LIST_BOTTOM_GAP = FAB_SIZE + Spacing.xl + Spacing.lg;
+
 export default function JournalScreen() {
   const router = useRouter();
   const { data: saisies, isLoading, refetch } = useSaisies();
@@ -39,7 +49,7 @@ export default function JournalScreen() {
 
   const renderItem = ({ item }: { item: SaisieTracker }) => (
     <Card padding={Spacing.lg} style={styles.saisieCard}>
-      <View style={[styles.emotionIcon, { backgroundColor: `${item.emotion?.couleur}20` }]}>
+      <View style={[styles.emotionIcon, { backgroundColor: `${item.emotion?.couleur || Colors.primary}20` }]}>
         <Text style={styles.emotionEmoji}>{item.emotion?.icone || '🔵'}</Text>
       </View>
       <View style={styles.saisieContent}>
@@ -79,7 +89,7 @@ export default function JournalScreen() {
           accessibilityLabel="Modifier la saisie"
           onPress={() => router.push({ pathname: '/(tabs)/journal/edit', params: { id: String(item.id) } })}
         >
-          <Ionicons name="create-outline" size={20} color={Colors.primary} />
+          <Ionicons name="create-outline" size={ACTION_ICON_SIZE} color={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.actionBtn}
@@ -87,7 +97,7 @@ export default function JournalScreen() {
           accessibilityLabel="Supprimer la saisie"
           onPress={() => handleDelete(item.id)}
         >
-          <Ionicons name="trash-outline" size={20} color={Colors.error} />
+          <Ionicons name="trash-outline" size={ACTION_ICON_SIZE} color={Colors.error} />
         </TouchableOpacity>
       </View>
     </Card>
@@ -120,10 +130,12 @@ export default function JournalScreen() {
       )}
       <TouchableOpacity
         style={styles.fab}
+        accessibilityRole="button"
         accessibilityLabel="Nouvelle saisie"
+        hitSlop={HIT_SLOP}
         onPress={() => router.push('/(tabs)/journal/new')}
       >
-        <Ionicons name="add" size={30} color={Colors.white} />
+        <Ionicons name="add" size={FAB_ICON} color={Colors.white} />
       </TouchableOpacity>
     </View>
   );
@@ -131,15 +143,15 @@ export default function JournalScreen() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: Colors.gray[50] },
-  listContent: { padding: Spacing.lg, paddingBottom: 96 },
+  listContent: { padding: Spacing.lg, paddingBottom: LIST_BOTTOM_GAP },
   saisieCard: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.md, marginBottom: Spacing.md },
-  emotionIcon: { width: 48, height: 48, borderRadius: Radius.sm, justifyContent: 'center', alignItems: 'center' },
-  emotionEmoji: { fontSize: 24 },
+  emotionIcon: { width: EMOTION_ICON, height: EMOTION_ICON, borderRadius: Radius.sm, justifyContent: 'center', alignItems: 'center' },
+  emotionEmoji: { fontSize: EMOJI_SIZE },
   saisieContent: { flex: 1 },
   saisieHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginBottom: Spacing.sm, flexWrap: 'wrap' },
   intensityText: { fontSize: FontSize.xs, color: Colors.gray[500] },
-  intensityBar: { height: 6, backgroundColor: Colors.gray[200], borderRadius: Radius.sm, marginBottom: Spacing.sm },
-  intensityFill: { height: 6, borderRadius: Radius.sm },
+  intensityBar: { height: BAR_HEIGHT, backgroundColor: Colors.gray[200], borderRadius: Radius.sm, marginBottom: Spacing.sm },
+  intensityFill: { height: BAR_HEIGHT, borderRadius: Radius.sm },
   note: { fontSize: FontSize.xs, color: Colors.gray[600], marginBottom: Spacing.xs, lineHeight: 19 },
   date: { fontSize: FontSize.xs, color: Colors.gray[400], textTransform: 'capitalize' },
   actions: { gap: Spacing.sm },
@@ -153,9 +165,9 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     right: Spacing.lg,
-    bottom: Spacing.lg,
-    width: 56,
-    height: 56,
+    bottom: Spacing.xl,
+    width: FAB_SIZE,
+    height: FAB_SIZE,
     borderRadius: Radius.sm,
     backgroundColor: Colors.primary,
     justifyContent: 'center',

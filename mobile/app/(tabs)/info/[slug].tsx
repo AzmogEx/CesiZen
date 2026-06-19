@@ -31,7 +31,16 @@ export default function FeedDetailScreen() {
     );
   }
 
-  const texteNettoye = (feed.contenu ?? '').replace(/<[^>]*>/g, '');
+  const texteNettoye = (feed.contenu ?? '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 
   return (
     <View style={styles.fill}>

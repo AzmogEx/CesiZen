@@ -5,7 +5,7 @@ import { FontSize, Spacing } from '@/lib/theme';
 /** Indicateur de chargement centré et homogène, avec libellé optionnel. */
 export default function Loader({ label }: { label?: string }) {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessibilityRole="progressbar" accessibilityLabel={label ?? 'Chargement en cours'}>
       <ActivityIndicator size="large" color={Colors.primary} />
       {label ? <Text style={styles.label}>{label}</Text> : null}
     </View>

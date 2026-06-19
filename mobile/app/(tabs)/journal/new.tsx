@@ -8,6 +8,14 @@ import { Colors } from '@/lib/colors';
 import { Spacing, Radius, FontSize, FontWeight } from '@/lib/theme';
 import { Button, TextField } from '@/components/ui';
 
+/** Dimensions locales (multiples de l'échelle 4px du DSFR). */
+const STEP_CIRCLE = 36;
+const STEP_LINE_WIDTH = 40;
+const STEP_LINE_HEIGHT = 3;
+const STEP_CHECK_ICON = 18;
+const INTENSITY_LINE_HEIGHT = 60;
+const DOT_SIZE = 44;
+
 export default function NewEntryScreen() {
   const router = useRouter();
   const createSaisie = useCreateSaisie();
@@ -34,12 +42,16 @@ export default function NewEntryScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Stepper */}
-      <View style={styles.stepper}>
+      <View
+        style={styles.stepper}
+        accessibilityRole="progressbar"
+        accessibilityLabel={`Étape ${step} sur 3`}
+      >
         {[1, 2, 3].map((s) => (
           <View key={s} style={styles.stepRow}>
             <View style={[styles.stepCircle, step >= s && styles.stepActive]}>
               {step > s ? (
-                <Ionicons name="checkmark" size={18} color={Colors.white} />
+                <Ionicons name="checkmark" size={STEP_CHECK_ICON} color={Colors.white} />
               ) : (
                 <Text style={[styles.stepNumber, step >= s && styles.stepNumberActive]}>{s}</Text>
               )}
@@ -123,6 +135,8 @@ export function IntensityPicker({ value, onChange }: { value: number; onChange: 
             key={v}
             style={[pickerStyles.dot, active && pickerStyles.dotActive]}
             onPress={() => onChange(v)}
+            accessibilityRole="button"
+            accessibilityState={{ selected: active }}
             accessibilityLabel={`Intensité ${v}`}
           >
             <Text style={[pickerStyles.dotText, active && pickerStyles.dotTextActive]}>{v}</Text>
@@ -136,8 +150,8 @@ export function IntensityPicker({ value, onChange }: { value: number; onChange: 
 const pickerStyles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, justifyContent: 'center' },
   dot: {
-    width: 44,
-    height: 44,
+    width: DOT_SIZE,
+    height: DOT_SIZE,
     borderRadius: Radius.sm,
     backgroundColor: Colors.gray[100],
     borderWidth: 1,
@@ -156,8 +170,8 @@ const styles = StyleSheet.create({
   stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: Spacing.xxl },
   stepRow: { flexDirection: 'row', alignItems: 'center' },
   stepCircle: {
-    width: 36,
-    height: 36,
+    width: STEP_CIRCLE,
+    height: STEP_CIRCLE,
     borderRadius: Radius.pill,
     backgroundColor: Colors.gray[200],
     justifyContent: 'center',
@@ -166,11 +180,11 @@ const styles = StyleSheet.create({
   stepActive: { backgroundColor: Colors.primary },
   stepNumber: { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.gray[500] },
   stepNumberActive: { color: Colors.white },
-  stepLine: { width: 40, height: 3, backgroundColor: Colors.gray[200], marginHorizontal: Spacing.xs },
+  stepLine: { width: STEP_LINE_WIDTH, height: STEP_LINE_HEIGHT, backgroundColor: Colors.gray[200], marginHorizontal: Spacing.xs },
   stepLineActive: { backgroundColor: Colors.primary },
   stepTitle: { fontSize: FontSize.xl, fontWeight: FontWeight.bold, color: Colors.black, marginBottom: Spacing.xl },
   intensityContainer: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', marginBottom: Spacing.xl },
-  intensityValue: { fontSize: FontSize.display, fontWeight: FontWeight.heavy, color: Colors.primary, lineHeight: 60 },
+  intensityValue: { fontSize: FontSize.display, fontWeight: FontWeight.heavy, color: Colors.primary, lineHeight: INTENSITY_LINE_HEIGHT },
   intensityLabel: { fontSize: FontSize.xxl, color: Colors.gray[400], marginLeft: Spacing.xs },
   scaleLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: Spacing.md, marginBottom: Spacing.xxl },
   scaleLabel: { fontSize: FontSize.xs, color: Colors.gray[500] },

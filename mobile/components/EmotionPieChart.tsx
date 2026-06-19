@@ -1,6 +1,14 @@
 import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Circle, G, Text as SvgText } from 'react-native-svg';
 import { Colors } from '@/lib/colors';
+import { Spacing, Radius, FontSize, FontWeight } from '@/lib/theme';
+
+/** Dimensions du donut et de sa légende. */
+const CENTER_PCT_SIZE = 30;
+const CENTER_LABEL_SIZE = FontSize.tiny;
+const CENTER_PCT_DY = 6;
+const CENTER_LABEL_DY = 16;
+const LEGEND_DOT = 12;
 
 export interface EmotionPieSlice {
   nom: string;
@@ -84,9 +92,9 @@ export default function EmotionPieChart({
         {/* Centre du donut : part dominante */}
         <SvgText
           x={center}
-          y={center - 6}
-          fontSize={30}
-          fontWeight="800"
+          y={center - CENTER_PCT_DY}
+          fontSize={CENTER_PCT_SIZE}
+          fontWeight={FontWeight.heavy}
           fill={Colors.black}
           textAnchor="middle"
         >
@@ -94,8 +102,8 @@ export default function EmotionPieChart({
         </SvgText>
         <SvgText
           x={center}
-          y={center + 16}
-          fontSize={12}
+          y={center + CENTER_LABEL_DY}
+          fontSize={CENTER_LABEL_SIZE}
           fill={Colors.gray[500]}
           textAnchor="middle"
         >
@@ -111,7 +119,9 @@ export default function EmotionPieChart({
             <Text style={styles.legendName} numberOfLines={1}>
               {item.nom}
             </Text>
-            <Text style={styles.legendPct}>{item.pourcentage}%</Text>
+            <Text style={styles.legendPct}>
+              {item.pourcentage}% · {item.count}
+            </Text>
           </View>
         ))}
       </View>
@@ -120,10 +130,10 @@ export default function EmotionPieChart({
 }
 
 const styles = StyleSheet.create({
-  container: { alignItems: 'center', marginBottom: 20 },
-  legend: { alignSelf: 'stretch', marginTop: 20, gap: 8 },
+  container: { alignItems: 'center', marginBottom: Spacing.lg },
+  legend: { alignSelf: 'stretch', marginTop: Spacing.lg, gap: Spacing.sm },
   legendRow: { flexDirection: 'row', alignItems: 'center' },
-  legendDot: { width: 12, height: 12, borderRadius: 6, marginRight: 10 },
-  legendName: { flex: 1, fontSize: 14, color: Colors.black },
-  legendPct: { fontSize: 14, fontWeight: '700', color: Colors.gray[600] },
+  legendDot: { width: LEGEND_DOT, height: LEGEND_DOT, borderRadius: Radius.pill, marginRight: Spacing.sm },
+  legendName: { flex: 1, fontSize: FontSize.sm, color: Colors.black },
+  legendPct: { fontSize: FontSize.sm, fontWeight: FontWeight.bold, color: Colors.gray[600] },
 });

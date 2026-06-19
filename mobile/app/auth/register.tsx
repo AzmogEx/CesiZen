@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuthStore } from '@/lib/auth-store';
 import { getApiError } from '@/lib/api';
 import { Colors } from '@/lib/colors';
-import { FontSize, FontWeight, MIN_TOUCH, Radius, Spacing } from '@/lib/theme';
+import { FontSize, FontWeight, IconSize, LineHeight, MIN_TOUCH, Radius, Spacing } from '@/lib/theme';
 import { AppBar, Button, Card, TextField } from '@/components/ui';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -132,7 +132,7 @@ export default function RegisterScreen() {
           >
             <Ionicons
               name={consentement ? 'checkbox' : 'square-outline'}
-              size={24}
+              size={IconSize.lg}
               color={consentement ? Colors.primary : Colors.gray[500]}
               style={styles.consentIcon}
             />
@@ -143,7 +143,7 @@ export default function RegisterScreen() {
           </Pressable>
           {consentError ? (
             <View style={styles.consentErrorRow}>
-              <Ionicons name="alert-circle" size={14} color={Colors.error} />
+              <Ionicons name="alert-circle" size={IconSize.sm} color={Colors.error} />
               <Text style={styles.consentErrorText}>{consentError}</Text>
             </View>
           ) : null}
@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.sm,
     minHeight: MIN_TOUCH,
   },
-  consentIcon: { marginTop: 1 },
-  consentText: { flex: 1, fontSize: FontSize.xs, color: Colors.black, lineHeight: 19 },
+  consentIcon: { marginTop: Spacing.xs / 4 },
+  consentText: { flex: 1, fontSize: FontSize.xs, color: Colors.black, lineHeight: LineHeight.snug },
   consentLink: { color: Colors.primary, fontWeight: FontWeight.semibold, textDecorationLine: 'underline' },
   consentErrorRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs, marginTop: Spacing.xs },
   consentErrorText: { fontSize: FontSize.xs, color: Colors.error },
