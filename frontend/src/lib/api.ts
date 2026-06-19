@@ -31,7 +31,13 @@ api.interceptors.response.use(
       typeof window !== 'undefined' &&
       !window.location.pathname.includes('/connexion')
     ) {
+      // Purge COMPLÈTE de l'auth pour éviter une boucle de redirection :
+      // le middleware lit le cookie `cesizen-auth` (état Zustand persisté) ;
+      // si on ne vide que le localStorage du token, il croit l'utilisateur
+      // encore connecté et renvoie /connexion -> /dashboard à l'infini.
       localStorage.removeItem('cesizen_token');
+      localStorage.removeItem('cesizen-auth'); // état Zustand persisté
+      document.cookie = 'cesizen-auth=;path=/;max-age=0;SameSite=Lax';
       window.location.href = '/connexion';
     }
     return Promise.reject(error);
