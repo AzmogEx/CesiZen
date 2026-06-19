@@ -1,0 +1,78 @@
+import { StyleSheet, Text, View } from 'react-native';
+import { Colors } from '@/lib/colors';
+import { FontSize, FontWeight, Spacing } from '@/lib/theme';
+
+interface AppBarProps {
+  /** Titre de la page, affiché sous le bandeau institutionnel. */
+  title?: string;
+  subtitle?: string;
+  /** Élément optionnel aligné à droite du bandeau (ex. bouton). */
+  right?: React.ReactNode;
+}
+
+/**
+ * Bandeau institutionnel République Française réutilisable, à placer en haut
+ * de chaque écran principal. Reprend le bloc-marque de l'État (DSFR) + le nom
+ * du service, avec un titre/sous-titre de page optionnel.
+ */
+export default function AppBar({ title, subtitle, right }: AppBarProps) {
+  return (
+    <View style={styles.wrapper}>
+      <View style={styles.brandRow}>
+        <View style={styles.marianne}>
+          <Text style={styles.republique}>RÉPUBLIQUE</Text>
+          <Text style={styles.republique}>FRANÇAISE</Text>
+        </View>
+        <View style={styles.serviceBlock}>
+          <Text style={styles.serviceName}>CESIZen</Text>
+          <Text style={styles.serviceTagline}>Santé mentale</Text>
+        </View>
+        {right ? <View style={styles.right}>{right}</View> : null}
+      </View>
+      {title ? (
+        <View style={styles.titleRow}>
+          <Text style={styles.title}>{title}</Text>
+          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: Colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.gray[200],
+  },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+  },
+  marianne: {
+    paddingRight: Spacing.md,
+    marginRight: Spacing.md,
+    borderRightWidth: 1,
+    borderRightColor: Colors.gray[200],
+  },
+  republique: {
+    fontSize: FontSize.tiny,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    letterSpacing: 0.5,
+    lineHeight: 13,
+  },
+  serviceBlock: { flex: 1 },
+  serviceName: { fontSize: FontSize.lg, fontWeight: FontWeight.heavy, color: Colors.primary },
+  serviceTagline: { fontSize: FontSize.tiny, color: Colors.gray[500], marginTop: 1 },
+  right: { marginLeft: Spacing.sm },
+  titleRow: {
+    paddingHorizontal: Spacing.lg,
+    paddingBottom: Spacing.md,
+    paddingTop: Spacing.xs,
+  },
+  title: { fontSize: FontSize.xxl, fontWeight: FontWeight.bold, color: Colors.black },
+  subtitle: { fontSize: FontSize.sm, color: Colors.gray[500], marginTop: 2 },
+});
