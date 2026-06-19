@@ -6,6 +6,7 @@ import type { Feed } from '@/types';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Modal from '@/components/ui/Modal';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import toast from 'react-hot-toast';
 
 export default function AdminContenusPage() {
@@ -14,6 +15,7 @@ export default function AdminContenusPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingFeed, setEditingFeed] = useState<Feed | null>(null);
   const [formLoading, setFormLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState({
     titre: '',
     contenu: '',
@@ -74,14 +76,16 @@ export default function AdminContenusPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cet article ?')) return;
+  const confirmDelete = async () => {
+    if (deleteId === null) return;
     try {
-      await api.delete(`/admin/feeds/${id}`);
+      await api.delete(`/admin/feeds/${deleteId}`);
       await fetchFeeds();
       toast.success('Article supprimé');
     } catch {
       toast.error('Erreur lors de la suppression');
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -152,7 +156,7 @@ export default function AdminContenusPage() {
                       <li>
                         <button
                           type="button"
-                          onClick={() => handleDelete(feed.id)}
+                          onClick={() => setDeleteId(feed.id)}
                           className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-delete-line"
                           title="Supprimer"
                         >
@@ -238,6 +242,16 @@ export default function AdminContenusPage() {
           </ul>
         </form>
       </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteId !== null}
+        title="Supprimer l'article"
+        message="Cet article sera supprimé définitivement. Cette action est irréversible."
+        confirmLabel="Supprimer"
+        destructive
+        onConfirm={confirmDelete}
+        onClose={() => setDeleteId(null)}
+      />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import type { Emotion } from '@/types';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Modal from '@/components/ui/Modal';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import toast from 'react-hot-toast';
 
 export default function AdminEmotionsPage() {
@@ -14,6 +15,7 @@ export default function AdminEmotionsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingEmotion, setEditingEmotion] = useState<Emotion | null>(null);
   const [formLoading, setFormLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState({
     nom: '',
     couleur: '#fce117',
@@ -86,14 +88,18 @@ export default function AdminEmotionsPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cette émotion ?')) return;
+  const handleDelete = (id: number) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (deleteId === null) return;
     try {
-      await api.delete(`/admin/emotions/${id}`);
+      await api.delete(`/admin/emotions/${deleteId}`);
       await fetchEmotions();
       toast.success('Émotion supprimée');
     } catch {
       toast.error('Erreur lors de la suppression');
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -253,6 +259,16 @@ export default function AdminEmotionsPage() {
           </ul>
         </form>
       </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteId !== null}
+        title="Supprimer l'émotion"
+        message="Cette émotion (et ses sous-émotions) sera supprimée. Cette action est irréversible."
+        confirmLabel="Supprimer"
+        destructive
+        onConfirm={confirmDelete}
+        onClose={() => setDeleteId(null)}
+      />
     </div>
   );
 }

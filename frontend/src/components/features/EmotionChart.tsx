@@ -60,11 +60,13 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
                 [`${value} saisies`, name]
               }
               contentStyle={{
-                backgroundColor: 'rgba(255,255,255,0.95)',
-                border: 'none',
-                borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                backgroundColor: 'var(--background-overlap-grey)',
+                border: '1px solid var(--border-default-grey)',
+                borderRadius: '0.25rem',
+                color: 'var(--text-default-grey)',
               }}
+              labelStyle={{ color: 'var(--text-default-grey)' }}
+              itemStyle={{ color: 'var(--text-default-grey)' }}
             />
           </PieChart>
         </ResponsiveContainer>
@@ -94,11 +96,13 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
             <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'rgba(255,255,255,0.95)',
-                border: 'none',
-                borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                backgroundColor: 'var(--background-overlap-grey)',
+                border: '1px solid var(--border-default-grey)',
+                borderRadius: '0.25rem',
+                color: 'var(--text-default-grey)',
               }}
+              labelStyle={{ color: 'var(--text-default-grey)' }}
+              itemStyle={{ color: 'var(--text-default-grey)' }}
             />
             <Legend />
             {data.evolution.emotions.map((emotion) => (
@@ -134,11 +138,13 @@ export default function EmotionChart({ data, type = 'repartition' }: EmotionChar
             <YAxis domain={[0, 10]} tick={{ fontSize: 12 }} />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'rgba(255,255,255,0.95)',
-                border: 'none',
-                borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                backgroundColor: 'var(--background-overlap-grey)',
+                border: '1px solid var(--border-default-grey)',
+                borderRadius: '0.25rem',
+                color: 'var(--text-default-grey)',
               }}
+              labelStyle={{ color: 'var(--text-default-grey)' }}
+              itemStyle={{ color: 'var(--text-default-grey)' }}
               formatter={(value: ValueType | undefined) => [`${Number(value).toFixed(1)}`, 'Intensité moyenne']}
             />
             <Bar dataKey="intensite" fill="#000091" radius={[6, 6, 0, 0]} />

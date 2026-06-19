@@ -6,6 +6,7 @@ import type { Utilisateur } from '@/types';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Modal from '@/components/ui/Modal';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import toast from 'react-hot-toast';
 
 export default function AdminUtilisateursPage() {
@@ -14,6 +15,7 @@ export default function AdminUtilisateursPage() {
   const [search, setSearch] = useState('');
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const [newUser, setNewUser] = useState({
     nom: '', prenom: '', email: '', password: '', password_confirmation: '', role_id: 2,
   });
@@ -41,14 +43,16 @@ export default function AdminUtilisateursPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Supprimer cet utilisateur ?')) return;
+  const confirmDelete = async () => {
+    if (deleteId === null) return;
     try {
-      await api.delete(`/admin/utilisateurs/${id}`);
+      await api.delete(`/admin/utilisateurs/${deleteId}`);
       await fetchUsers();
       toast.success('Utilisateur supprimé');
     } catch {
       toast.error('Erreur lors de la suppression');
+    } finally {
+      setDeleteId(null);
     }
   };
 
@@ -170,7 +174,7 @@ export default function AdminUtilisateursPage() {
                       <li>
                         <button
                           type="button"
-                          onClick={() => handleDelete(user.id)}
+                          onClick={() => setDeleteId(user.id)}
                           className="fr-btn fr-btn--sm fr-btn--tertiary fr-btn--icon-left fr-icon-delete-line"
                           title="Supprimer"
                         >
@@ -222,6 +226,16 @@ export default function AdminUtilisateursPage() {
           </ul>
         </form>
       </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteId !== null}
+        title="Supprimer l'utilisateur"
+        message="Cet utilisateur sera supprimé. Cette action est irréversible."
+        confirmLabel="Supprimer"
+        destructive
+        onConfirm={confirmDelete}
+        onClose={() => setDeleteId(null)}
+      />
     </div>
   );
 }
