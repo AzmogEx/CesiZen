@@ -1,0 +1,56 @@
+name: "✨ Demande d'évolution"
+about: "Proposer une nouvelle fonctionnalité ou une amélioration (maintenance évolutive)"
+title: "[ÉVOLUTION] "
+labels:
+  - "type/évolution"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Toute demande d'évolution fait l'objet d'une analyse par le prestataire
+        (documentation, délai de mise en œuvre, coût associé) avant planification.
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module concerné
+      options:
+        - "Comptes utilisateurs"
+        - "Informations"
+        - "Tracker d'émotions"
+        - "Administration"
+        - "Nouveau module (Diagnostic, Cohérence cardiaque, Activités de détente)"
+        - "Transverse (sécurité, RGPD, performance)"
+    validations:
+      required: true
+  - type: textarea
+    id: besoin
+    attributes:
+      label: Besoin / problème à résoudre
+      description: "En tant que … je souhaite … afin de …"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution proposée
+    validations:
+      required: false
+  - type: dropdown
+    id: priorite
+    attributes:
+      label: Priorité souhaitée
+      options:
+        - "Haute"
+        - "Moyenne"
+        - "Basse"
+    validations:
+      required: true
+  - type: textarea
+    id: criteres
+    attributes:
+      label: Critères d'acceptation
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: false

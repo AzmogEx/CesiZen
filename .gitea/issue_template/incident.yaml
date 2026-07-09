@@ -1,0 +1,74 @@
+name: "🐞 Signalement d'incident / anomalie"
+about: "Déclarer un dysfonctionnement de l'application (maintenance corrective)"
+title: "[INCIDENT] "
+labels:
+  - "type/incident"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de renseigner ce formulaire le plus précisément possible.
+        Le délai de prise en compte dépend de la **sévérité** déclarée (voir SLA du contrat).
+  - type: dropdown
+    id: severite
+    attributes:
+      label: Sévérité
+      description: "Bloquant = service inutilisable · Majeur = service dégradé avec contournement · Mineur = altération mineure"
+      options:
+        - "Bloquant — priorité critique (prise en compte 1 h / correction 3 h)"
+        - "Bloquant — priorité forte (prise en compte 2 h / correction 6 h)"
+        - "Majeur (prise en compte 7 h / correction 16 h)"
+        - "Mineur (prise en compte 1 j / correction 40 h)"
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module concerné
+      options:
+        - "Comptes utilisateurs / Authentification"
+        - "Informations (contenus)"
+        - "Tracker d'émotions"
+        - "Administration"
+        - "Infrastructure / Déploiement"
+        - "Autre"
+    validations:
+      required: true
+  - type: input
+    id: environnement
+    attributes:
+      label: Environnement
+      placeholder: "Production (cesizen.cleanows.fr) · web ou mobile · navigateur/OS + version"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du problème
+      description: "Ce qui ne fonctionne pas."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Résultat attendu vs. obtenu
+      placeholder: "Attendu : … / Obtenu : …"
+    validations:
+      required: true
+  - type: textarea
+    id: contexte
+    attributes:
+      label: Captures d'écran / logs
+      description: "Capture, message d'erreur, extrait de journal (sans donnée personnelle)."
+    validations:
+      required: false
