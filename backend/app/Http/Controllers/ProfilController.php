@@ -59,7 +59,12 @@ class ProfilController extends Controller
         ]);
     }
 
-    // RGPD — Article 20 : droit à la portabilité des données
+    /**
+     * RGPD — Article 20 : droit à la portabilité des données.
+     * Exporte toutes les données liées à l'utilisateur au format JSON.
+     *
+     * @return JsonResponse
+     */
     public function export(): JsonResponse
     {
         $utilisateur = auth()->user();
@@ -93,7 +98,13 @@ class ProfilController extends Controller
             ->header('Content-Disposition', 'attachment; filename="cesizen-export-'.$utilisateur->id.'.json"');
     }
 
-    // RGPD — Article 17 : alternative à la suppression définitive — anonymisation
+    /**
+     * RGPD — Article 17 : droit à l'effacement.
+     * Alternative à la suppression définitive : anonymise le compte pour conserver 
+     * les statistiques globales sans conserver d'informations personnellement identifiables.
+     *
+     * @return JsonResponse
+     */
     public function anonymiser(): JsonResponse
     {
         $utilisateur = auth()->user();
