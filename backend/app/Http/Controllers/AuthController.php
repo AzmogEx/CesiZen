@@ -14,12 +14,9 @@ class AuthController extends Controller
 {
     /**
      * Inscription d'un nouvel utilisateur.
-     * 
+     *
      * Assigne automatiquement le rôle "membre", enregistre le consentement RGPD,
      * crée un tracker par défaut et génère le token JWT.
-     *
-     * @param RegisterRequest $request
-     * @return JsonResponse
      */
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -51,12 +48,9 @@ class AuthController extends Controller
 
     /**
      * Authentification d'un utilisateur existant.
-     * 
+     *
      * Vérifie les identifiants, le statut actif du compte et génère un token JWT.
      * Renvoie une erreur 403 si le compte est désactivé/anonymisé.
-     *
-     * @param LoginRequest $request
-     * @return JsonResponse
      */
     public function login(LoginRequest $request): JsonResponse
     {

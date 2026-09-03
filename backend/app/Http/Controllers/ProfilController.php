@@ -62,8 +62,6 @@ class ProfilController extends Controller
     /**
      * RGPD — Article 20 : droit à la portabilité des données.
      * Exporte toutes les données liées à l'utilisateur au format JSON.
-     *
-     * @return JsonResponse
      */
     public function export(): JsonResponse
     {
@@ -100,10 +98,8 @@ class ProfilController extends Controller
 
     /**
      * RGPD — Article 17 : droit à l'effacement.
-     * Alternative à la suppression définitive : anonymise le compte pour conserver 
+     * Alternative à la suppression définitive : anonymise le compte pour conserver
      * les statistiques globales sans conserver d'informations personnellement identifiables.
-     *
-     * @return JsonResponse
      */
     public function anonymiser(): JsonResponse
     {
