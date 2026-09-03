@@ -43,6 +43,12 @@ jobs:
       - name: Vérifier le style (Laravel Pint, PSR-12)
         run: vendor/bin/pint --test
 
+      - name: Préparer l'environnement (clés)
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan jwt:secret
+
       - name: Lancer les tests (Unit + Feature)
         run: php artisan test
 
