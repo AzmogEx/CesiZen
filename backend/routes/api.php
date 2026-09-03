@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
+    Route::get('ping', function () {
+        return response()->json(['message' => 'pong deploy successful']);
+    });
+
     // ── Auth (public) ──────────────────────────────────────
     Route::prefix('auth')->group(function () {
         Route::post('register', [AuthController::class, 'register'])
